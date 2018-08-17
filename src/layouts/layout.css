@@ -1,0 +1,38 @@
+.page__layout {
+  min-height: 100vh;
+}
+
+.page__hd {
+  min-width: 1016px;
+  color: #fff;
+  font-weight: 700;
+  /* background-color: #008aff; */
+}
+
+.page__hd h3 {
+  color: #fff;
+  font-weight: 600;
+}
+
+.page__bd {
+  padding: 30px;
+  margin: 30px 40px 0;
+  background-color: #fff;
+}
+
+.page__hd,
+.page__ft {
+  text-align: center;
+}
+
+.logo {
+  height: 64px;
+  /* border-right: 1px solid #065279; */
+  border-bottom: 1px solid #065279;
+  text-align: center;
+  line-height: 60px;
+}
+
+.logo-img {
+  height: 40px;
+}

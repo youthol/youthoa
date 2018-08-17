@@ -1,0 +1,8 @@
+.breadcrumb {
+  height: 30px;
+  padding: 0 20px;
+  line-height: 30px;
+  margin-bottom: 16px;
+  background: #f8f8f8;
+  border-radius: 5px;
+}
