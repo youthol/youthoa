@@ -19,14 +19,14 @@ class ModalRenew extends Component {
     };
     return (
       <Modal
-        title="日程完结"
+        title="借用设备"
         visible={this.props.visible}
-        onOk={() => this.props.handleOk('renew', this.props.form)}
-        onCancel={() => this.props.handleCancel('renew', this.props.form)}
+        onOk={e => this.props.handleOk('renew', this.props.form)}
+        onCancel={e => this.props.handleCancel('renew', this.props.form)}
       >
         <Form>
           <FormItem {...formItemLayout} label="备忘人">
-            {getFieldDecorator('user', {
+            {getFieldDecorator('rememo_user', {
               rules: [{ required: true, message: '备忘人不能为空!' }]
             })(<Input placeholder="请输入备忘人学号" autoComplete="off" />)}
           </FormItem>

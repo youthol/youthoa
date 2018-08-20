@@ -1,13 +1,6 @@
 const initialState = {
-  server: 'https://api.youthol.cn/',
-  localhost: 'http://localhost:5000/api/'
+  server: 'https://api.youthol.cn/api',
+  localhost: 'http://localhost:5000/api'
 };
 
-const baseUrl = (state = initialState, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
-
-export default baseUrl;
+export default (state = initialState.localhost) => state;
