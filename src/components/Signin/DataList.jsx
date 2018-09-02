@@ -16,7 +16,7 @@ const DataList = props => {
         key="status"
         render={text => (
           <div>
-            {text.status === '0' ? (
+            {text.status === 0 ? (
               <Badge status="processing" text="值班中" />
             ) : (
               <Badge status="success" text="已签退" />
@@ -33,7 +33,7 @@ const DataList = props => {
         title="签退时间"
         key="updated_at"
         render={text => (
-          <div>{text.status === '0' ? null : moment(text.updated_at).format('HH:mm:ss')}</div>
+          <div>{text.status === 0 ? null : moment(text.updated_at).format('HH:mm:ss')}</div>
         )}
       />
     </Table>
@@ -41,7 +41,7 @@ const DataList = props => {
 };
 
 DataList.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
 };
 
 export default DataList;

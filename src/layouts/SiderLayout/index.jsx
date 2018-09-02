@@ -79,11 +79,11 @@ class SiderLayout extends Component {
             <Icon type="compass" />
             <span>工作量统计</span>
           </Menu.Item>
-          <Menu.Item key="h">
+          {/* <Menu.Item key="h">
             <Link to={`/phonebook`} />
             <Icon type="compass" />
             <span>办公电话表</span>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
     );

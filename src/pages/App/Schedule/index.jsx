@@ -15,12 +15,77 @@ class AppSchedule extends Component {
     this.state = {
       modalAddVisible: false,
       modalRenewVisible: false,
-      currentId: 0
+      currentId: 0,
     };
   }
+
   componentDidMount() {
     this.getScheduleList();
   }
+
+  /**
+   * @description 显示 modal
+   * @param {*} type 新增 add, 更新 renew
+   * @param {*} id 更新的 id
+   */
+  showModal = (type, id) => {
+    switch (type) {
+      case 'add':
+        this.setState({ modalAddVisible: true });
+        break;
+      case 'renew':
+        this.setState({ modalRenewVisible: true, currentId: id });
+        break;
+      default:
+        message.error('出错啦~');
+    }
+  };
+
+  /**
+   * @description 处理 modal 确认事件
+   * @param {*} type 新增 add, 更新 renew
+   * @param {*} form
+   */
+  handleOk = (type, form) => {
+    form.validateFields((err, values) => {
+      if (!err) {
+        switch (type) {
+          case 'add':
+            values.event_date = values.event_date.format('YYYY-MM-DD HH:mm:ss');
+            console.log(values);
+            this.createSchedule(values);
+            this.setState({ modalAddVisible: false });
+            break;
+          case 'renew':
+            console.log(values);
+            this.upgradeSchedule(values);
+            this.setState({ modalRenewVisible: false, currentId: 0 });
+            break;
+          default:
+            message.error('出现错误');
+        }
+      }
+    });
+  };
+  
+  /**
+   * @description 处理 modal 取消事件
+   * @param {*} type 新增 add, 更新 renew
+   * @param {*} form
+   */
+  handleCancel = (type, form) => {
+    switch (type) {
+      case 'add':
+        this.setState({ modalAddVisible: false });
+        break;
+      case 'renew':
+        this.setState({ modalRenewVisible: false });
+        break;
+      default:
+        message.error('出现错误');
+    }
+    form.resetFields();
+  };
   getScheduleList = () => {
     axios
       .get(`${this.props.baseUrl}/schedules`)
@@ -61,52 +126,7 @@ class AppSchedule extends Component {
         console.error(err);
       });
   };
-  showModal = (type, id) => {
-    switch (type) {
-      case 'add':
-        this.setState({ modalAddVisible: true });
-        break;
-      case 'renew':
-        this.setState({ modalRenewVisible: true, currentId: id });
-        break;
-      default:
-        message.error('出错啦~');
-    }
-  };
-  handleOk = (type, form) => {
-    form.validateFields((err, values) => {
-      if (!err) {
-        switch (type) {
-          case 'add':
-            values.event_date = values.event_date.format('YYYY-MM-DD HH:mm:ss');
-            console.log(values);
-            this.createSchedule(values);
-            this.setState({ modalAddVisible: false });
-            break;
-          case 'renew':
-            console.log(values);
-            this.upgradeSchedule(values);
-            this.setState({ modalRenewVisible: false, currentId: 0 });
-            break;
-          default:
-            message.error('出现错误');
-        }
-      }
-    });
-  };
-  handleCancel = (type, form) => {
-    switch (type) {
-      case 'add':
-        this.setState({ modalAddVisible: false });
-        break;
-      case 'renew':
-        this.setState({ modalRenewVisible: false });
-        break;
-      default:
-        message.error('出错啦~');
-    }
-    form.resetFields();
-  };
+
   render() {
     return (
       <BasicLayout history={this.props.history}>
@@ -128,7 +148,7 @@ class AppSchedule extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  baseUrl: state.baseUrl,
 });
 
 export default connect(mapStateToProps)(AppSchedule);

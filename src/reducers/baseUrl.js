@@ -1,6 +1,6 @@
 const initialState = {
-  server: 'https://api.youthol.cn/api',
-  localhost: 'http://localhost:5000/api'
+  server: 'https://api.youthol.cn/api/oa',
+  localhost: 'http://192.168.1.104/youthAPI/public/api/oa',
 };
 
-export default (state = initialState.localhost) => state;
+export default (state = initialState.server) => state;
