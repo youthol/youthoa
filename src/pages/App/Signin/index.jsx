@@ -52,8 +52,12 @@ class AppSignin extends Component {
       .get(`${this.props.baseUrl}/signin`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
-          console.log(res.data)
-          this.setState({ data: res.data.data });
+          const data = res.data.data.map(el => ({
+            ...el,
+            key: el.id,
+          }));
+          this.setState({ data });
+          console.log(data);
         }
       })
       .catch(err => {
@@ -75,7 +79,7 @@ class AppSignin extends Component {
       .post(`${baseUrl}/signin`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
-          console.log(res.data)
+          console.log(res.data);
           switch (res.data.data.status) {
             case 0:
               message.success(`${id}签到成功`);
