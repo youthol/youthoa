@@ -36,7 +36,7 @@ class SiderLayout extends Component {
             <Icon type="dashboard" />
             <span>首页</span>
           </Menu.Item>
-          <Menu.SubMenu
+          {/* <Menu.SubMenu
             key="manage"
             title={
               <span>
@@ -57,33 +57,31 @@ class SiderLayout extends Component {
               <Link to="/perms" />
               <span>权限</span>
             </Menu.Item>
-          </Menu.SubMenu>
-          {this.props.isAuth && (
-            <Menu.Item key="c">
-              <Icon type="laptop" />
-              <span>内容管理</span>
-            </Menu.Item>
-          )}
+          </Menu.SubMenu> */}
+          {/* <Menu.Item key="c">
+            <Icon type="laptop" />
+            <span>内容管理</span>
+          </Menu.Item> */}
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
             <span>值班签到系统</span>
           </Menu.Item>
-          <Menu.Item key="/device">
+          {/* <Menu.Item key="/device">
             <Link to="/device" />
             <Icon type="compass" />
             <span>设备借用记录</span>
-          </Menu.Item>
-          <Menu.Item key="/schedule">
+          </Menu.Item> */}
+          {/* <Menu.Item key="/schedule">
             <Link to="/schedule" />
             <Icon type="compass" />
             <span>网站日程安排</span>
-          </Menu.Item>
-          <Menu.Item key="/workload">
+          </Menu.Item> */}
+          {/* <Menu.Item key="/workload">
             <Link to="/workload" />
             <Icon type="compass" />
             <span>工作量统计</span>
-          </Menu.Item>
+          </Menu.Item> */}
           {/* <Menu.Item key="/phonebook">
             <Link to="/phonebook" />
             <Icon type="compass" />
