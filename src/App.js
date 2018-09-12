@@ -17,7 +17,6 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          {/* <Redirect exact from="/" to="/login" /> */}
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/users" component={Users} />
@@ -28,6 +27,7 @@ class App extends Component {
           <Route exact path="/schedule" component={AppSchedule} />
           <Route exact path="/workload" component={AppWorkload} />
           <Route exact path="/phonebook" component={AppPhonebook} />
+          <Redirect to="/" />
           <Route component={NotMatch} />
         </Switch>
       </Router>

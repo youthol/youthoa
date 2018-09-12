@@ -65,24 +65,24 @@ class SiderLayout extends Component {
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
-            <span>值班签到系统</span>
+            <span>值班签到</span>
           </Menu.Item>
-          {/* <Menu.Item key="/device">
+          <Menu.Item key="/device">
             <Link to="/device" />
             <Icon type="compass" />
-            <span>设备借用记录</span>
-          </Menu.Item> */}
-          {/* <Menu.Item key="/schedule">
+            <span>设备借用</span>
+          </Menu.Item>
+          <Menu.Item key="/schedule">
             <Link to="/schedule" />
             <Icon type="compass" />
-            <span>网站日程安排</span>
-          </Menu.Item> */}
+            <span>日程安排</span>
+          </Menu.Item>
           {/* <Menu.Item key="/workload">
             <Link to="/workload" />
             <Icon type="compass" />
             <span>工作量统计</span>
-          </Menu.Item> */}
-          {/* <Menu.Item key="/phonebook">
+          </Menu.Item>
+          <Menu.Item key="/phonebook">
             <Link to="/phonebook" />
             <Icon type="compass" />
             <span>办公电话表</span>

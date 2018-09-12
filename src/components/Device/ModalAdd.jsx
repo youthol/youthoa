@@ -34,7 +34,7 @@ class ModalAdd extends Component {
               <RadioGroup>
                 {this.props.equipments &&
                   this.props.equipments.map(item => (
-                    <RadioButton key={item.id} value={item.device_name}>
+                    <RadioButton key={item.id} value={item.id}>
                       {item.device_name}
                     </RadioButton>
                   ))}
