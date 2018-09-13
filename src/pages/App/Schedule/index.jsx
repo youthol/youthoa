@@ -52,12 +52,10 @@ class AppSchedule extends Component {
         switch (type) {
           case 'add':
             values.event_date = values.event_date.format('YYYY-MM-DD HH:mm:ss');
-            console.log(values);
             this.createSchedule(values);
             this.setState({ modalAddVisible: false });
             break;
           case 'renew':
-            console.log(values);
             this.upgradeSchedule(values);
             this.setState({ modalRenewVisible: false, currentId: 0 });
             break;
@@ -66,8 +64,9 @@ class AppSchedule extends Component {
         }
       }
     });
+    form.resetFields();
   };
-  
+
   /**
    * @description 处理 modal 取消事件
    * @param {*} type 新增 add, 更新 renew
@@ -86,23 +85,41 @@ class AppSchedule extends Component {
     }
     form.resetFields();
   };
+
+  /**
+   * @description 获取进一个月的日程记录
+   */
   getScheduleList = () => {
+    const { baseUrl } = this.props;
+
     axios
-      .get(`${this.props.baseUrl}/schedules`)
+      .get(`${baseUrl}/schedules`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
-          this.setState({ data: res.data.data });
+          const data = res.data.data.map(el => ({
+            ...el,
+            key: el.id,
+          }));
+          this.setState({ data });
         }
       })
       .catch(err => {
         console.error(err);
       });
   };
+
+  /**
+   * @description 请求创建新的日程记录
+   * @param {*} data
+   * @returns
+   */
   createSchedule = data => {
     if (!data) return;
+    const { baseUrl } = this.props;
     const params = qs.stringify(data);
+
     axios
-      .post(`${this.props.baseUrl}/schedules`, params)
+      .post(`${baseUrl}/schedule`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getScheduleList();
@@ -112,11 +129,17 @@ class AppSchedule extends Component {
         console.error(err);
       });
   };
+
+  /**
+   * @description 更新日程，标注为已完成状态
+   * @param {*} data
+   * @returns
+   */
   upgradeSchedule = data => {
     if (!data) return;
     const params = qs.stringify(data);
     axios
-      .put(`${this.props.baseUrl}/schedules/${this.state.currentId}`, params)
+      .put(`${this.props.baseUrl}/schedule/${this.state.currentId}`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getScheduleList();

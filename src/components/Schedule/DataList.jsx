@@ -15,13 +15,13 @@ const DataList = props => {
         key="event_date"
         render={text => <div>{moment(text.created_at).format('YYYY-MM-DD HH:mm')}</div>}
       />
-      <Column title="发起人" dataIndex="sponsor" key="sponsor" />
+      <Column title="发起人" dataIndex="sponsor_user.name" key="sponsor" />
       <Column
         title="完成状态"
         key="event_status"
         render={text => (
           <div>
-            {text.event_status === '0' ? (
+            {text.event_status === 0 ? (
               <Badge status="processing" text="进行中" />
             ) : (
               <Badge status="success" text="已完成" />
@@ -41,7 +41,7 @@ const DataList = props => {
           <Button.Group>
             <Button
               icon="logout"
-              disabled={text.event_status === '0' ? false : true}
+              disabled={text.event_status === 0 ? false : true}
               onClick={() => props.showModal('renew', text.key)}
             />
             <Button icon="delete" disabled onClick={props.handleDelete} />

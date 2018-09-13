@@ -8,9 +8,9 @@ const { Column } = Table;
 const DataList = props => {
   return (
     <Table dataSource={props.data} expandedRowRender={props.handleExpandRow}>
-      <Column title="设备名称" dataIndex="device" key="device" />
+      <Column title="设备名称" dataIndex="device.device_name" key="device" />
       <Column title="活动名称" dataIndex="activity" key="activity" />
-      <Column title="借用人" dataIndex="lend_user" key="lend_user" />
+      <Column title="借用人" dataIndex="lend_user_name.name" key="lend_user" />
       <Column
         title="借出时间"
         key="lend_at"
@@ -37,7 +37,7 @@ const DataList = props => {
             <Button
               icon="logout"
               disabled={text.return_at ? true : false}
-              onClick={() => props.showModal('renew', text.key)}
+              onClick={() => props.showModal('renew', text.id)}
             />
             <Button icon="delete" disabled onClick={props.handleDelete} />
           </Button.Group>

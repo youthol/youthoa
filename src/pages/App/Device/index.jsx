@@ -16,65 +16,19 @@ class AppDevice extends Component {
     this.state = {
       modalAddVisible: false,
       modalRenewVisible: false,
-      currentId: 0
+      currentId: 0,
     };
   }
   componentDidMount() {
     this.getEquipmentList();
     this.getRecordList();
   }
-  getEquipmentList = () => {
-    axios
-      .get(`${this.props.baseUrl}/equipments`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.setState({ equipments: res.data.data });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  getRecordList = () => {
-    axios
-      .get(`${this.props.baseUrl}/devices`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.setState({ data: res.data.data });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  createRecord = data => {
-    if (!data) return;
-    const params = qs.stringify(data);
-    axios
-      .post(`${this.props.baseUrl}/devices`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getRecordList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  upgradeRecord = data => {
-    if (!data) return;
-    const params = qs.stringify(data);
-    axios
-      .put(`${this.props.baseUrl}/devices/${this.state.currentId}`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getRecordList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
+
+  /**
+   * @description 打开表单输入框
+   * @param {*} type
+   * @param {*} id
+   */
   showModal = (type, id) => {
     switch (type) {
       case 'add':
@@ -87,6 +41,12 @@ class AppDevice extends Component {
         message.error('出错啦~');
     }
   };
+
+  /**
+   * @description 处理表单框OK点击事件
+   * @param {*} type
+   * @param {*} form
+   */
   handleOk = (type, form) => {
     form.validateFields((err, values) => {
       if (!err) {
@@ -94,11 +54,9 @@ class AppDevice extends Component {
           case 'add':
             values.lend_at = values.lend_at.format('YYYY-MM-DD HH:mm:ss');
             this.createRecord(values);
-            console.log(values);
             this.setState({ modalAddVisible: false });
             break;
           case 'renew':
-            console.log(values);
             this.upgradeRecord(values);
             this.setState({ modalRenewVisible: false, currentId: 0 });
             break;
@@ -107,7 +65,14 @@ class AppDevice extends Component {
         }
       }
     });
+    form.resetFields();
   };
+
+  /**
+   * @description 处理表单框Cancle点击事件
+   * @param {*} type
+   * @param {*} form
+   */
   handleCancel = (type, form) => {
     switch (type) {
       case 'add':
@@ -121,21 +86,106 @@ class AppDevice extends Component {
     }
     form.resetFields();
   };
+
   handleDelete = e => {
     console.log('delete');
   };
+
+  /**
+   * @description 获取全部可借用设备
+   */
+  getEquipmentList = () => {
+    const { baseUrl } = this.props;
+    axios
+      .get(`${baseUrl}/equipments`)
+      .then(res => {
+        if (res.status >= 200 && res.status <= 300) {
+          this.setState({ equipments: res.data.data });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  /**
+   * @description 获取近一个月借用记录
+   */
+  getRecordList = () => {
+    const { baseUrl } = this.props;
+    axios
+      .get(`${baseUrl}/devices`)
+      .then(res => {
+        if (res.status >= 200 && res.status <= 300) {
+          const data = res.data.data.map(el => ({
+            ...el,
+            key: el.id,
+          }));
+          this.setState({ data });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  /**
+   * @description 创建借用记录
+   * @param {*} data
+   * @returns
+   */
+  createRecord = data => {
+    if (!data) return;
+    const params = qs.stringify(data);
+
+    axios
+      .post(`${this.props.baseUrl}/device`, params)
+      .then(res => {
+        if (res.status >= 200 && res.status <= 300) {
+          this.getRecordList();
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  /**
+   * @description 更新状态
+   * @param {*} data
+   * @returns
+   */
+  upgradeRecord = data => {
+    if (!data) return;
+    const params = qs.stringify(data);
+    axios
+      .put(`${this.props.baseUrl}/device/${this.state.currentId}`, params)
+      .then(res => {
+        if (res.status >= 200 && res.status <= 300) {
+          this.getRecordList();
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  /**
+   * @description 处理展开事件
+   * @param {*} record
+   */
   handleExpandRow = record => (
     <ul>
       {record.memo_user && (
         <li>
           借出备忘人：
-          {record.memo_user}
+          {record.memo_user_name.name}
         </li>
       )}
       {record.rememo_user && (
         <li>
           归还备忘人：
-          {record.rememo_user}
+          {record.rememo_user_name.name}
         </li>
       )}
       {record.return_at && (
@@ -146,6 +196,7 @@ class AppDevice extends Component {
       )}
     </ul>
   );
+
   render() {
     return (
       <BasicLayout history={this.props.history}>
@@ -173,7 +224,7 @@ class AppDevice extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  baseUrl: state.baseUrl,
 });
 
 export default connect(mapStateToProps)(Form.create()(AppDevice));

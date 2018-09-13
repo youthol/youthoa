@@ -57,7 +57,6 @@ class AppSignin extends Component {
             key: el.id,
           }));
           this.setState({ data });
-          console.log(data);
         }
       })
       .catch(err => {
