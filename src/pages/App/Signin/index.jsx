@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { message } from 'antd';
+import { Modal, message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
+import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
 import DataList from '@/components/Signin/DataList';
 import SigninInput from '@/components/Signin/SigninInput';
+
+const confirm = Modal.confirm;
 
 class AppSignin extends Component {
   constructor(props) {
@@ -36,11 +39,27 @@ class AppSignin extends Component {
    * @returns
    */
   handleSubmit = val => {
-    if (!val) {
-      message.error('学号不能为空');
-      return;
+    if (!val || val.length !== 11) {
+      return message.error('请输入正确学号');
     }
-    this.postSignin(val);
+    const user = this.state.data.filter(el => el.sdut_id === val && el.status === 0);
+    const timer = 77;
+    if (
+      user.length &&
+      moment()
+        .add(-timer, 'minutes')
+        .isBefore(user[0].created_at)
+    ) {
+      confirm({
+        title: '确定要签退吗?',
+        content: '现在签退是早退喔~',
+        onOk: () => {
+          this.postSignin(val);
+        },
+      });
+    } else {
+      this.postSignin(val);
+    }
     this.setState({ inputValue: '' });
   };
 
@@ -78,19 +97,23 @@ class AppSignin extends Component {
       .post(`${baseUrl}/signin`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
-          console.log(res.data);
-          switch (res.data.data.status) {
+          const { status, user } = res.data.data;
+          switch (status) {
             case 0:
-              message.success(`${id}签到成功`);
+              message.success(`${user.name} 签到成功`);
               break;
             default:
-              message.success(`${id}已签退`);
+              message.success(`${user.name} 已签退`);
           }
           this.getRecordList();
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          message.error(err.response.data.message);
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
