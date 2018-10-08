@@ -6,6 +6,7 @@ import Login from '@/pages/Login';
 import Users from '@/pages/Auth/User';
 import Roles from '@/pages/Auth/Role';
 import Permissions from '@/pages/Auth/Permission';
+import Manager from '@/pages/Manager';
 import AppSignin from '@/pages/App/Signin';
 import AppDevice from '@/pages/App/Device';
 import AppSchedule from '@/pages/App/Schedule';
@@ -22,6 +23,7 @@ class App extends Component {
           <Route exact path="/users" component={Users} />
           <Route exact path="/roles" component={Roles} />
           <Route exact path="/perms" component={Permissions} />
+          <Route exact path="/manager" component={Manager} />
           <Route exact path="/signin" component={AppSignin} />
           <Route exact path="/device" component={AppDevice} />
           <Route exact path="/schedule" component={AppSchedule} />
