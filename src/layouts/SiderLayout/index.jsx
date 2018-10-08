@@ -9,7 +9,7 @@ const { Sider } = Layout;
 
 class SiderLayout extends Component {
   state = {
-    collapsed: false,
+    collapsed: false
   };
   handleCollapse = collapsed => {
     this.setState({ collapsed });
@@ -36,7 +36,7 @@ class SiderLayout extends Component {
             <Icon type="dashboard" />
             <span>首页</span>
           </Menu.Item>
-          {/* <Menu.SubMenu
+          <Menu.SubMenu
             key="manage"
             title={
               <span>
@@ -49,19 +49,20 @@ class SiderLayout extends Component {
               <Link to="/users" />
               <span>用户</span>
             </Menu.Item>
-            <Menu.Item key="/roles">
+            {/* <Menu.Item key="/roles">
               <Link to="/roles" />
               <span>角色</span>
             </Menu.Item>
             <Menu.Item key="/perms">
               <Link to="/perms" />
               <span>权限</span>
-            </Menu.Item>
-          </Menu.SubMenu> */}
-          {/* <Menu.Item key="c">
+            </Menu.Item> */}
+          </Menu.SubMenu>
+          <Menu.Item key="manager">
+            <Link to="/manager" />
             <Icon type="laptop" />
-            <span>内容管理</span>
-          </Menu.Item> */}
+            <span>系统数据管理</span>
+          </Menu.Item>
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
