@@ -16,7 +16,7 @@ class AppDevice extends Component {
     this.state = {
       modalAddVisible: false,
       modalRenewVisible: false,
-      currentId: 0,
+      currentId: 0
     };
   }
   componentDidMount() {
@@ -104,7 +104,20 @@ class AppDevice extends Component {
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
@@ -119,13 +132,26 @@ class AppDevice extends Component {
         if (res.status >= 200 && res.status <= 300) {
           const data = res.data.data.map(el => ({
             ...el,
-            key: el.id,
+            key: el.id
           }));
           this.setState({ data });
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
@@ -147,6 +173,30 @@ class AppDevice extends Component {
       })
       .catch(err => {
         console.error(err);
+        try {
+          message.error(err.response.data.message);
+          for (let error in err.response.data.errors) {
+            // FIXED: 修改
+            error.forEach(el => {
+              message.error(el);
+            });
+          }
+        } catch (e) {
+          try {
+            const { errors } = err.response.data;
+            if (errors) {
+              for (let error in errors) {
+                if (errors[error] instanceof Array) {
+                  errors[error].forEach(el => message.error(el));
+                }
+              }
+            } else {
+              message.error(err.response.data.message);
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
       });
   };
 
@@ -166,7 +216,20 @@ class AppDevice extends Component {
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
@@ -224,7 +287,7 @@ class AppDevice extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl,
+  baseUrl: state.baseUrl
 });
 
 export default connect(mapStateToProps)(Form.create()(AppDevice));
