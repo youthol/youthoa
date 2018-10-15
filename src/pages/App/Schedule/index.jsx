@@ -15,7 +15,7 @@ class AppSchedule extends Component {
     this.state = {
       modalAddVisible: false,
       modalRenewVisible: false,
-      currentId: 0,
+      currentId: 0
     };
   }
 
@@ -98,13 +98,26 @@ class AppSchedule extends Component {
         if (res.status >= 200 && res.status <= 300) {
           const data = res.data.data.map(el => ({
             ...el,
-            key: el.id,
+            key: el.id
           }));
           this.setState({ data });
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
@@ -126,7 +139,20 @@ class AppSchedule extends Component {
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
@@ -171,7 +197,7 @@ class AppSchedule extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl,
+  baseUrl: state.baseUrl
 });
 
 export default connect(mapStateToProps)(AppSchedule);
