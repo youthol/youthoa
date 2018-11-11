@@ -6,7 +6,9 @@ import Login from '@/pages/Login';
 import Users from '@/pages/Auth/User';
 import Roles from '@/pages/Auth/Role';
 import Permissions from '@/pages/Auth/Permission';
-import Manager from '@/pages/Manager';
+import Manages from '@/pages/Manager';
+import ExportSigninTable from '@/pages/Manager/ExportSigninTable'
+import ImportUserTable from '@/pages/Manager/ImportUserTable';
 import AppSignin from '@/pages/App/Signin';
 import AppDevice from '@/pages/App/Device';
 import AppSchedule from '@/pages/App/Schedule';
@@ -18,17 +20,23 @@ class App extends Component {
     return (
       <Router>
         <Switch>
+          {/* Basic Routes */}
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/users" component={Users} />
           <Route exact path="/roles" component={Roles} />
           <Route exact path="/perms" component={Permissions} />
-          <Route exact path="/manager" component={Manager} />
+          {/* Manager Routes */}
+          <Route exact path="/manage" component={Manages} />
+          <Route exact path="/manage/impt-user-tb" component={ImportUserTable} />
+          <Route exact path="/manage/expt-signin-rec-tb" component={ExportSigninTable} />
+          {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />
           <Route exact path="/device" component={AppDevice} />
           <Route exact path="/schedule" component={AppSchedule} />
           <Route exact path="/workload" component={AppWorkload} />
           <Route exact path="/phonebook" component={AppPhonebook} />
+          {/* NotMatch Routes */}
           <Redirect to="/" />
           <Route component={NotMatch} />
         </Switch>
