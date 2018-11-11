@@ -37,7 +37,7 @@ class SiderLayout extends Component {
             <span>首页</span>
           </Menu.Item>
           <Menu.SubMenu
-            key="manage"
+            key="prems"
             title={
               <span>
                 <Icon type="laptop" />
@@ -58,8 +58,8 @@ class SiderLayout extends Component {
               <span>权限</span>
             </Menu.Item> */}
           </Menu.SubMenu>
-          <Menu.Item key="manager">
-            <Link to="/manager" />
+          <Menu.Item key="manage">
+            <Link to="/manage" />
             <Icon type="laptop" />
             <span>系统数据管理</span>
           </Menu.Item>

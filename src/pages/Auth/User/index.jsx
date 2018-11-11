@@ -34,7 +34,6 @@ class User extends Component {
   render() {
     return (
       <BasicLayout history={this.props.history}>
-        <div>User</div>
         <UserList data={this.state.data} />
       </BasicLayout>
     );
