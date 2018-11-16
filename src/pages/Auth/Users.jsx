@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
-import UserList from '../../../components/Admin/UserList';
+import UserList from '@/components/Admin/UserList';
 
 class User extends Component {
   state = {

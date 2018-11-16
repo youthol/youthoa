@@ -6,24 +6,6 @@ import BasicLayout from '@/layouts/BasicLayout';
 const SubMenu = Menu.SubMenu;
 
 class Manager extends Component {
-  handleExport = (e, form) => {
-    e.preventDefault();
-    const { baseUrl } = this.props;
-    form.validateFields((err, values) => {
-      if (!err) {
-        let [start, end] = values.daterange;
-        start = start.format('YYYY-MM-DD');
-        end = end.format('YYYY-MM-DD');
-        let a = document.createElement('a');
-        let url = `${baseUrl}/signin/export?start=${start}&end=${end}`;
-        let filename = 'myfile.zip';
-        a.href = url;
-        a.download = filename;
-        a.click();
-      }
-    });
-  };
-
   render() {
     const menu = (
       <Menu>
@@ -33,12 +15,13 @@ class Manager extends Component {
         <Menu.Item>
           <Link to="/manage/impt-user-tb">导入成员表</Link>
         </Menu.Item>
-        <SubMenu title="sub menu">
+        <SubMenu title="Auth">
           <Menu.Item>3rd menu item</Menu.Item>
           <Menu.Item>4th menu item</Menu.Item>
         </SubMenu>
       </Menu>
     );
+
     return (
       <BasicLayout history={this.props.history}>
         <div>
@@ -48,6 +31,7 @@ class Manager extends Component {
               <Icon type="down" />
             </Button>
           </Dropdown>
+
           <div>{this.props.children}</div>
         </div>
       </BasicLayout>

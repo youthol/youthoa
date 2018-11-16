@@ -49,14 +49,14 @@ class SiderLayout extends Component {
               <Link to="/users" />
               <span>用户</span>
             </Menu.Item>
-            {/* <Menu.Item key="/roles">
+            <Menu.Item key="/roles">
               <Link to="/roles" />
               <span>角色</span>
             </Menu.Item>
             <Menu.Item key="/perms">
               <Link to="/perms" />
               <span>权限</span>
-            </Menu.Item> */}
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.Item key="manage">
             <Link to="/manage" />
