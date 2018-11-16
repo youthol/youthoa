@@ -13,7 +13,7 @@ const DataList = props => {
       <Column
         title="时间"
         key="event_date"
-        render={text => <div>{moment(text.created_at).format('YYYY-MM-DD HH:mm')}</div>}
+        render={text => <div>{moment(text.event_date).format('YYYY-MM-DD HH:mm')}</div>}
       />
       <Column title="发起人" dataIndex="sponsor_user.name" key="sponsor" />
       <Column
