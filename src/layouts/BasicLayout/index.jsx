@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Layout, Modal, Icon, message } from 'antd';
+import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
 import { updateBaseInfo, updateAuthInfo } from '@/actions/userinfo';
 import './style.scss';
@@ -14,8 +15,14 @@ class BasicLayout extends Component {
   };
   componentDidMount() {
     const { token, expires_at } = sessionStorage;
-    if (token && expires_at) {
+    if (token && moment().isBefore(expires_at)) {
       this.setState({ isAuth: true });
+      const { userInfo, authInfo } = this.props;
+      if (!userInfo || !authInfo) {
+        console.log(userInfo);
+      }
+    } else {
+      this.setState({ isAuth: false });
     }
   }
 

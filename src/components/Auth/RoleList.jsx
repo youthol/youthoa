@@ -20,7 +20,7 @@ const RoleList = props => {
             key="action"
             render={text => (
               <Button.Group>
-                <Button icon="edit" disabled />
+                <Button icon="edit" onClick={() => props.handleEdit(text)} />
                 <Button icon="delete" disabled />
               </Button.Group>
             )}

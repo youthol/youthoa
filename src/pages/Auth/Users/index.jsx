@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import axios from "axios";
-import BasicLayout from "@/layouts/BasicLayout";
-import UserList from "@/components/Auth/UserList";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import BasicLayout from '@/layouts/BasicLayout';
+import UserList from '@/components/Auth/UserList';
 
 class User extends Component {
   state = {
@@ -27,10 +27,14 @@ class User extends Component {
         console.log(err);
       });
   };
+
+  handleEdit = user => {
+    this.props.history.push(`/users/edit/${user.id}`);
+  };
   render() {
     return (
       <BasicLayout history={this.props.history}>
-        <UserList data={this.state.data} />
+        <UserList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );
   }

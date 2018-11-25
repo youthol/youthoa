@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { Form, message } from "antd";
-import moment from "moment";
-import axios from "axios";
-import qs from "qs";
-import BasicLayout from "@/layouts/BasicLayout";
-import LoginForm from "@/components/Auth/Login/LoginForm";
-import { updateBaseInfo, updateAuthInfo } from "@/actions/userinfo";
-import "./style.scss";
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Form, message } from 'antd';
+import moment from 'moment';
+import axios from 'axios';
+import qs from 'qs';
+import BasicLayout from '@/layouts/BasicLayout';
+import LoginForm from '@/components/Auth/Login/LoginForm';
+import { updateBaseInfo, updateAuthInfo } from '@/actions/userinfo';
+import './style.scss';
 
 class Login extends Component {
   componentDidMount() {
     const { token, expires_at } = sessionStorage;
     if (token && expires_at) {
-      this.props.history.push("/");
+      this.props.history.push('/');
     }
   }
   handleSubmit = e => {
@@ -35,15 +35,15 @@ class Login extends Component {
       .then(res => {
         const { data, meta } = res.data;
         const expires_at = moment()
-          .add(meta.expires_in, "second")
-          .format("YYYY-MM-DD HH:mm:ss");
+          .add(meta.expires_in, 'second')
+          .format('YYYY-MM-DD HH:mm:ss');
         sessionStorage.clear();
-        sessionStorage.setItem("token", meta.access_token);
-        sessionStorage.setItem("expires_at", expires_at);
+        sessionStorage.setItem('token', meta.access_token);
+        sessionStorage.setItem('expires_at', expires_at);
         this.props.updateBaseInfo(data);
-        this.props.updateAuthInfo();
-        // this.getAuthInfo(meta.access_token);
-        this.props.history.push("/");
+        // this.props.updateAuthInfo();
+        this.getAuthInfo(meta.access_token);
+        this.props.history.push('/');
         console.log(data);
       })
       .catch(err => {
