@@ -4,7 +4,7 @@ import { Table, Button } from 'antd';
 
 const { Column } = Table;
 
-const DataList = props => {
+const UserList = props => {
   return (
     <div>
       {props.data && (
@@ -32,8 +32,8 @@ const DataList = props => {
   );
 };
 
-DataList.propTypes = {
+UserList.propTypes = {
   data: PropTypes.array
 };
 
-export default DataList;
+export default UserList;

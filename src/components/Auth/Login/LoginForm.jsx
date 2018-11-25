@@ -12,7 +12,7 @@ const LoginForm = props => {
       <h2>{props.title || 'LOGIN'}</h2>
       <FormItem>
         {getFieldDecorator('username', {
-          initialValue: '',
+          initialValue: '15110302127',
           rules: [{ required: true, message: 'Please input your Username!' }]
         })(
           <Input

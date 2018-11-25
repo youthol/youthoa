@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Layout, Modal, Icon, message } from 'antd';
 import SiderLayout from '@/layouts/SiderLayout';
+import { updateBaseInfo, updateAuthInfo } from '@/actions/userinfo';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -10,14 +13,12 @@ class BasicLayout extends Component {
     isAuth: false
   };
   componentDidMount() {
-    const { token, expires_at, username } = sessionStorage;
-    if (token && expires_at && username) {
+    const { token, expires_at } = sessionStorage;
+    if (token && expires_at) {
       this.setState({ isAuth: true });
     }
   }
-  currentYear() {
-    return new Date().getFullYear();
-  }
+
   handleLogin = e => {
     if (this.props.history.location.pathname === '/login') {
       message.info('请登录');
@@ -43,6 +44,9 @@ class BasicLayout extends Component {
       }
     });
   };
+  currentYear() {
+    return new Date().getFullYear();
+  }
 
   render() {
     return (
@@ -76,4 +80,18 @@ class BasicLayout extends Component {
   }
 }
 
-export default BasicLayout;
+const mapStateToProps = state => ({
+  baseUrl: state.baseUrl,
+  baseInfo: state.userinfo.baseInfo,
+  authInfo: state.userinfo.authInfo
+});
+
+const mapDispatchToProps = dispatch => ({
+  updateBaseInfo: bindActionCreators(updateBaseInfo, dispatch),
+  updateAuthInfo: bindActionCreators(updateAuthInfo, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BasicLayout);

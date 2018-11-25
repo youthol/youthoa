@@ -1,0 +1,43 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+import RoleList from '@/components/Auth/RoleList'
+import BasicLayout from "@/layouts/BasicLayout";
+
+class Role extends Component {
+  state = {
+    data: []
+  };
+  componentDidMount() {
+    this.getRoleList();
+  }
+  getRoleList = () => {
+    const { baseUrl } = this.props;
+
+    axios
+      .get(`${baseUrl}/roles`)
+      .then(res => {
+        const data = res.data.data.map(item => ({ ...item, key: item.id }));
+        if (data && data.length) {
+          this.setState({ data });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+
+  render() {
+    return (
+      <BasicLayout history={this.props.history}>
+        <RoleList data={this.state.data} />
+      </BasicLayout>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  baseUrl: state.baseUrl
+});
+
+export default connect(mapStateToProps)(Role);

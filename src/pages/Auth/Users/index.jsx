@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import BasicLayout from '@/layouts/BasicLayout';
-import UserList from '../../../components/Admin/UserList';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+import BasicLayout from "@/layouts/BasicLayout";
+import UserList from "@/components/Auth/UserList";
 
 class User extends Component {
   state = {
@@ -18,11 +18,8 @@ class User extends Component {
     axios
       .get(`${baseUrl}/users`)
       .then(res => {
-        const data = res.data.data.map(item => ({
-          ...item,
-          key: item.id
-        }));
-        if (data && data) {
+        const data = res.data.data.map(item => ({ ...item, key: item.id }));
+        if (data && data.length) {
           this.setState({ data });
         }
       })
