@@ -1,25 +1,19 @@
 const initialState = {
-  baseInfo: null,
-  authInfo: null
+  userinfo: null,
+  roles: null,
+  permissions: null
 };
 
 const userinfo = (state = initialState, action) => {
   switch (action.type) {
-    case "UPDATE_BASEINFO":
+    case 'UPDATE_USERINFO':
+      return Object.assign({}, initialState, action.data);
+    case 'DELETE_USERINFO':
       return {
-        ...state,
-        baseInfo: action.data
+        userinfo: null,
+        roles: null,
+        permissions: null
       };
-    case "UPDATE_AUTHINFO":
-      return {
-        ...state,
-        authInfo: action.data
-      };
-    case "DELETE_USERINFO":
-      return {
-        baseInfo: null,
-        authInfo: null
-      }
     default:
       return state;
   }

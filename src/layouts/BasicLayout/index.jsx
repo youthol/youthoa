@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Layout, Modal, Icon, message } from 'antd';
 import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
-import { updateBaseInfo, updateAuthInfo } from '@/actions/userinfo';
+import { deleteUserInfo } from '@/actions/userinfo';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -15,13 +15,11 @@ class BasicLayout extends Component {
   };
   componentDidMount() {
     const { token, expires_at } = sessionStorage;
-    if (token && moment().isBefore(expires_at)) {
+    const { userinfo } = this.props;
+    if (token && moment().isBefore(expires_at) && !!userinfo) {
       this.setState({ isAuth: true });
-      const { userInfo, authInfo } = this.props;
-      if (!userInfo || !authInfo) {
-        console.log(userInfo);
-      }
     } else {
+      sessionStorage.clear();
       this.setState({ isAuth: false });
     }
   }
@@ -43,6 +41,7 @@ class BasicLayout extends Component {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('expires_at');
         sessionStorage.removeItem('username');
+        this.props.deleteUserInfo();
         message.success('已退出');
         this.setState({ isAuth: false });
         if (this.props.history.location.pathname !== '/') {
@@ -89,13 +88,13 @@ class BasicLayout extends Component {
 
 const mapStateToProps = state => ({
   baseUrl: state.baseUrl,
-  baseInfo: state.userinfo.baseInfo,
-  authInfo: state.userinfo.authInfo
+  userinfo: state.userinfo.userinfo,
+  roles: state.userinfo.roles,
+  permissions: state.userinfo.permissions
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateBaseInfo: bindActionCreators(updateBaseInfo, dispatch),
-  updateAuthInfo: bindActionCreators(updateAuthInfo, dispatch)
+  deleteUserInfo: bindActionCreators(deleteUserInfo, dispatch)
 });
 
 export default connect(

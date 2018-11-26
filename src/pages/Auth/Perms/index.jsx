@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import axios from "axios";
-import BasicLayout from "@/layouts/BasicLayout";
-import PermList from "@/components/Auth/PermList";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import BasicLayout from '@/layouts/BasicLayout';
+import PermList from '@/components/Auth/PermList';
 
 class Permission extends Component {
   state = {
@@ -20,16 +20,18 @@ class Permission extends Component {
         if (data && data.length) {
           this.setState({ data });
         }
-        console.log(res, data);
       })
       .catch(err => {
         console.log(err);
       });
   };
+  handleEdit = role => {
+    this.props.history.push(`/perms/edit/${role.id}`);
+  };
   render() {
     return (
       <BasicLayout history={this.props.history}>
-        <PermList data={this.state.data} />
+        <PermList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );
   }

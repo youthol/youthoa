@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
 import UserList from '@/components/Auth/UserList';
+import OptsBtnGroup from '@/components/Auth/OptsBtnGroup'
 
 class User extends Component {
   state = {
@@ -34,6 +35,7 @@ class User extends Component {
   render() {
     return (
       <BasicLayout history={this.props.history}>
+        <OptsBtnGroup add download upload />
         <UserList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );

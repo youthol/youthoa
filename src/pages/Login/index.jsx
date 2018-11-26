@@ -6,8 +6,8 @@ import moment from 'moment';
 import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
-import LoginForm from '@/components/Auth/Login/LoginForm';
-import { updateBaseInfo, updateAuthInfo } from '@/actions/userinfo';
+import LoginForm from './components/LoginForm';
+import { updateUserInfo } from '@/actions/userinfo';
 import './style.scss';
 
 class Login extends Component {
@@ -33,33 +33,29 @@ class Login extends Component {
     axios
       .post(`${baseUrl}/login`, params)
       .then(res => {
-        const { data, meta } = res.data;
+        const { access_token, expires_in } = res.data.data;
         const expires_at = moment()
-          .add(meta.expires_in, 'second')
+          .add(expires_in, 'second')
           .format('YYYY-MM-DD HH:mm:ss');
         sessionStorage.clear();
-        sessionStorage.setItem('token', meta.access_token);
+        sessionStorage.setItem('token', access_token);
         sessionStorage.setItem('expires_at', expires_at);
-        this.props.updateBaseInfo(data);
-        // this.props.updateAuthInfo();
-        this.getAuthInfo(meta.access_token);
-        this.props.history.push('/');
-        console.log(data);
+        this.getUserInfo(access_token);
       })
       .catch(err => {
         console.log(err);
       });
   };
-  getAuthInfo = token => {
+  getUserInfo = token => {
     if (!token) return;
     const { baseUrl } = this.props;
     axios
-      .get(`${baseUrl}/user/permissions`, {
+      .get(`${baseUrl}/user`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
-        this.props.updateAuthInfo(res.data.data);
-        console.log(res);
+        this.props.updateUserInfo(res.data.data);
+        this.props.history.push('/');
       })
       .catch(err => {
         console.log(err);
@@ -79,8 +75,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateBaseInfo: bindActionCreators(updateBaseInfo, dispatch),
-  updateAuthInfo: bindActionCreators(updateAuthInfo, dispatch)
+  updateUserInfo: bindActionCreators(updateUserInfo, dispatch)
 });
 
 export default connect(

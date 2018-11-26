@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Table, Button } from "antd";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table, Button } from 'antd';
 
 const { Column } = Table;
 
@@ -20,7 +20,7 @@ const PermList = props => {
             key="action"
             render={text => (
               <Button.Group>
-                <Button icon="edit" disabled />
+                <Button icon="edit" onClick={() => props.handleEdit(text)} />
                 <Button icon="delete" disabled />
               </Button.Group>
             )}

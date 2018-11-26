@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import NotMatch from '@/pages/404';
 import Home from '@/pages/Home';
-import Login from '@/pages/Auth/Login';
+import Login from '@/pages/Login';
 import Users from '@/pages/Auth/Users';
 import UserEdit from '@/pages/Auth/Users/Edit';
 import ImportUsersTable from '@/pages/Auth/Users/Import';
 import Roles from '@/pages/Auth/Roles';
 import RoleEdit from '@/pages/Auth/Roles/Edit';
 import Perms from '@/pages/Auth/Perms';
+import PermEdit from '@/pages/Auth/Perms/Edit'
 import Manages from '@/pages/Manager';
 import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
 import AppSignin from '@/pages/App/Signin';
@@ -33,11 +34,10 @@ class App extends Component {
           <Route exact path="/users/add" component={ImportUsersTable} />
           <Route exact path="/users/edit/:id" component={UserEdit} />
           <Route exact path="/roles" component={Roles} />
-          <Route exact path="/roles/export" component={ImportUsersTable} />
           <Route exact path="/roles/add" component={ImportUsersTable} />
           <Route exact path="/roles/edit/:id" component={RoleEdit} />
           <Route exact path="/perms" component={Perms} />
-          <Route exact path="/prems/export" component={ImportUsersTable} />
+          <Route exact path="/perms/edit/:id" component={PermEdit} />
           {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />
           <Route exact path="/signin/export" component={ExportSigninTable} />

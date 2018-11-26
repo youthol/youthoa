@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import RoleList from '@/components/Auth/RoleList';
 import BasicLayout from '@/layouts/BasicLayout';
+import OptsBtnGroup from '@/components/Auth/OptsBtnGroup'
 
 class Role extends Component {
   state = {
@@ -33,6 +34,7 @@ class Role extends Component {
   render() {
     return (
       <BasicLayout history={this.props.history}>
+        <OptsBtnGroup add />
         <RoleList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Checkbox, Select } from 'antd';
+import { Form, Input, Button, Select } from 'antd';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
 
@@ -12,7 +11,7 @@ class RoleEdit extends Component {
     permList: null
   };
   componentDidMount() {
-    const roelid = this.props.history.location.pathname.split('/')[3];
+    const roleid = this.props.history.location.pathname.split('/')[3];
     this.getPermList();
   }
   handleSubmit = e => {
@@ -23,6 +22,18 @@ class RoleEdit extends Component {
         console.log(values);
       }
     });
+  };
+  getRoleById = id => {
+    if (!id) return;
+    const { baseUrl } = this.props;
+    axios
+      .get(`${baseUrl}/role/${id}`)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   getPermList = () => {
     const { baseUrl } = this.props;
@@ -65,12 +76,6 @@ class RoleEdit extends Component {
         }
       }
     };
-    // 多选框选项
-    const options = [
-      { label: 'Apple', value: 'Apple' },
-      { label: 'Pear', value: 'Pear' },
-      { label: 'Orange', value: 'Orange' }
-    ];
     return (
       <BasicLayout history={this.props.history}>
         <Form onSubmit={this.handleSubmit}>
@@ -78,7 +83,7 @@ class RoleEdit extends Component {
             {getFieldDecorator('name', {
               initialValue: 'Formal',
               rules: [{ required: true, message: 'Please input Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入姓名" />)}
+            })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Guard Name">
             {getFieldDecorator('guard_name', {
