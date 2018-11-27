@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Upload, Icon, message } from 'antd';
 import Manager from '@/pages/Manager';
-import './style.scss';
 
 const Dragger = Upload.Dragger;
 
-class ImportUserTable extends Component {
+class ImportHygiene extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { token } = sessionStorage;
     const props = {
-      name: 'excel',
-      action: 'https://api.youthol.cn/api/oa/user/import',
+      name: 'dormitory',
+      action: 'https://api.youthol.cn/api/oa/hygiene/import',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
       onChange(info) {
         const status = info.file.status;
         if (status !== 'uploading') {
@@ -24,12 +27,11 @@ class ImportUserTable extends Component {
         }
       }
     };
-
     return (
       <Manager>
         <Form className="import-form" onSubmit={this.handleExport}>
           <Form.Item>
-            {getFieldDecorator('excel', {
+            {getFieldDecorator('dormitory', {
               rules: [{ required: true, message: 'Please input your Password!' }]
             })(
               <Dragger {...props}>
@@ -54,4 +56,4 @@ const mapStateToProps = state => ({
   baseUrl: state.baseUrl
 });
 
-export default connect(mapStateToProps)(Form.create()(ImportUserTable));
+export default connect(mapStateToProps)(Form.create()(ImportHygiene));

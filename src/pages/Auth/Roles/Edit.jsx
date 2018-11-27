@@ -8,11 +8,13 @@ const FormItem = Form.Item;
 
 class RoleEdit extends Component {
   state = {
-    permList: null
+    permList: null,
+    role: {}
   };
   componentDidMount() {
-    const roleid = this.props.history.location.pathname.split('/')[3];
+    const id = this.props.history.location.pathname.split('/')[3];
     this.getPermList();
+    this.getRoleById(id);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -26,10 +28,18 @@ class RoleEdit extends Component {
   getRoleById = id => {
     if (!id) return;
     const { baseUrl } = this.props;
+    const { token } = sessionStorage;
     axios
-      .get(`${baseUrl}/role/${id}`)
+      .get(`${baseUrl}/role/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then(res => {
         console.log(res);
+        this.setState({
+          role: res.data.data
+        });
       })
       .catch(err => {
         console.log(err);
@@ -46,7 +56,6 @@ class RoleEdit extends Component {
           value: item.id
         }));
         this.setState({ permList });
-        console.log(permList);
       })
       .catch(err => {
         console.log(err);
@@ -78,46 +87,48 @@ class RoleEdit extends Component {
     };
     return (
       <BasicLayout history={this.props.history}>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="Name">
-            {getFieldDecorator('name', {
-              initialValue: 'Formal',
-              rules: [{ required: true, message: 'Please input Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="Guard Name">
-            {getFieldDecorator('guard_name', {
-              initialValue: 'oa',
-              rules: [{ required: true, message: 'Please input Guard Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入学号" disabled />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="Display Name">
-            {getFieldDecorator('display_name', {
-              initialValue: '正式',
-              rules: [{ required: true, message: 'Please input Display Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入学号" />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="拥有权限">
-            {getFieldDecorator('permissions', {
-              initialValue: [1],
-              rules: [{ required: true, message: 'Please select permissions!' }]
-            })(
-              <Select mode="multiple" placeholder="请选择角色所拥有的权限">
-                {this.state.permList &&
-                  this.state.permList.map(item => (
-                    <Select.Option key={item.value} value={item.value}>
-                      {item.label}
-                    </Select.Option>
-                  ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              提交
-            </Button>
-          </FormItem>
-        </Form>
+        {this.state.role && (
+          <Form onSubmit={this.handleSubmit}>
+            <FormItem {...formItemLayout} label="Name">
+              {getFieldDecorator('name', {
+                initialValue: this.state.role.name,
+                rules: [{ required: true, message: 'Please input Name!' }]
+              })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="Guard Name">
+              {getFieldDecorator('guard_name', {
+                initialValue: this.state.role.guard_name,
+                rules: [{ required: true, message: 'Please input Guard Name!' }]
+              })(<Input autoComplete="off" placeholder="请输入学号" disabled />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="Display Name">
+              {getFieldDecorator('display_name', {
+                initialValue: this.state.role.display_name,
+                rules: [{ required: true, message: 'Please input Display Name!' }]
+              })(<Input autoComplete="off" placeholder="请输入学号" />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="拥有权限">
+              {getFieldDecorator('permissions', {
+                initialValue: [1],
+                rules: [{ required: true, message: 'Please select permissions!' }]
+              })(
+                <Select mode="multiple" placeholder="请选择角色所拥有的权限">
+                  {this.state.permList &&
+                    this.state.permList.map(item => (
+                      <Select.Option key={item.value} value={item.value}>
+                        {item.label}
+                      </Select.Option>
+                    ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit" className="login-form-button">
+                提交
+              </Button>
+            </FormItem>
+          </Form>
+        )}
       </BasicLayout>
     );
   }

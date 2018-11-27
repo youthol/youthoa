@@ -8,7 +8,8 @@ const FormItem = Form.Item;
 
 class PremsEdit extends Component {
   componentDidMount() {
-    const permid = this.props.history.location.pathname.split('/')[3];
+    const id = this.props.history.location.pathname.split('/')[3];
+    this.getPremById(id);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -22,8 +23,13 @@ class PremsEdit extends Component {
   getPremById = id => {
     if (!id) return;
     const { baseUrl } = this.props;
+    const { token } = sessionStorage;
     axios
-      .get(`${baseUrl}/permission/${id}`)
+      .get(`${baseUrl}/permission/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then(res => {
         console.log(res);
       })

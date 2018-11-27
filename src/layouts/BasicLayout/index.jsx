@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Icon, message } from 'antd';
 import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
@@ -100,4 +101,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BasicLayout);
+)(withRouter(BasicLayout));

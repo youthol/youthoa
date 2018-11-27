@@ -9,9 +9,10 @@ import ImportUsersTable from '@/pages/Auth/Users/Import';
 import Roles from '@/pages/Auth/Roles';
 import RoleEdit from '@/pages/Auth/Roles/Edit';
 import Perms from '@/pages/Auth/Perms';
-import PermEdit from '@/pages/Auth/Perms/Edit'
+import PermEdit from '@/pages/Auth/Perms/Edit';
 import Manages from '@/pages/Manager';
 import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
+import ImportHygieneTable from '@/pages/Manager/ImportHygieneTable';
 import AppSignin from '@/pages/App/Signin';
 import AppDevice from '@/pages/App/Device';
 import AppSchedule from '@/pages/App/Schedule';
@@ -25,9 +26,8 @@ class App extends Component {
         <Switch>
           {/* Basic Routes */}
           <Route exact path="/" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/manage" component={Manages} />
           {/* Auth Routes */}
+          <Route exact path="/login" component={Login} />
           <Route exact path="/users" component={Users} />
           <Route exact path="/users/import" component={ImportUsersTable} />
           <Route exact path="/users/export" component={ImportUsersTable} />
@@ -38,6 +38,9 @@ class App extends Component {
           <Route exact path="/roles/edit/:id" component={RoleEdit} />
           <Route exact path="/perms" component={Perms} />
           <Route exact path="/perms/edit/:id" component={PermEdit} />
+          {/* Manages Routes */}
+          <Route exact path="/manage" component={Manages} />
+          <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} />
           {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />
           <Route exact path="/signin/export" component={ExportSigninTable} />

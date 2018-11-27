@@ -11,14 +11,14 @@ const FormItem = Form.Item;
 class UserEdit extends Component {
   state = {
     userid: 0,
-    userInfo: [],
+    userInfo: {},
     roles: [],
     roleList: []
   };
   componentDidMount() {
-    const userid = this.props.history.location.pathname.split('/')[3];
+    const id = this.props.history.location.pathname.split('/')[3];
     this.getRoleList();
-    this.getUserById(userid);
+    this.getUserById(id);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -88,7 +88,7 @@ class UserEdit extends Component {
       })
       .then(res => {
         console.log(res);
-        this.getUserById(id)
+        this.getUserById(id);
       })
       .catch(err => {
         console.error(err);

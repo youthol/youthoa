@@ -36,36 +36,36 @@ class SiderLayout extends Component {
           <Menu.Item key="/">
             <Link to="/" />
             <Icon type="dashboard" />
-            <span>Dashboard</span>
+            <span>首页</span>
           </Menu.Item>
           {/* {!!permissions &&
             permissions.some(
               item => item.name === 'manage_administrator' || item.name === 'manage_user'
             ) && ( */}
-              <Menu.SubMenu
-                key="prems"
-                title={
-                  <span>
-                    <Icon type="laptop" />
-                    <span>用户管理</span>
-                  </span>
-                }
-              >
-                <Menu.Item key="/users">
-                  <Link to="/users" />
-                  <span>用户</span>
-                </Menu.Item>
-                <Menu.Item key="/roles">
-                  <Link to="/roles" />
-                  <span>角色</span>
-                </Menu.Item>
-                <Menu.Item key="/perms">
-                  <Link to="/perms" />
-                  <span>权限</span>
-                </Menu.Item>
-              </Menu.SubMenu>
-            {/* )} */}
-          {!!permissions &&
+          <Menu.SubMenu
+            key="prems"
+            title={
+              <span>
+                <Icon type="laptop" />
+                <span>管理员管理</span>
+              </span>
+            }
+          >
+            <Menu.Item key="/users">
+              <Link to="/users" />
+              <span>用户管理</span>
+            </Menu.Item>
+            <Menu.Item key="/roles">
+              <Link to="/roles" />
+              <span>角色管理</span>
+            </Menu.Item>
+            <Menu.Item key="/perms">
+              <Link to="/perms" />
+              <span>权限管理</span>
+            </Menu.Item>
+          </Menu.SubMenu>
+          {/* )} */}
+          {/* {!!permissions &&
             permissions.some(
               item => item.name === 'manage_administrator' || item.name === 'manage_user'
             ) && (
@@ -74,7 +74,12 @@ class SiderLayout extends Component {
                 <Icon type="laptop" />
                 <span>系统数据管理</span>
               </Menu.Item>
-            )}
+            )} */}
+          <Menu.Item key="/manage">
+            <Link to="/manage" />
+            <Icon type="laptop" />
+            <span>系统数据管理</span>
+          </Menu.Item>
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
