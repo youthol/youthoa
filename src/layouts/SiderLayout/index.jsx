@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 import LOGO from '@/assets/youthol_logo_lg@700x300.png';
@@ -15,6 +16,7 @@ class SiderLayout extends Component {
     this.setState({ collapsed });
   };
   render() {
+    const { permissions } = this.props;
     return (
       <Sider
         collapsible
@@ -28,7 +30,7 @@ class SiderLayout extends Component {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['a']}
+          defaultSelectedKeys={['/']}
           selectedKeys={[this.props.history.location.pathname]}
         >
           <Menu.Item key="/">
@@ -36,29 +38,44 @@ class SiderLayout extends Component {
             <Icon type="dashboard" />
             <span>首页</span>
           </Menu.Item>
+          {/* {!!permissions &&
+            permissions.some(
+              item => item.name === 'manage_administrator' || item.name === 'manage_user'
+            ) && ( */}
           <Menu.SubMenu
             key="prems"
             title={
               <span>
                 <Icon type="laptop" />
-                <span>用户管理</span>
+                <span>管理员管理</span>
               </span>
             }
           >
             <Menu.Item key="/users">
               <Link to="/users" />
-              <span>用户</span>
+              <span>用户管理</span>
             </Menu.Item>
-            {/* <Menu.Item key="/roles">
+            <Menu.Item key="/roles">
               <Link to="/roles" />
-              <span>角色</span>
+              <span>角色管理</span>
             </Menu.Item>
             <Menu.Item key="/perms">
               <Link to="/perms" />
-              <span>权限</span>
-            </Menu.Item> */}
+              <span>权限管理</span>
+            </Menu.Item>
           </Menu.SubMenu>
-          <Menu.Item key="manage">
+          {/* )} */}
+          {/* {!!permissions &&
+            permissions.some(
+              item => item.name === 'manage_administrator' || item.name === 'manage_user'
+            ) && (
+              <Menu.Item key="/manage">
+                <Link to="/manage" />
+                <Icon type="laptop" />
+                <span>系统数据管理</span>
+              </Menu.Item>
+            )} */}
+          <Menu.Item key="/manage">
             <Link to="/manage" />
             <Icon type="laptop" />
             <span>系统数据管理</span>
@@ -94,4 +111,10 @@ class SiderLayout extends Component {
   }
 }
 
-export default withRouter(SiderLayout);
+const mapStateToProps = state => ({
+  userinfo: state.userinfo.userinfo,
+  roles: state.userinfo.roles,
+  permissions: state.userinfo.permissions
+});
+
+export default connect(mapStateToProps)(withRouter(SiderLayout));

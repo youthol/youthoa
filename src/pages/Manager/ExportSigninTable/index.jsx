@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, DatePicker, Button } from 'antd';
-import ManageList from '@/pages/Manager';
+import Manager from '@/pages/Manager';
 import './style.scss';
 
 const { RangePicker } = DatePicker;
@@ -32,7 +32,7 @@ class ExportSigninTable extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <ManageList>
+      <Manager>
         <Form className="export-form" onSubmit={this.handleExport}>
           <Form.Item>
             {getFieldDecorator('daterange', {
@@ -45,7 +45,7 @@ class ExportSigninTable extends Component {
             </Button>
           </Form.Item>
         </Form>
-      </ManageList>
+      </Manager>
     );
   }
 }

@@ -2,39 +2,36 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
-import UserList from '../../../components/Admin/UserList';
+import PermList from '@/components/Auth/PermList';
 
-class User extends Component {
+class Permission extends Component {
   state = {
     data: []
   };
-
   componentDidMount() {
-    this.getUserList();
+    this.getPermList();
   }
-
-  getUserList = () => {
+  getPermList = () => {
     const { baseUrl } = this.props;
     axios
-      .get(`${baseUrl}/users`)
+      .get(`${baseUrl}/permissions`)
       .then(res => {
-        const data = res.data.data.map(item => ({
-          ...item,
-          key: item.id
-        }));
-        if (data && data) {
+        const data = res.data.data.map(item => ({ ...item, key: item.id }));
+        if (data && data.length) {
           this.setState({ data });
         }
       })
       .catch(err => {
-        
         console.log(err);
       });
+  };
+  handleEdit = role => {
+    this.props.history.push(`/perms/edit/${role.id}`);
   };
   render() {
     return (
       <BasicLayout history={this.props.history}>
-        <UserList data={this.state.data} />
+        <PermList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );
   }
@@ -44,4 +41,4 @@ const mapStateToProps = state => ({
   baseUrl: state.baseUrl
 });
 
-export default connect(mapStateToProps)(User);
+export default connect(mapStateToProps)(Permission);

@@ -3,12 +3,16 @@ import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import NotMatch from '@/pages/404';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
-import Users from '@/pages/Auth/User';
-import Roles from '@/pages/Auth/Role';
-import Permissions from '@/pages/Auth/Permission';
+import Users from '@/pages/Auth/Users';
+import UserEdit from '@/pages/Auth/Users/Edit';
+import ImportUsersTable from '@/pages/Auth/Users/Import';
+import Roles from '@/pages/Auth/Roles';
+import RoleEdit from '@/pages/Auth/Roles/Edit';
+import Perms from '@/pages/Auth/Perms';
+import PermEdit from '@/pages/Auth/Perms/Edit';
 import Manages from '@/pages/Manager';
-import ExportSigninTable from '@/pages/Manager/ExportSigninTable'
-import ImportUserTable from '@/pages/Manager/ImportUserTable';
+import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
+import ImportHygieneTable from '@/pages/Manager/ImportHygieneTable';
 import AppSignin from '@/pages/App/Signin';
 import AppDevice from '@/pages/App/Device';
 import AppSchedule from '@/pages/App/Schedule';
@@ -22,16 +26,24 @@ class App extends Component {
         <Switch>
           {/* Basic Routes */}
           <Route exact path="/" component={Home} />
+          {/* Auth Routes */}
           <Route exact path="/login" component={Login} />
           <Route exact path="/users" component={Users} />
+          <Route exact path="/users/import" component={ImportUsersTable} />
+          <Route exact path="/users/export" component={ImportUsersTable} />
+          <Route exact path="/users/add" component={ImportUsersTable} />
+          <Route exact path="/users/edit/:id" component={UserEdit} />
           <Route exact path="/roles" component={Roles} />
-          <Route exact path="/perms" component={Permissions} />
-          {/* Manager Routes */}
+          <Route exact path="/roles/add" component={ImportUsersTable} />
+          <Route exact path="/roles/edit/:id" component={RoleEdit} />
+          <Route exact path="/perms" component={Perms} />
+          <Route exact path="/perms/edit/:id" component={PermEdit} />
+          {/* Manages Routes */}
           <Route exact path="/manage" component={Manages} />
-          <Route exact path="/manage/impt-user-tb" component={ImportUserTable} />
-          <Route exact path="/manage/expt-signin-rec-tb" component={ExportSigninTable} />
+          <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} />
           {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />
+          <Route exact path="/signin/export" component={ExportSigninTable} />
           <Route exact path="/device" component={AppDevice} />
           <Route exact path="/schedule" component={AppSchedule} />
           <Route exact path="/workload" component={AppWorkload} />

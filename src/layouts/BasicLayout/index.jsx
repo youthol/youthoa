@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Icon, message } from 'antd';
+import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
+import { deleteUserInfo } from '@/actions/userinfo';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -10,14 +15,16 @@ class BasicLayout extends Component {
     isAuth: false
   };
   componentDidMount() {
-    const { token, expires_at, username } = sessionStorage;
-    if (token && expires_at && username) {
+    const { token, expires_at } = sessionStorage;
+    const { userinfo } = this.props;
+    if (token && moment().isBefore(expires_at) && !!userinfo) {
       this.setState({ isAuth: true });
+    } else {
+      sessionStorage.clear();
+      this.setState({ isAuth: false });
     }
   }
-  currentYear() {
-    return new Date().getFullYear();
-  }
+
   handleLogin = e => {
     if (this.props.history.location.pathname === '/login') {
       message.info('请登录');
@@ -35,6 +42,7 @@ class BasicLayout extends Component {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('expires_at');
         sessionStorage.removeItem('username');
+        this.props.deleteUserInfo();
         message.success('已退出');
         this.setState({ isAuth: false });
         if (this.props.history.location.pathname !== '/') {
@@ -43,6 +51,9 @@ class BasicLayout extends Component {
       }
     });
   };
+  currentYear() {
+    return new Date().getFullYear();
+  }
 
   render() {
     return (
@@ -76,4 +87,18 @@ class BasicLayout extends Component {
   }
 }
 
-export default BasicLayout;
+const mapStateToProps = state => ({
+  baseUrl: state.baseUrl,
+  userinfo: state.userinfo.userinfo,
+  roles: state.userinfo.roles,
+  permissions: state.userinfo.permissions
+});
+
+const mapDispatchToProps = dispatch => ({
+  deleteUserInfo: bindActionCreators(deleteUserInfo, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(BasicLayout));

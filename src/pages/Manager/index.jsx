@@ -3,53 +3,59 @@ import { Link } from 'react-router-dom';
 import { Menu, Dropdown, Icon, Button } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
-const SubMenu = Menu.SubMenu;
-
 class Manager extends Component {
-  handleExport = (e, form) => {
-    e.preventDefault();
-    const { baseUrl } = this.props;
-    form.validateFields((err, values) => {
-      if (!err) {
-        let [start, end] = values.daterange;
-        start = start.format('YYYY-MM-DD');
-        end = end.format('YYYY-MM-DD');
-        let a = document.createElement('a');
-        let url = `${baseUrl}/signin/export?start=${start}&end=${end}`;
-        let filename = 'myfile.zip';
-        a.href = url;
-        a.download = filename;
-        a.click();
-      }
+  state = {
+    current: 'app'
+  };
+  handleClick = e => {
+    console.log('click ', e);
+    this.setState({
+      current: e.key
     });
   };
-
   render() {
-    const menu = (
-      <Menu>
-        <Menu.Item>
-          <Link to="/manage/expt-signin-rec-tb">导出签到表</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to="/manage/impt-user-tb">导入成员表</Link>
-        </Menu.Item>
-        <SubMenu title="sub menu">
-          <Menu.Item>3rd menu item</Menu.Item>
-          <Menu.Item>4th menu item</Menu.Item>
-        </SubMenu>
-      </Menu>
-    );
     return (
-      <BasicLayout history={this.props.history}>
-        <div>
-          <Dropdown overlay={menu}>
-            <Button style={{ marginLeft: 8 }}>
-              操作选项
-              <Icon type="down" />
-            </Button>
-          </Dropdown>
-          <div>{this.props.children}</div>
-        </div>
+      <BasicLayout>
+        <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
+          <Menu.SubMenu title="管理员管理" disabled>
+            <Menu.Item key="/users">
+              <Link to="/users">用户管理</Link>
+            </Menu.Item>
+            <Menu.Item key="/roles">
+              <Link to="/roles">角色管理</Link>
+            </Menu.Item>
+            <Menu.Item key="/perms">
+              <Link to="/perms">权限管理</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          {/* 系统内数据管理入口 */}
+          <Menu.SubMenu
+            title={
+              <span className="submenu-title-wrapper">
+                <Icon type="appstore" />
+                办公系统管理
+              </span>
+            }
+          >
+            <Menu.Item key="expt-signin-tb">
+              <Link to="/signin/export">导出签到数据表</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          {/* 系统外数据管理入口 */}
+          <Menu.SubMenu
+            title={
+              <span className="submenu-title-wrapper">
+                <Icon type="setting" />
+                其他数据管理
+              </span>
+            }
+          >
+            <Menu.Item key="impt-hygiene-tb">
+              <Link to="/manage/impt-hygiene-tb">导入卫生表</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        </Menu>
+        <div>{this.props.children}</div>
       </BasicLayout>
     );
   }
