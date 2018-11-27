@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button, InputNumber, Checkbox, DatePicker, Select } from 'antd';
+import { Form, Input, Button, InputNumber, Checkbox, DatePicker, Select, message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import moment from 'moment';

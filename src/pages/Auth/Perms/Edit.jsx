@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';

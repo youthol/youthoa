@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { message } from 'antd';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
 import UserList from '@/components/Auth/UserList';
@@ -44,10 +45,29 @@ class User extends Component {
   handleEdit = user => {
     this.props.history.push(`/users/edit/${user.id}`);
   };
+  handleExport = e => {
+    e.preventDefault();
+    const { form, BASE_API } = this.props;
+    form.validateFields((err, values) => {
+      try {
+        if (!err) {
+          const { token } = sessionStorage;
+          let a = document.createElement('a');
+          let url = `${BASE_API}/user/export?token=${token}`;
+          let filename = 'myfile.zip';
+          a.href = url;
+          a.download = filename;
+          a.click();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  };
   render() {
     return (
       <BasicLayout>
-        <OptsBtnGroup component="users" add download upload />
+        <OptsBtnGroup add download upload component="users" handleExport={this.handleExport} />
         <UserList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );

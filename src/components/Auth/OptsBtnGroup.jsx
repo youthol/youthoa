@@ -27,11 +27,7 @@ const OptsBtnGroup = props => {
           </Button>
         )}
         {props.upload && (
-          <Button
-            type="primary"
-            icon="download"
-            onClick={() => props.history.push(`/${props.component}/export`)}
-          >
+          <Button type="primary" icon="download" onClick={e => props.handleExport(e)}>
             导出
           </Button>
         )}
@@ -44,7 +40,8 @@ OptsBtnGroup.propTypes = {
   component: PropTypes.string.isRequired,
   add: PropTypes.bool,
   upload: PropTypes.bool,
-  download: PropTypes.bool
+  download: PropTypes.bool,
+  handleExport: PropTypes.func
 };
 
 export default withRouter(OptsBtnGroup);
