@@ -110,7 +110,7 @@ class UserEdit extends Component {
         }
       })
       .then(res => {
-        this.getUserById(id);
+        this.props.history.push('/users');
       })
       .catch(err => {
         try {

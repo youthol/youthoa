@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { message } from 'antd';
+import { Form, message } from 'antd';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
 import UserList from '@/components/Auth/UserList';
@@ -78,4 +78,4 @@ const mapStateToProps = state => ({
   BASE_API: state.globalData.BASE_API
 });
 
-export default connect(mapStateToProps)(User);
+export default connect(mapStateToProps)(Form.create()(User));

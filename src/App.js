@@ -32,7 +32,6 @@ class App extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/users" component={Users} />
           <Route exact path="/users/import" component={ImportUsersTable} />
-          <Route exact path="/users/export" component={ImportUsersTable} />
           <Route exact path="/users/add" component={UserAdd} />
           <Route exact path="/users/edit/:id" component={UserEdit} />
           <Route exact path="/roles" component={Roles} />

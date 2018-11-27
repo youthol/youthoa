@@ -20,7 +20,6 @@ class PremsEdit extends Component {
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         this.putPermInfo(values.id, values);
       }
     });
@@ -36,7 +35,6 @@ class PremsEdit extends Component {
         }
       })
       .then(res => {
-        console.log(res);
         this.setState({
           permInfo: res.data.data
         });
@@ -71,7 +69,7 @@ class PremsEdit extends Component {
         }
       })
       .then(res => {
-        this.getPermById(id);
+        this.props.history.push('/perms');
       })
       .catch(err => {
         try {

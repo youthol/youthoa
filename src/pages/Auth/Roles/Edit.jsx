@@ -104,8 +104,7 @@ class RoleEdit extends Component {
         }
       })
       .then(res => {
-        console.log(res);
-        this.getRoleById(id);
+        this.props.history.push('/roles');
       })
       .catch(err => {
         try {

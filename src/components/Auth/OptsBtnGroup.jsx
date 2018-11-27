@@ -27,7 +27,7 @@ const OptsBtnGroup = props => {
           </Button>
         )}
         {props.upload && (
-          <Button type="primary" icon="download" onClick={e => props.handleExport(e)}>
+          <Button disabled type="primary" icon="download" onClick={e => props.handleExport(e)}>
             导出
           </Button>
         )}
