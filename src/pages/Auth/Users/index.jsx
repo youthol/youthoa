@@ -32,10 +32,13 @@ class User extends Component {
   handleEdit = user => {
     this.props.history.push(`/users/edit/${user.id}`);
   };
+  handleAdd = () => {
+    // this.props.history.push(`/user`)
+  }
   render() {
     return (
-      <BasicLayout history={this.props.history}>
-        <OptsBtnGroup add download upload />
+      <BasicLayout>
+        <OptsBtnGroup component="users" add download upload />
         <UserList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );

@@ -63,7 +63,7 @@ class Login extends Component {
   };
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <LoginForm form={this.props.form} handleSubmit={this.handleSubmit} />
       </BasicLayout>
     );

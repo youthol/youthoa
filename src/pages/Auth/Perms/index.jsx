@@ -30,7 +30,7 @@ class Permission extends Component {
   };
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <PermList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );

@@ -178,7 +178,7 @@ class AppSchedule extends Component {
 
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <NewItemBtn label="新增日程" showModal={this.showModal} />
         <DataList data={this.state.data} showModal={this.showModal} />
         <ModalAdd

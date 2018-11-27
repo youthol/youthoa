@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { withRouter } from 'react-router-dom';
+import { Button } from 'antd';
 import './style.scss';
 
 const OptsBtnGroup = props => {
@@ -8,20 +9,29 @@ const OptsBtnGroup = props => {
     <div className="opt-btns">
       <Button.Group className="opt-btn-group">
         {props.add && (
-          <Button type="primary">
-            <Icon type="plus" />
+          <Button
+            type="primary"
+            icon="plus"
+            onClick={() => props.history.push(`/${props.component}/add`)}
+          >
             新增
           </Button>
         )}
         {props.download && (
-          <Button type="primary">
-            <Icon type="upload" />
+          <Button
+            type="primary"
+            icon="upload"
+            onClick={() => props.history.push(`/${props.component}/import`)}
+          >
             导入
           </Button>
         )}
         {props.upload && (
-          <Button type="primary">
-            <Icon type="download" />
+          <Button
+            type="primary"
+            icon="download"
+            onClick={() => props.history.push(`/${props.component}/export`)}
+          >
             导出
           </Button>
         )}
@@ -31,9 +41,10 @@ const OptsBtnGroup = props => {
 };
 
 OptsBtnGroup.propTypes = {
+  component: PropTypes.string.isRequired,
   add: PropTypes.bool,
   upload: PropTypes.bool,
   download: PropTypes.bool
 };
 
-export default OptsBtnGroup;
+export default withRouter(OptsBtnGroup);

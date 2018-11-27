@@ -10,10 +10,10 @@ const FormItem = Form.Item;
 class PremsEdit extends Component {
   state = {
     premInfo: {}
-  }
+  };
   componentDidMount() {
     const id = this.props.history.location.pathname.split('/')[3];
-    this.getPremById(id);
+    this.getPermById(id);
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -21,11 +21,11 @@ class PremsEdit extends Component {
     validateFields((err, values) => {
       if (!err) {
         console.log(values);
-        this.putPermInfo(values.id, values)
+        this.putPermInfo(values.id, values);
       }
     });
   };
-  getPremById = id => {
+  getPermById = id => {
     if (!id) return;
     const { baseUrl } = this.props;
     const { token } = sessionStorage;
@@ -64,7 +64,7 @@ class PremsEdit extends Component {
         console.error(err);
       });
   };
-  
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -91,35 +91,34 @@ class PremsEdit extends Component {
     };
     getFieldDecorator('id', { initialValue: this.state.permInfo ? this.state.permInfo.id : 0 });
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         {this.state.permInfo && (
           <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="Name">
-            {getFieldDecorator('name', {
-              initialValue: this.state.permInfo.name,
-              rules: [{ required: true, message: 'Please input Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="Guard Name">
-            {getFieldDecorator('guard_name', {
-              initialValue: this.state.permInfo.guard_name,
-              rules: [{ required: true, message: 'Please input Guard Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入学号" disabled />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="Display Name">
-            {getFieldDecorator('display_name', {
-              initialValue: this.state.permInfo.display_name,
-              rules: [{ required: true, message: 'Please input Display Name!' }]
-            })(<Input autoComplete="off" placeholder="请输入学号" />)}
-          </FormItem>
-          <FormItem {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              提交
-            </Button>
-          </FormItem>
-        </Form>
+            <FormItem {...formItemLayout} label="Name">
+              {getFieldDecorator('name', {
+                initialValue: this.state.permInfo.name,
+                rules: [{ required: true, message: 'Please input Name!' }]
+              })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="Guard Name">
+              {getFieldDecorator('guard_name', {
+                initialValue: this.state.permInfo.guard_name,
+                rules: [{ required: true, message: 'Please input Guard Name!' }]
+              })(<Input autoComplete="off" placeholder="请输入学号" disabled />)}
+            </FormItem>
+            <FormItem {...formItemLayout} label="Display Name">
+              {getFieldDecorator('display_name', {
+                initialValue: this.state.permInfo.display_name,
+                rules: [{ required: true, message: 'Please input Display Name!' }]
+              })(<Input autoComplete="off" placeholder="请输入学号" />)}
+            </FormItem>
+            <FormItem {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit" className="login-form-button">
+                提交
+              </Button>
+            </FormItem>
+          </Form>
         )}
-        
       </BasicLayout>
     );
   }

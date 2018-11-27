@@ -141,7 +141,7 @@ class AppSignin extends Component {
 
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <DataList data={this.state.data} />
         <SigninInput
           inputValue={this.state.inputValue}

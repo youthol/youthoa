@@ -111,7 +111,7 @@ class RoleEdit extends Component {
     };
     getFieldDecorator('id', { initialValue: this.state.roleInfo ? this.state.roleInfo.id : 0 });
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         {this.state.roleInfo && (
           <Form onSubmit={this.handleSubmit}>
             <FormItem {...formItemLayout} label="Name">

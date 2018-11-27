@@ -95,7 +95,7 @@ class AppWorkload extends Component {
   };
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <NewItemBtn label="记录工作量" showModal={this.showModal} />
         <DataList
           data={this.state.data}

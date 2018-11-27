@@ -4,7 +4,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 class RoleAdd extends Component {
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <div>RoleAdd</div>
       </BasicLayout>
     );

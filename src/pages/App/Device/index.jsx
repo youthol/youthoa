@@ -262,7 +262,7 @@ class AppDevice extends Component {
 
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <NewItemBtn label="借用设备" showModal={this.showModal} />
         <DataList
           data={this.state.data}

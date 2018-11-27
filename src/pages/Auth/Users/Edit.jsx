@@ -163,7 +163,7 @@ class UserEdit extends Component {
     ];
     getFieldDecorator('id', { initialValue: this.state.userinfo ? this.state.userinfo.id : 0 });
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         {this.state.userinfo && (
           <Form onSubmit={this.handleSubmit}>
             {/* <h2>{props.title || 'LOGIN'}</h2> */}

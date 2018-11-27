@@ -5,7 +5,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 class Home extends Component {
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <div style={{ textAlign: 'center' }}>
           <Spin />
           <h1>Hey!</h1>

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import BasicLayout from '@/layouts/BasicLayout';
 
-class UserAdd extends Component {
+class Add extends Component {
   render() {
     return (
-      <BasicLayout history={this.props.history}>
-        <div>UserAdd</div>
+      <BasicLayout>
+        <div>User Add</div>
       </BasicLayout>
     );
   }
 }
 
-export default UserAdd;
+export default Add;

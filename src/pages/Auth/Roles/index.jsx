@@ -33,8 +33,8 @@ class Role extends Component {
 
   render() {
     return (
-      <BasicLayout history={this.props.history}>
-        <OptsBtnGroup add />
+      <BasicLayout>
+        <OptsBtnGroup component="roles" add />
         <RoleList data={this.state.data} handleEdit={this.handleEdit} />
       </BasicLayout>
     );

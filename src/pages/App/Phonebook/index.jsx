@@ -32,7 +32,7 @@ class AppPhoneBook extends Component {
   };
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <DataList data={this.state.data} />
       </BasicLayout>
     );
