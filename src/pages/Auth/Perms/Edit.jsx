@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
+import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 
 const FormItem = Form.Item;
@@ -35,6 +36,26 @@ class PremsEdit extends Component {
       })
       .catch(err => {
         console.log(err);
+      });
+  };
+  putPermInfo = (id, data) => {
+    if (!id || !data) return;
+    const { baseUrl, userinfo, permissions } = this.props;
+    // TODO: 判断权限
+    const { token } = sessionStorage;
+    const params = qs.stringify(data);
+    axios
+      .put(`${baseUrl}/permission/${id}`, params, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.getPermById(id);
+      })
+      .catch(err => {
+        console.error(err);
       });
   };
   render() {

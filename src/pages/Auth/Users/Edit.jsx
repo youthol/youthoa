@@ -25,16 +25,30 @@ class UserEdit extends Component {
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         const data = Object.assign({}, values, {
           birthday: moment(values.birthday).format('YYYY-MM-DD'),
           department: values.department.join('+'),
           duty_at: values.duty_at.join('|')
         });
-        console.log(data);
-        this.putUserInfo(data);
+        this.putUserInfo(values.id, data);
       }
     });
+  };
+  getRoleList = () => {
+    const { baseUrl } = this.props;
+    axios
+      .get(`${baseUrl}/roles`)
+      .then(res => {
+        const { data } = res.data;
+        const roleList = data.map(item => ({
+          label: item.display_name,
+          value: item.id
+        }));
+        this.setState({ roleList });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   getUserById = id => {
     if (!id) return;
@@ -52,23 +66,6 @@ class UserEdit extends Component {
           userinfo,
           roles: roles.map(item => item.id)
         });
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-  getRoleList = () => {
-    const { baseUrl } = this.props;
-    axios
-      .get(`${baseUrl}/roles`)
-      .then(res => {
-        const { data } = res.data;
-        const roleList = data.map(item => ({
-          label: item.display_name,
-          value: item.id
-        }));
-        this.setState({ roleList });
       })
       .catch(err => {
         console.log(err);

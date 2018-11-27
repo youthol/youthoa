@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Select } from 'antd';
 import axios from 'axios';
+import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 
 const FormItem = Form.Item;
@@ -9,7 +10,8 @@ const FormItem = Form.Item;
 class RoleEdit extends Component {
   state = {
     permList: null,
-    role: {}
+    roleInfo: {},
+    permissions: []
   };
   componentDidMount() {
     const id = this.props.history.location.pathname.split('/')[3];
@@ -22,28 +24,9 @@ class RoleEdit extends Component {
     validateFields((err, values) => {
       if (!err) {
         console.log(values);
+        this.putRoleInfo(values.id, values);
       }
     });
-  };
-  getRoleById = id => {
-    if (!id) return;
-    const { baseUrl } = this.props;
-    const { token } = sessionStorage;
-    axios
-      .get(`${baseUrl}/role/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        console.log(res);
-        this.setState({
-          role: res.data.data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
   };
   getPermList = () => {
     const { baseUrl } = this.props;
@@ -59,6 +42,47 @@ class RoleEdit extends Component {
       })
       .catch(err => {
         console.log(err);
+      });
+  };
+  getRoleById = id => {
+    if (!id) return;
+    const { baseUrl } = this.props;
+    const { token } = sessionStorage;
+    axios
+      .get(`${baseUrl}/role/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          roleInfo: res.data.data,
+          permissions: res.data.data.permissions.map(el => el.id)
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  putRoleInfo = (id, data) => {
+    if (!id || !data) return;
+    const { baseUrl, userinfo, permissions } = this.props;
+    // TODO: 判断权限
+    const { token } = sessionStorage;
+    const params = qs.stringify(data);
+    axios
+      .put(`${baseUrl}/role/${id}`, params, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        console.log(res);
+        this.getRoleById(id);
+      })
+      .catch(err => {
+        console.error(err);
       });
   };
   render() {
@@ -85,31 +109,32 @@ class RoleEdit extends Component {
         }
       }
     };
+    getFieldDecorator('id', { initialValue: this.state.roleInfo ? this.state.roleInfo.id : 0 });
     return (
       <BasicLayout history={this.props.history}>
-        {this.state.role && (
+        {this.state.roleInfo && (
           <Form onSubmit={this.handleSubmit}>
             <FormItem {...formItemLayout} label="Name">
               {getFieldDecorator('name', {
-                initialValue: this.state.role.name,
+                initialValue: this.state.roleInfo.name,
                 rules: [{ required: true, message: 'Please input Name!' }]
               })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
             </FormItem>
             <FormItem {...formItemLayout} label="Guard Name">
               {getFieldDecorator('guard_name', {
-                initialValue: this.state.role.guard_name,
+                initialValue: this.state.roleInfo.guard_name,
                 rules: [{ required: true, message: 'Please input Guard Name!' }]
               })(<Input autoComplete="off" placeholder="请输入学号" disabled />)}
             </FormItem>
             <FormItem {...formItemLayout} label="Display Name">
               {getFieldDecorator('display_name', {
-                initialValue: this.state.role.display_name,
+                initialValue: this.state.roleInfo.display_name,
                 rules: [{ required: true, message: 'Please input Display Name!' }]
               })(<Input autoComplete="off" placeholder="请输入学号" />)}
             </FormItem>
             <FormItem {...formItemLayout} label="拥有权限">
               {getFieldDecorator('permissions', {
-                initialValue: [1],
+                initialValue: this.state.permissions,
                 rules: [{ required: true, message: 'Please select permissions!' }]
               })(
                 <Select mode="multiple" placeholder="请选择角色所拥有的权限">
