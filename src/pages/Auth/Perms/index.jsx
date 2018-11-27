@@ -12,9 +12,9 @@ class Permission extends Component {
     this.getPermList();
   }
   getPermList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/permissions`)
+      .get(`${BASE_API}/permissions`)
       .then(res => {
         const data = res.data.data.map(item => ({ ...item, key: item.id }));
         if (data && data.length) {
@@ -38,7 +38,7 @@ class Permission extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Permission);

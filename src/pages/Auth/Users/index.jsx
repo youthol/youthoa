@@ -15,9 +15,9 @@ class User extends Component {
   }
 
   getUserList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/users`)
+      .get(`${BASE_API}/users`)
       .then(res => {
         const data = res.data.data.map(item => ({ ...item, key: item.id }));
         if (data && data.length) {
@@ -46,7 +46,7 @@ class User extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(User);

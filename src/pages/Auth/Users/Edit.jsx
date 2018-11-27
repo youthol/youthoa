@@ -35,9 +35,9 @@ class UserEdit extends Component {
     });
   };
   getRoleList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/roles`)
+      .get(`${BASE_API}/roles`)
       .then(res => {
         const { data } = res.data;
         const roleList = data.map(item => ({
@@ -52,10 +52,10 @@ class UserEdit extends Component {
   };
   getUserById = id => {
     if (!id) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const { token } = sessionStorage;
     axios
-      .get(`${baseUrl}/user/${id}`, {
+      .get(`${BASE_API}/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -74,12 +74,12 @@ class UserEdit extends Component {
   };
   putUserInfo = (id, data) => {
     if (!id || !data) return;
-    const { baseUrl, userinfo, permissions } = this.props;
+    const { BASE_API, userinfo, permissions } = this.props;
     // TODO: 判断权限
     const { token } = sessionStorage;
     const params = qs.stringify(data);
     axios
-      .put(`${baseUrl}/user/${id}`, params, {
+      .put(`${BASE_API}/user/${id}`, params, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -244,10 +244,10 @@ class UserEdit extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl,
-  userinfo: state.userinfo.userinfo,
-  roles: state.userinfo.roles,
-  permissions: state.userinfo.permissions
+  BASE_API: state.globalData.BASE_API,
+  userinfo: state.currentUser.userinfo,
+  roles: state.currentUser.roles,
+  permissions: state.currentUser.permissions
 });
 
 export default connect(mapStateToProps)(Form.create()(UserEdit));

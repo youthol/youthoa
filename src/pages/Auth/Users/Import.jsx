@@ -51,7 +51,7 @@ class ImportUserTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Form.create()(ImportUserTable));

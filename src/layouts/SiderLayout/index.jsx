@@ -107,9 +107,9 @@ class SiderLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-  userinfo: state.userinfo.userinfo,
-  roles: state.userinfo.roles,
-  permissions: state.userinfo.permissions
+  userinfo: state.currentUser.userinfo,
+  roles: state.currentUser.roles,
+  permissions: state.currentUser.permissions
 });
 
 export default connect(mapStateToProps)(withRouter(SiderLayout));

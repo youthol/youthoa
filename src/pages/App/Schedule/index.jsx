@@ -90,10 +90,10 @@ class AppSchedule extends Component {
    * @description 获取进一个月的日程记录
    */
   getScheduleList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
 
     axios
-      .get(`${baseUrl}/schedules`)
+      .get(`${BASE_API}/schedules`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           const data = res.data.data.map(el => ({
@@ -128,11 +128,11 @@ class AppSchedule extends Component {
    */
   createSchedule = data => {
     if (!data) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const params = qs.stringify(data);
 
     axios
-      .post(`${baseUrl}/schedule`, params)
+      .post(`${BASE_API}/schedule`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getScheduleList();
@@ -165,7 +165,7 @@ class AppSchedule extends Component {
     if (!data) return;
     const params = qs.stringify(data);
     axios
-      .put(`${this.props.baseUrl}/schedule/${this.state.currentId}`, params)
+      .put(`${this.props.BASE_API}/schedule/${this.state.currentId}`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getScheduleList();
@@ -197,7 +197,7 @@ class AppSchedule extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(AppSchedule);

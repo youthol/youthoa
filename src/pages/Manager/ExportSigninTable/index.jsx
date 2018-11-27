@@ -9,7 +9,7 @@ const { RangePicker } = DatePicker;
 class ExportSigninTable extends Component {
   handleExport = e => {
     e.preventDefault();
-    const { form, baseUrl } = this.props;
+    const { form, BASE_API } = this.props;
     form.validateFields((err, values) => {
       try {
         if (!err) {
@@ -17,7 +17,7 @@ class ExportSigninTable extends Component {
           start = start.format('YYYY-MM-DD');
           end = end.format('YYYY-MM-DD');
           let a = document.createElement('a');
-          let url = `${baseUrl}/signin/export?start=${start}&end=${end}`;
+          let url = `${BASE_API}/signin/export?start=${start}&end=${end}`;
           let filename = 'myfile.zip';
           a.href = url;
           a.download = filename;
@@ -51,7 +51,7 @@ class ExportSigninTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Form.create()(ExportSigninTable));

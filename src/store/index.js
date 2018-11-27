@@ -1,11 +1,19 @@
-import { createStore } from 'redux';
-import rootReducer from '../reducers';
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import globalData from './reducer';
+import currentUser from '@/pages/Login/redux/reducer';
 
-export default function configureStore(initialState) {
-  const store = createStore(
-    rootReducer,
-    initialState,
-    window.devToolsExtension ? window.devToolsExtension() : undefined
-  );
-  return store;
-}
+const rootReducer = combineReducers({
+  globalData,
+  currentUser
+});
+
+const store = createStore(
+  rootReducer,
+  compose(
+    applyMiddleware(thunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )
+);
+
+export default store;

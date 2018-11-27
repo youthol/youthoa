@@ -95,9 +95,9 @@ class AppDevice extends Component {
    * @description 获取全部可借用设备
    */
   getEquipmentList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/equipments`)
+      .get(`${BASE_API}/equipments`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.setState({ equipments: res.data.data });
@@ -125,9 +125,9 @@ class AppDevice extends Component {
    * @description 获取近一个月借用记录
    */
   getRecordList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/devices`)
+      .get(`${BASE_API}/devices`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           const data = res.data.data.map(el => ({
@@ -165,7 +165,7 @@ class AppDevice extends Component {
     const params = qs.stringify(data);
 
     axios
-      .post(`${this.props.baseUrl}/device`, params)
+      .post(`${this.props.BASE_API}/device`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getRecordList();
@@ -176,7 +176,7 @@ class AppDevice extends Component {
         try {
           message.error(err.response.data.message);
           for (let error in err.response.data.errors) {
-            // FIXED: 修改
+            // FIX: 修改
             error.forEach(el => {
               message.error(el);
             });
@@ -209,7 +209,7 @@ class AppDevice extends Component {
     if (!data) return;
     const params = qs.stringify(data);
     axios
-      .put(`${this.props.baseUrl}/device/${this.state.currentId}`, params)
+      .put(`${this.props.BASE_API}/device/${this.state.currentId}`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getRecordList();
@@ -287,7 +287,7 @@ class AppDevice extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Form.create()(AppDevice));

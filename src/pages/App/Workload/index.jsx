@@ -22,7 +22,7 @@ class AppWorkload extends Component {
   }
   getWorkloadList = () => {
     axios
-      .get(`${this.props.baseUrl}/workloads`)
+      .get(`${this.props.BASE_API}/workloads`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.setState({ data: res.data.data });
@@ -36,7 +36,7 @@ class AppWorkload extends Component {
     if (!data) return;
     const params = qs.stringify(data);
     axios
-      .post(`${this.props.baseUrl}/workloads`, params)
+      .post(`${this.props.BASE_API}/workloads`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getWorkloadList();
@@ -114,7 +114,7 @@ class AppWorkload extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(AppWorkload);

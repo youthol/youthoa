@@ -27,10 +27,10 @@ class PremsEdit extends Component {
   };
   getPermById = id => {
     if (!id) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const { token } = sessionStorage;
     axios
-      .get(`${baseUrl}/permission/${id}`, {
+      .get(`${BASE_API}/permission/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -47,12 +47,12 @@ class PremsEdit extends Component {
   };
   putPermInfo = (id, data) => {
     if (!id || !data) return;
-    const { baseUrl, userinfo, permissions } = this.props;
+    const { BASE_API, userinfo, permissions } = this.props;
     // TODO: 判断权限
     const { token } = sessionStorage;
     const params = qs.stringify(data);
     axios
-      .put(`${baseUrl}/permission/${id}`, params, {
+      .put(`${BASE_API}/permission/${id}`, params, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -125,7 +125,7 @@ class PremsEdit extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Form.create()(PremsEdit));

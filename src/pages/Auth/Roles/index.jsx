@@ -13,10 +13,10 @@ class Role extends Component {
     this.getRoleList();
   }
   getRoleList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
 
     axios
-      .get(`${baseUrl}/roles`)
+      .get(`${BASE_API}/roles`)
       .then(res => {
         const data = res.data.data.map(item => ({ ...item, key: item.id }));
         if (data && data.length) {
@@ -42,7 +42,7 @@ class Role extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Role);

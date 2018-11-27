@@ -68,7 +68,7 @@ class AppSignin extends Component {
    */
   getRecordList = () => {
     axios
-      .get(`${this.props.baseUrl}/signin`)
+      .get(`${this.props.BASE_API}/signin`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           const data = res.data.data.map(el => ({
@@ -103,11 +103,11 @@ class AppSignin extends Component {
    */
   postSignin = id => {
     if (!id) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const params = qs.stringify({ sdut_id: id });
 
     axios
-      .post(`${baseUrl}/signin`, params)
+      .post(`${BASE_API}/signin`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           const { status, user } = res.data.data;
@@ -154,7 +154,7 @@ class AppSignin extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(AppSignin);
