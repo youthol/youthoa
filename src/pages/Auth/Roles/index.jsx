@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import RoleList from '@/components/Auth/RoleList';
 import BasicLayout from '@/layouts/BasicLayout';
-import OptsBtnGroup from '@/components/Auth/OptsBtnGroup'
+import OptsBtnGroup from '@/components/Auth/OptsBtnGroup';
 
 class Role extends Component {
   state = {
@@ -14,7 +14,6 @@ class Role extends Component {
   }
   getRoleList = () => {
     const { BASE_API } = this.props;
-
     axios
       .get(`${BASE_API}/roles`)
       .then(res => {
@@ -24,7 +23,20 @@ class Role extends Component {
         }
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   handleEdit = role => {

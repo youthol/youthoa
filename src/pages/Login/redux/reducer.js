@@ -2,6 +2,7 @@ import * as actionTypes from './actionTypes';
 
 const initialState = {
   userinfo: null,
+  roles: null,
   permissions: null
 };
 
@@ -12,6 +13,7 @@ const userinfo = (state = initialState, action) => {
     case actionTypes.DEL_USER_INFO:
       return {
         userinfo: null,
+        roles: null,
         permissions: null
       };
     default:

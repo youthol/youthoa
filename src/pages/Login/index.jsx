@@ -44,7 +44,20 @@ class Login extends Component {
         this.props.history.push('/');
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   render() {

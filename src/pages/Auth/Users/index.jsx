@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
 import UserList from '@/components/Auth/UserList';
-import OptsBtnGroup from '@/components/Auth/OptsBtnGroup'
+import OptsBtnGroup from '@/components/Auth/OptsBtnGroup';
 
 class User extends Component {
   state = {
@@ -13,7 +13,6 @@ class User extends Component {
   componentDidMount() {
     this.getUserList();
   }
-
   getUserList = () => {
     const { BASE_API } = this.props;
     axios
@@ -25,16 +24,26 @@ class User extends Component {
         }
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
 
   handleEdit = user => {
     this.props.history.push(`/users/edit/${user.id}`);
   };
-  handleAdd = () => {
-    // this.props.history.push(`/user`)
-  }
   render() {
     return (
       <BasicLayout>

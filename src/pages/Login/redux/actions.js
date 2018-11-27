@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { message } from 'antd';
 import * as actionTypes from './actionTypes';
 
 export const setUserInfo = token => (dispatch, getState) => {
@@ -16,7 +17,20 @@ export const setUserInfo = token => (dispatch, getState) => {
       });
     })
     .catch(err => {
-      console.log(err);
+      try {
+        const { errors } = err.response.data;
+        if (errors) {
+          for (let error in errors) {
+            if (errors[error] instanceof Array) {
+              errors[error].forEach(el => message.error(el));
+            }
+          }
+        } else {
+          message.error(err.response.data.message);
+        }
+      } catch (e) {
+        console.error(e);
+      }
     });
 };
 

@@ -41,7 +41,20 @@ class RoleEdit extends Component {
         this.setState({ permList });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   getRoleById = id => {
@@ -62,7 +75,20 @@ class RoleEdit extends Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   putRoleInfo = (id, data) => {
@@ -82,7 +108,20 @@ class RoleEdit extends Component {
         this.getRoleById(id);
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   render() {

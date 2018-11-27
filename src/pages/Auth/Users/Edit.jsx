@@ -47,7 +47,20 @@ class UserEdit extends Component {
         this.setState({ roleList });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   getUserById = id => {
@@ -62,15 +75,26 @@ class UserEdit extends Component {
       })
       .then(res => {
         const { userinfo, roles } = res.data.data;
-        console.log(roles)
         this.setState({
           userinfo,
           roles: roles.map(item => item.id)
         });
-        console.log(res.data.data)
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   putUserInfo = (id, data) => {
@@ -89,7 +113,20 @@ class UserEdit extends Component {
         this.getUserById(id);
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   render() {
