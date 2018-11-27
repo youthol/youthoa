@@ -8,6 +8,9 @@ import BasicLayout from '@/layouts/BasicLayout';
 const FormItem = Form.Item;
 
 class PremsEdit extends Component {
+  state = {
+    premInfo: {}
+  }
   componentDidMount() {
     const id = this.props.history.location.pathname.split('/')[3];
     this.getPremById(id);
@@ -18,6 +21,7 @@ class PremsEdit extends Component {
     validateFields((err, values) => {
       if (!err) {
         console.log(values);
+        this.putPermInfo(values.id, values)
       }
     });
   };
@@ -33,6 +37,9 @@ class PremsEdit extends Component {
       })
       .then(res => {
         console.log(res);
+        this.setState({
+          permInfo: res.data.data
+        });
       })
       .catch(err => {
         console.log(err);
@@ -51,13 +58,13 @@ class PremsEdit extends Component {
         }
       })
       .then(res => {
-        console.log(res);
         this.getPermById(id);
       })
       .catch(err => {
         console.error(err);
       });
   };
+  
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -82,24 +89,26 @@ class PremsEdit extends Component {
         }
       }
     };
+    getFieldDecorator('id', { initialValue: this.state.permInfo ? this.state.permInfo.id : 0 });
     return (
       <BasicLayout history={this.props.history}>
-        <Form onSubmit={this.handleSubmit}>
+        {this.state.permInfo && (
+          <Form onSubmit={this.handleSubmit}>
           <FormItem {...formItemLayout} label="Name">
             {getFieldDecorator('name', {
-              initialValue: 'manage_administrator',
+              initialValue: this.state.permInfo.name,
               rules: [{ required: true, message: 'Please input Name!' }]
             })(<Input autoComplete="off" placeholder="请输入姓名" disabled />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Guard Name">
             {getFieldDecorator('guard_name', {
-              initialValue: 'oa',
+              initialValue: this.state.permInfo.guard_name,
               rules: [{ required: true, message: 'Please input Guard Name!' }]
             })(<Input autoComplete="off" placeholder="请输入学号" disabled />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Display Name">
             {getFieldDecorator('display_name', {
-              initialValue: '正式',
+              initialValue: this.state.permInfo.display_name,
               rules: [{ required: true, message: 'Please input Display Name!' }]
             })(<Input autoComplete="off" placeholder="请输入学号" />)}
           </FormItem>
@@ -109,6 +118,8 @@ class PremsEdit extends Component {
             </Button>
           </FormItem>
         </Form>
+        )}
+        
       </BasicLayout>
     );
   }

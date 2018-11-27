@@ -66,6 +66,7 @@ class UserEdit extends Component {
           userinfo,
           roles: roles.map(item => item.id)
         });
+        console.log(res.data.data)
       })
       .catch(err => {
         console.log(err);
@@ -84,7 +85,6 @@ class UserEdit extends Component {
         }
       })
       .then(res => {
-        console.log(res);
         this.getUserById(id);
       })
       .catch(err => {
