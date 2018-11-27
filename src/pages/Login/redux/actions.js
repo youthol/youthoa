@@ -1,16 +1,15 @@
 import axios from 'axios';
 import * as actionTypes from './actionTypes';
 
-export const setUserInfo = token => async (dispatch, getState) => {
+export const setUserInfo = token => (dispatch, getState) => {
   if (!token) return;
   const state = getState();
   const BASE_API = state.globalData.BASE_API;
-  await axios
+  axios
     .get(`${BASE_API}/user`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
-      console.log(res);
       dispatch({
         type: actionTypes.SET_USER_INFO,
         data: res.data.data

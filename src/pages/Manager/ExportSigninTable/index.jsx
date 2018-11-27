@@ -13,11 +13,12 @@ class ExportSigninTable extends Component {
     form.validateFields((err, values) => {
       try {
         if (!err) {
+          const { token } = sessionStorage;
           let [start, end] = values.daterange;
           start = start.format('YYYY-MM-DD');
           end = end.format('YYYY-MM-DD');
           let a = document.createElement('a');
-          let url = `${BASE_API}/signin/export?start=${start}&end=${end}`;
+          let url = `${BASE_API}/signin/export?start=${start}&end=${end}&token=${token}`;
           let filename = 'myfile.zip';
           a.href = url;
           a.download = filename;

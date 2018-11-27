@@ -18,12 +18,8 @@ class BasicLayout extends Component {
     const { token, expires_at } = sessionStorage;
     const { userinfo } = this.props.currentUser;
     if (token && moment().isBefore(expires_at)) {
-      // this.setState({ isAuth: true });
-      if (this.props.currentUser.userinfo) {
-        this.setState({ isAuth: true });
-      } else {
-        this.props.setUserInfo(token);
-      }
+      if (!userinfo) this.props.setUserInfo(token);
+      this.setState({ isAuth: true });
     } else {
       sessionStorage.clear();
       this.props.deleteUserInfo();
@@ -32,7 +28,6 @@ class BasicLayout extends Component {
   }
 
   handleLogin = e => {
-    console.log(this.props);
     if (this.props.history.location.pathname === '/login') {
       message.info('请登录');
     } else {

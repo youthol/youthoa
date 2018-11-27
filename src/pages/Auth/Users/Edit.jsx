@@ -62,6 +62,7 @@ class UserEdit extends Component {
       })
       .then(res => {
         const { userinfo, roles } = res.data.data;
+        console.log(roles)
         this.setState({
           userinfo,
           roles: roles.map(item => item.id)

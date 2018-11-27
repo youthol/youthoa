@@ -47,21 +47,6 @@ class Login extends Component {
         console.log(err);
       });
   };
-  // getUserInfo = token => {
-  //   if (!token) return;
-  //   const { BASE_API } = this.props;
-  //   axios
-  //     .get(`${BASE_API}/user`, {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     })
-  //     .then(res => {
-  //       this.props.updateUserInfo(res.data.data);
-  //       this.props.history.push('/');
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // };
   render() {
     return (
       <BasicLayout>
