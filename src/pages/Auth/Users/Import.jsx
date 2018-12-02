@@ -9,9 +9,13 @@ const Dragger = Upload.Dragger;
 class ImportUserTable extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { token } = sessionStorage;
     const props = {
       name: 'excel',
       action: 'https://api.youthol.cn/api/oa/user/import',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
       onChange(info) {
         const status = info.file.status;
         if (status !== 'uploading') {
@@ -51,7 +55,7 @@ class ImportUserTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Form.create()(ImportUserTable));

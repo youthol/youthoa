@@ -20,7 +20,7 @@ class AppPhoneBook extends Component {
   }
   getPhoneBookList = () => {
     axios
-      .get(`${this.props.baseUrl}/phones`)
+      .get(`${this.props.BASE_API}/phones`)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.setState({ data: res.data.data });
@@ -32,7 +32,7 @@ class AppPhoneBook extends Component {
   };
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <DataList data={this.state.data} />
       </BasicLayout>
     );
@@ -40,7 +40,7 @@ class AppPhoneBook extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(AppPhoneBook);

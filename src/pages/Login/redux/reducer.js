@@ -1,3 +1,5 @@
+import * as actionTypes from './actionTypes';
+
 const initialState = {
   userinfo: null,
   roles: null,
@@ -6,9 +8,9 @@ const initialState = {
 
 const userinfo = (state = initialState, action) => {
   switch (action.type) {
-    case 'UPDATE_USERINFO':
+    case actionTypes.SET_USER_INFO:
       return Object.assign({}, initialState, action.data);
-    case 'DELETE_USERINFO':
+    case actionTypes.DEL_USER_INFO:
       return {
         userinfo: null,
         roles: null,

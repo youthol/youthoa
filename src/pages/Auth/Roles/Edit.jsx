@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Select } from 'antd';
+import { Form, Input, Button, Select, message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
@@ -29,9 +29,9 @@ class RoleEdit extends Component {
     });
   };
   getPermList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/permissions`)
+      .get(`${BASE_API}/permissions`)
       .then(res => {
         const { data } = res.data;
         const permList = data.map(item => ({
@@ -41,15 +41,28 @@ class RoleEdit extends Component {
         this.setState({ permList });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   getRoleById = id => {
     if (!id) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const { token } = sessionStorage;
     axios
-      .get(`${baseUrl}/role/${id}`, {
+      .get(`${BASE_API}/role/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -62,27 +75,52 @@ class RoleEdit extends Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   putRoleInfo = (id, data) => {
     if (!id || !data) return;
-    const { baseUrl, userinfo, permissions } = this.props;
+    const { BASE_API, userinfo, permissions } = this.props;
     // TODO: 判断权限
     const { token } = sessionStorage;
     const params = qs.stringify(data);
     axios
-      .put(`${baseUrl}/role/${id}`, params, {
+      .put(`${BASE_API}/role/${id}`, params, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       .then(res => {
-        console.log(res);
-        this.getRoleById(id);
+        this.props.history.push('/roles');
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   render() {
@@ -111,7 +149,7 @@ class RoleEdit extends Component {
     };
     getFieldDecorator('id', { initialValue: this.state.roleInfo ? this.state.roleInfo.id : 0 });
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         {this.state.roleInfo && (
           <Form onSubmit={this.handleSubmit}>
             <FormItem {...formItemLayout} label="Name">
@@ -160,7 +198,7 @@ class RoleEdit extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 export default connect(mapStateToProps)(Form.create()(RoleEdit));

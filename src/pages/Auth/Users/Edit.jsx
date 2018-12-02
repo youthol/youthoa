@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button, InputNumber, Checkbox, DatePicker, Select } from 'antd';
+import { Form, Input, Button, InputNumber, Checkbox, DatePicker, Select, message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import moment from 'moment';
@@ -35,9 +35,9 @@ class UserEdit extends Component {
     });
   };
   getRoleList = () => {
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     axios
-      .get(`${baseUrl}/roles`)
+      .get(`${BASE_API}/roles`)
       .then(res => {
         const { data } = res.data;
         const roleList = data.map(item => ({
@@ -47,15 +47,28 @@ class UserEdit extends Component {
         this.setState({ roleList });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   getUserById = id => {
     if (!id) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const { token } = sessionStorage;
     axios
-      .get(`${baseUrl}/user/${id}`, {
+      .get(`${BASE_API}/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -68,27 +81,52 @@ class UserEdit extends Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   putUserInfo = (id, data) => {
     if (!id || !data) return;
-    const { baseUrl, userinfo, permissions } = this.props;
+    const { BASE_API, userinfo, permissions } = this.props;
     // TODO: 判断权限
     const { token } = sessionStorage;
     const params = qs.stringify(data);
     axios
-      .put(`${baseUrl}/user/${id}`, params, {
+      .put(`${BASE_API}/user/${id}`, params, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
       .then(res => {
-        console.log(res);
-        this.getUserById(id);
+        this.props.history.push('/users');
       })
       .catch(err => {
-        console.error(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   render() {
@@ -163,7 +201,7 @@ class UserEdit extends Component {
     ];
     getFieldDecorator('id', { initialValue: this.state.userinfo ? this.state.userinfo.id : 0 });
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         {this.state.userinfo && (
           <Form onSubmit={this.handleSubmit}>
             {/* <h2>{props.title || 'LOGIN'}</h2> */}
@@ -244,10 +282,10 @@ class UserEdit extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl,
-  userinfo: state.userinfo.userinfo,
-  roles: state.userinfo.roles,
-  permissions: state.userinfo.permissions
+  BASE_API: state.globalData.BASE_API,
+  userinfo: state.currentUser.userinfo,
+  roles: state.currentUser.roles,
+  permissions: state.currentUser.permissions
 });
 
 export default connect(mapStateToProps)(Form.create()(UserEdit));

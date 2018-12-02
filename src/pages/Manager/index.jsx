@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Dropdown, Icon, Button } from 'antd';
+import { Menu, Icon } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
 class Manager extends Component {

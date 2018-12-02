@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Icon, message } from 'antd';
 import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
-import { deleteUserInfo } from '@/actions/userinfo';
+import { setUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -16,11 +16,13 @@ class BasicLayout extends Component {
   };
   componentDidMount() {
     const { token, expires_at } = sessionStorage;
-    const { userinfo } = this.props;
-    if (token && moment().isBefore(expires_at) && !!userinfo) {
+    const { userinfo } = this.props.currentUser;
+    if (token && moment().isBefore(expires_at)) {
+      if (!userinfo) this.props.setUserInfo(token);
       this.setState({ isAuth: true });
     } else {
       sessionStorage.clear();
+      this.props.deleteUserInfo();
       this.setState({ isAuth: false });
     }
   }
@@ -51,9 +53,6 @@ class BasicLayout extends Component {
       }
     });
   };
-  currentYear() {
-    return new Date().getFullYear();
-  }
 
   render() {
     return (
@@ -79,7 +78,7 @@ class BasicLayout extends Component {
           </Header>
           <Content className="page__bd">{this.props.children}</Content>
           <Footer className="page__ft">
-            <span>© {this.currentYear()} 青春在线网站 版权所有</span>
+            <span>© {new Date().getFullYear()} 青春在线网站 版权所有</span>
           </Footer>
         </Layout>
       </Layout>
@@ -88,13 +87,12 @@ class BasicLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl,
-  userinfo: state.userinfo.userinfo,
-  roles: state.userinfo.roles,
-  permissions: state.userinfo.permissions
+  BASE_API: state.globalData.BASE_API,
+  currentUser: state.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({
+  setUserInfo: bindActionCreators(setUserInfo, dispatch),
   deleteUserInfo: bindActionCreators(deleteUserInfo, dispatch)
 });
 

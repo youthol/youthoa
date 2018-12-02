@@ -7,13 +7,13 @@ import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import LoginForm from './components/LoginForm';
-import { updateUserInfo } from '@/actions/userinfo';
+import { setUserInfo } from './redux/actions';
 import './style.scss';
 
 class Login extends Component {
   componentDidMount() {
     const { token, expires_at } = sessionStorage;
-    if (token && expires_at) {
+    if (token && moment().isBefore(expires_at)) {
       this.props.history.push('/');
     }
   }
@@ -28,10 +28,10 @@ class Login extends Component {
   };
   postLoginData = data => {
     if (!data) return;
-    const { baseUrl } = this.props;
+    const { BASE_API } = this.props;
     const params = qs.stringify(data);
     axios
-      .post(`${baseUrl}/login`, params)
+      .post(`${BASE_API}/login`, params)
       .then(res => {
         const { access_token, expires_in } = res.data.data;
         const expires_at = moment()
@@ -40,30 +40,29 @@ class Login extends Component {
         sessionStorage.clear();
         sessionStorage.setItem('token', access_token);
         sessionStorage.setItem('expires_at', expires_at);
-        this.getUserInfo(access_token);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-  getUserInfo = token => {
-    if (!token) return;
-    const { baseUrl } = this.props;
-    axios
-      .get(`${baseUrl}/user`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then(res => {
-        this.props.updateUserInfo(res.data.data);
+        this.props.setUserInfo(access_token);
         this.props.history.push('/');
       })
       .catch(err => {
-        console.log(err);
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
       });
   };
   render() {
     return (
-      <BasicLayout history={this.props.history}>
+      <BasicLayout>
         <LoginForm form={this.props.form} handleSubmit={this.handleSubmit} />
       </BasicLayout>
     );
@@ -71,11 +70,11 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  baseUrl: state.baseUrl
+  BASE_API: state.globalData.BASE_API
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateUserInfo: bindActionCreators(updateUserInfo, dispatch)
+  setUserInfo: bindActionCreators(setUserInfo, dispatch)
 });
 
 export default connect(
