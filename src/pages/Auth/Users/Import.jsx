@@ -13,7 +13,7 @@ class ImportUserTable extends Component {
     const props = {
       name: 'excel',
       action: 'https://api.youthol.cn/api/oa/user/import',
-      headers :{
+      headers: {
         Authorization : `Bearer ${token}`
       },
       onChange(info) {
