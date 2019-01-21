@@ -14,7 +14,7 @@ class ImportUserTable extends Component {
       name: 'excel',
       action: 'https://api.youthol.cn/api/oa/user/import',
       headers: {
-        Authorization : `Bearer ${token}`
+        Authorization: `Bearer ${token}`
       },
       onChange(info) {
         const status = info.file.status;
