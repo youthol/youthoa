@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { message } from 'antd';
 import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
-import DataList from '@/components/Phonebook/DataList';
+import DataList from './components/DataList';
 
 class AppPhoneBook extends Component {
   constructor(props) {

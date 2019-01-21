@@ -6,9 +6,9 @@ import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import NewItemBtn from '@/components/NewItemBtn';
-import DataList from '@/components/Device/DataList';
-import ModalAdd from '@/components/Device/ModalAdd';
-import ModalRenew from '@/components/Device/ModalRenew';
+import DataList from './components/DataList';
+import ModalAdd from './components/ModalAdd';
+import ModalRenew from './components/ModalRenew';
 
 class AppDevice extends Component {
   constructor(props) {

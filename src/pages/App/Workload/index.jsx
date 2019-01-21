@@ -4,9 +4,9 @@ import { message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
-import DataList from '@/components/Workload/DataList';
 import NewItemBtn from '@/components/NewItemBtn';
-import ModalAdd from '@/components/Workload/ModalAdd';
+import DataList from './components/DataList';
+import ModalAdd from './components/ModalAdd';
 
 class AppWorkload extends Component {
   constructor(props) {
@@ -34,9 +34,10 @@ class AppWorkload extends Component {
   };
   createWorkload = data => {
     if (!data) return;
+    const { BASE_API } = this.props;
     const params = qs.stringify(data);
     axios
-      .post(`${this.props.BASE_API}/workloads`, params)
+      .post(`${BASE_API}/workloads`, params)
       .then(res => {
         if (res.status >= 200 && res.status <= 300) {
           this.getWorkloadList();

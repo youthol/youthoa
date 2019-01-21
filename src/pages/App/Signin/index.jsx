@@ -5,8 +5,8 @@ import axios from 'axios';
 import qs from 'qs';
 import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
-import DataList from '@/components/Signin/DataList';
-import SigninInput from '@/components/Signin/SigninInput';
+import DataList from './components/DataList';
+import SigninInput from './components/SigninInput';
 
 const confirm = Modal.confirm;
 

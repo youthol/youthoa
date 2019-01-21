@@ -4,10 +4,10 @@ import { message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
-import DataList from '@/components/Schedule/DataList';
 import NewItemBtn from '@/components/NewItemBtn';
-import ModalAdd from '@/components/Schedule/ModalAdd';
-import ModalRenew from '@/components/Schedule/ModalRenew';
+import DataList from './components/DataList';
+import ModalAdd from './components/ModalAdd';
+import ModalRenew from './components/ModalRenew';
 
 class AppSchedule extends Component {
   constructor(props) {
