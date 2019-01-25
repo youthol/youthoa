@@ -40,6 +40,12 @@ class Manager extends Component {
             <Menu.Item key="expt-signin-tb">
               <Link to="/signin/export">导出签到数据表</Link>
             </Menu.Item>
+            <Menu.Item key="/phonebook/export">
+              <Link to="/phonebook/export">导出联系方式表</Link>
+            </Menu.Item>
+            <Menu.Item key="/phonebook/import">
+              <Link to="/phonebook/import">导入联系方式表</Link>
+            </Menu.Item>
           </Menu.SubMenu>
           {/* 系统外数据管理入口 */}
           <Menu.SubMenu

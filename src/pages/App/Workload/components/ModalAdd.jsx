@@ -40,11 +40,11 @@ class ModalAdd extends Component {
               rules: [{ required: true, message: '工作量不能为空!' }]
             })(<InputNumber placeholder="数值" min={1} max={100} />)}
           </FormItem>
-          <FormItem {...formItemLayout} label="统计人">
+          {/* <FormItem {...formItemLayout} label="统计人">
             {getFieldDecorator('manager', {
               rules: [{ required: true, message: '统计人学号不能为空!' }]
             })(<Input placeholder="请输入统计人学号" autoComplete="off" />)}
-          </FormItem>
+          </FormItem> */}
         </Form>
       </Modal>
     );

@@ -28,7 +28,8 @@ const DataList = props => {
         key="action"
         render={text => (
           <Button.Group>
-            <Button icon="delete" disabled onClick={props.handleDelete} />
+            <Button icon="logout" onClick={() => props.showModal('edit', text.id)} />
+            <Button icon="delete" onClick={() => props.handleDelete(text.id)} />
           </Button.Group>
         )}
       />

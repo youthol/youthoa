@@ -13,47 +13,20 @@ class AppWorkload extends Component {
     super(props);
     this.state = {
       modalAddVisible: false,
-      modalRenewVisible: false,
+      modalEditVisible: false,
       currentId: 0
     };
   }
   componentDidMount() {
     this.getWorkloadList();
   }
-  getWorkloadList = () => {
-    axios
-      .get(`${this.props.BASE_API}/workloads`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.setState({ data: res.data.data });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  createWorkload = data => {
-    if (!data) return;
-    const { BASE_API } = this.props;
-    const params = qs.stringify(data);
-    axios
-      .post(`${BASE_API}/workloads`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getWorkloadList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
   showModal = (type, id) => {
     switch (type) {
       case 'add':
         this.setState({ modalAddVisible: true });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: true, currentId: id });
+      case 'edit':
+        this.setState({ modalEditVisible: true, currentId: id });
         break;
       default:
         message.error('出错啦~');
@@ -68,9 +41,9 @@ class AppWorkload extends Component {
             this.createWorkload(values);
             this.setState({ modalAddVisible: false });
             break;
-          case 'renew':
+          case 'edit':
             console.log(values);
-            this.setState({ modalRenewVisible: false, currentId: 0 });
+            this.setState({ modalEditVisible: false, currentId: 0 });
             break;
           default:
             message.error('出现错误');
@@ -83,16 +56,115 @@ class AppWorkload extends Component {
       case 'add':
         this.setState({ modalAddVisible: false });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: false });
+      case 'edit':
+        this.setState({ modalEditVisible: false });
         break;
       default:
         message.error('出错啦~');
     }
     form.resetFields();
   };
-  handleDelete = e => {
-    console.log('delete');
+  handleDelete = id => {
+    if (id) {
+      this.deletePhoneBook(id);
+    }
+  };
+  getWorkloadList = () => {
+    const { BASE_API } = this.props;
+    axios
+      .get(`${BASE_API}/workloads`)
+      .then(res => {
+        console.log(res);
+        if (res.status >= 200 && res.status <= 300) {
+          this.setState({ data: res.data.data });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+  createWorkload = data => {
+    if (!data) return;
+    const { BASE_API } = this.props;
+    const { token } = sessionStorage;
+    const params = qs.stringify(data);
+    axios
+      .post(`${BASE_API}/workload`, params, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        if (res.status >= 200 && res.status <= 300) {
+          this.getWorkloadList();
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
+  upgradeWorkload = data => {
+    if (!data) return;
+    const { BASE_API } = this.props;
+    const { token } = sessionStorage;
+    const params = qs.stringify(data);
+    axios
+      .put(`${BASE_API}/workload/${this.state.currentId}`, params, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        if (res.status >= 200 && res.status <= 300) {
+          this.getWorkloadList();
+        }
+      })
+      .catch(err => {
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      });
+  };
+  deleteWorkload = id => {
+    if (!id) return;
+    const { BASE_API } = this.props;
+    const { token } = sessionStorage;
+    axios
+      .delete(`${BASE_API}/workload/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(res => {
+        this.getWorkloadList();
+      })
+      .catch(err => {
+        try {
+          const { errors } = err.response.data;
+          if (errors) {
+            for (let error in errors) {
+              if (errors[error] instanceof Array) {
+                errors[error].forEach(el => message.error(el));
+              }
+            }
+          } else {
+            message.error(err.response.data.message);
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      });
   };
   render() {
     return (

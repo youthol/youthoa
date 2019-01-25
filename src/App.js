@@ -15,6 +15,8 @@ import PermEdit from '@/pages/Auth/Perms/Edit';
 import Manages from '@/pages/Manager';
 import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
 import ImportHygieneTable from '@/pages/Manager/ImportHygieneTable';
+import ExportPhoneBook from '@/pages/Manager/ExportPhoneBook';
+import ImportPhoneBook from '@/pages/Manager/ImportPhoneBook';
 import AppSignin from '@/pages/App/Signin';
 import AppDevice from '@/pages/App/Device';
 import AppSchedule from '@/pages/App/Schedule';
@@ -49,6 +51,8 @@ class App extends Component {
           <Route exact path="/schedule" component={AppSchedule} />
           <Route exact path="/workload" component={AppWorkload} />
           <Route exact path="/phonebook" component={AppPhonebook} />
+          <Route exact path="/phonebook/export" component={ExportPhoneBook} />
+          <Route exact path="/phonebook/import" component={ImportPhoneBook} />
           {/* NotMatch Routes */}
           <Redirect to="/" />
           <Route component={NotMatch} />

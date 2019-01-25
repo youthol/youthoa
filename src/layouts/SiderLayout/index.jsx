@@ -75,6 +75,11 @@ class SiderLayout extends Component {
                 <span>系统数据管理</span>
               </Menu.Item>
             )}
+          {/* <Menu.Item key="/manage">
+                <Link to="/manage" />
+                <Icon type="laptop" />
+                <span>系统数据管理</span>
+              </Menu.Item> */}
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
