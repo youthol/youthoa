@@ -30,7 +30,7 @@ instance.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencod
 
 instance.interceptors.request.use(
   config => {
-    const { token } = localStorage;
+    const { token } = sessionStorage;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

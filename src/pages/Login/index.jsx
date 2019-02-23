@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
 import moment from 'moment';
-import axios from 'axios';
-import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import LoginForm from './components/LoginForm';
 import { setUserInfo } from './redux/actions';
+import { postLogin, getUserInfo } from '@/api/login';
 import './style.scss';
 
 class Login extends Component {
@@ -17,48 +16,40 @@ class Login extends Component {
       this.props.history.push('/');
     }
   }
+
+  /**
+   * @description 处理提交事件
+   * @param {*} e
+   */
   handleSubmit = e => {
     e.preventDefault();
     const { validateFields } = this.props.form;
     validateFields((err, values) => {
       if (!err) {
-        this.postLoginData(values);
+        this.postUserLogin(values);
       }
     });
   };
-  postLoginData = data => {
-    if (!data) return;
-    const { BASE_API } = this.props;
-    const params = qs.stringify(data);
-    axios
-      .post(`${BASE_API}/login`, params)
-      .then(res => {
-        const { access_token, expires_in } = res.data.data;
-        const expires_at = moment()
-          .add(expires_in, 'second')
-          .format('YYYY-MM-DD HH:mm:ss');
-        sessionStorage.clear();
-        sessionStorage.setItem('token', access_token);
-        sessionStorage.setItem('expires_at', expires_at);
-        this.props.setUserInfo(access_token);
-        this.props.history.push('/');
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+
+  /**
+   * @description 异步发送数据
+   * @param {*} value 发送的数据对象，包括学号和密码
+   * @returns
+   */
+  postUserLogin = async value => {
+    if (!value) return;
+    const rowData = await postLogin(value);
+    const { access_token, expires_in } = rowData.data;
+    const expires_at = moment()
+      .add(expires_in, 'second')
+      .format('YYYY-MM-DD HH:mm:ss');
+    sessionStorage.clear();
+    sessionStorage.setItem('token', access_token);
+    sessionStorage.setItem('expires_at', expires_at);
+    const userInfo = await getUserInfo();
+    console.log(userInfo);
+    this.props.setUserInfo(userInfo);
+    this.props.history.push('/');
   };
   render() {
     return (

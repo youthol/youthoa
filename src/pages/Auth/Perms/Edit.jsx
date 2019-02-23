@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Form, Input, Button, message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
+import { Form, Input, Button } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
+import { getPermById, putPerm } from '@/api/auth';
 
 const FormItem = Form.Item;
 
@@ -12,8 +10,7 @@ class PremsEdit extends Component {
     premInfo: {}
   };
   componentDidMount() {
-    const id = this.props.history.location.pathname.split('/')[3];
-    this.getPermById(id);
+    this.initialization();
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -24,69 +21,17 @@ class PremsEdit extends Component {
       }
     });
   };
-  getPermById = id => {
-    if (!id) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    axios
-      .get(`${BASE_API}/permission/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        this.setState({
-          permInfo: res.data.data
-        });
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  initialization = async () => {
+    const id = this.props.match.params.id;
+    const rowData = await getPermById(id);
+    this.setState({
+      permInfo: rowData.data
+    });
   };
-  putPermInfo = (id, data) => {
+  putPermInfo = async (id, data) => {
     if (!id || !data) return;
-    const { BASE_API, userinfo, permissions } = this.props;
-    // TODO: 判断权限
-    const { token } = sessionStorage;
-    const params = qs.stringify(data);
-    axios
-      .put(`${BASE_API}/permission/${id}`, params, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        this.props.history.push('/perms');
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await putPerm(id, data);
+    this.props.history.push('/perms');
   };
 
   render() {
@@ -148,8 +93,4 @@ class PremsEdit extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(Form.create()(PremsEdit));
+export default Form.create()(PremsEdit);
