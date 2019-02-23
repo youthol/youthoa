@@ -55,7 +55,6 @@ class SearchDrawer extends Component {
         <Input.Search
           placeholder="请输入查询关键词"
           size="large"
-          allowClear
           value={this.state.searchText}
           onSearch={val => this.searchConfirm(val)}
           onChange={this.onChange}
@@ -72,7 +71,7 @@ class SearchDrawer extends Component {
 }
 
 SearchDrawer.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   visible: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired
 };

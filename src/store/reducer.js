@@ -1,8 +1,8 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from "./actionTypes";
 
 const urls = {
-  serve: 'https://api.youthol.cn/api/oa',
-  localhost: 'http://localhost:5000/api'
+  serve: "https://api.youthol.cn/api/oa",
+  localhost: "http://localhost:5000/api"
 };
 
 const initialState = {

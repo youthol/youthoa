@@ -4,7 +4,6 @@ import { Button, message } from 'antd';
 import axios from 'axios';
 import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
-import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalEdit from './components/ModalEdit';
 import SearchDrawer from './components/SearchDrawer';
@@ -17,8 +16,7 @@ class AppPhoneBook extends Component {
       modalEditVisible: false,
       searchDrawerVisible: false,
       upgradeId: 0,
-      phoneDetail: {},
-      searchText: ''
+      phoneDetail: {}
     };
   }
   componentDidMount() {

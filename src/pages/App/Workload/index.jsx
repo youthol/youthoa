@@ -7,6 +7,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalAdd from './components/ModalAdd';
+import ModalEdit from './components/ModalEdit';
 
 class AppWorkload extends Component {
   constructor(props) {
@@ -14,13 +15,17 @@ class AppWorkload extends Component {
     this.state = {
       modalAddVisible: false,
       modalEditVisible: false,
-      currentId: 0
+      currentId: 0,
+      workloadDetail: {}
     };
   }
   componentDidMount() {
     this.getWorkloadList();
   }
   showModal = (type, id) => {
+    const workloadList = this.state.data;
+    const workloadDetail = workloadList.filter(item => item.id === id);
+    this.setState({ workloadDetail: workloadDetail[0] });
     switch (type) {
       case 'add':
         this.setState({ modalAddVisible: true });
@@ -37,12 +42,11 @@ class AppWorkload extends Component {
       if (!err) {
         switch (type) {
           case 'add':
-            console.log(values);
             this.createWorkload(values);
             this.setState({ modalAddVisible: false });
             break;
           case 'edit':
-            console.log(values);
+            this.upgradeWorkload(values);
             this.setState({ modalEditVisible: false, currentId: 0 });
             break;
           default:
@@ -66,7 +70,7 @@ class AppWorkload extends Component {
   };
   handleDelete = id => {
     if (id) {
-      this.deletePhoneBook(id);
+      this.deleteWorkload(id);
     }
   };
   getWorkloadList = () => {
@@ -74,9 +78,9 @@ class AppWorkload extends Component {
     axios
       .get(`${BASE_API}/workloads`)
       .then(res => {
-        console.log(res);
         if (res.status >= 200 && res.status <= 300) {
-          this.setState({ data: res.data.data });
+          const data = res.data.data.map(el => ({ ...el, key: el.id }));
+          this.setState({ data });
         }
       })
       .catch(err => {
@@ -178,6 +182,12 @@ class AppWorkload extends Component {
         />
         <ModalAdd
           visible={this.state.modalAddVisible}
+          handleOk={this.handleOk}
+          handleCancel={this.handleCancel}
+        />
+        <ModalEdit
+          data={this.state.workloadDetail}
+          visible={this.state.modalEditVisible}
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
         />

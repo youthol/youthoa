@@ -21,8 +21,7 @@ const DataList = props => {
         key="action"
         render={text => (
           <Button.Group>
-            <Button icon="logout" onClick={() => props.showModal('edit', text.id)} />
-            {/* <Button icon="delete" onClick={() => props.handleDelete(text.id)} /> */}
+            <Button icon="edit" onClick={() => props.showModal('edit', text.id)} />
             <Popconfirm
               title="Are you sure delete this data?"
               onConfirm={() => props.handleDelete(text.id)}

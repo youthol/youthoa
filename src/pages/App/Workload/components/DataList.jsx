@@ -1,23 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Table, Button, Tag } from 'antd';
+import { Table, Button, Tag, Popconfirm } from 'antd';
 
 const { Column } = Table;
 
 const DataList = props => {
   return (
     <Table dataSource={props.data}>
-      <Column title="姓名" dataIndex="name" key="name" />
-      <Column title="部门" dataIndex="department" key="department" />
+      <Column title="姓名" dataIndex="user.name" key="user.name" />
+      <Column title="部门" dataIndex="user.department" key="user.department" />
       <Column title="工作量描述" dataIndex="description" key="description" />
       <Column
         title="工作量"
-        key="wk_count"
-        render={text => <Tag color="cyan">{text.wk_count}</Tag>}
-        sorter={(a, b) => a.wk_count - b.wk_count}
+        key="score"
+        render={text => <Tag color="blue">{text.score}</Tag>}
+        sorter={(a, b) => a.score - b.score}
       />
-      <Column title="统计人" dataIndex="manager" key="manager" />
+      <Column title="统计人" dataIndex="manager_user.name" key="manager_user.name" />
       <Column
         title="统计时间"
         key="created_at"
@@ -28,8 +28,13 @@ const DataList = props => {
         key="action"
         render={text => (
           <Button.Group>
-            <Button icon="logout" onClick={() => props.showModal('edit', text.id)} />
-            <Button icon="delete" onClick={() => props.handleDelete(text.id)} />
+            <Button icon="edit" onClick={() => props.showModal('edit', text.id)} />
+            <Popconfirm
+              title="Are you sure delete this data?"
+              onConfirm={() => props.handleDelete(text.id)}
+            >
+              <Button icon="delete" />
+            </Popconfirm>
           </Button.Group>
         )}
       />

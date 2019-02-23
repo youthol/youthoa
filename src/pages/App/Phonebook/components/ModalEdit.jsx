@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Input, DatePicker } from 'antd';
+import { Modal, Form, Input } from 'antd';
 
 const FormItem = Form.Item;
 
