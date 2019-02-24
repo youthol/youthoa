@@ -47,7 +47,6 @@ class Login extends Component {
     sessionStorage.setItem('token', access_token);
     sessionStorage.setItem('expires_at', expires_at);
     const userInfo = await getUserInfo();
-    console.log(userInfo);
     this.props.setUserInfo(userInfo);
     this.props.history.push('/');
   };

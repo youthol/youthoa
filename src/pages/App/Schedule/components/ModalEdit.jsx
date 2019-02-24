@@ -4,7 +4,7 @@ import { Modal, Form, Input } from 'antd';
 
 const FormItem = Form.Item;
 
-class ModalRenew extends Component {
+class ModalEdit extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -19,14 +19,14 @@ class ModalRenew extends Component {
     };
     return (
       <Modal
-        title="借用设备"
+        title="日程完结"
         visible={this.props.visible}
-        onOk={e => this.props.handleOk('renew', this.props.form)}
-        onCancel={e => this.props.handleCancel('renew', this.props.form)}
+        onOk={() => this.props.handleOk('renew', this.props.form)}
+        onCancel={() => this.props.handleCancel('renew', this.props.form)}
       >
         <Form>
           <FormItem {...formItemLayout} label="备忘人">
-            {getFieldDecorator('rememo_user', {
+            {getFieldDecorator('user', {
               rules: [{ required: true, message: '备忘人不能为空!' }]
             })(<Input placeholder="请输入备忘人学号" autoComplete="off" />)}
           </FormItem>
@@ -36,10 +36,10 @@ class ModalRenew extends Component {
   }
 }
 
-ModalRenew.propTypes = {
+ModalEdit.propTypes = {
   visible: PropTypes.bool.isRequired,
   handleOk: PropTypes.func.isRequired,
   handleCancel: PropTypes.func.isRequired
 };
 
-export default Form.create()(ModalRenew);
+export default Form.create()(ModalEdit);

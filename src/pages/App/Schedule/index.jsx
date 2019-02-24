@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalAdd from './components/ModalAdd';
-import ModalRenew from './components/ModalRenew';
+import ModalEdit from './components/ModalEdit';
+import { getSchedules, postSchedule, putSchedule } from '@/api/schedule';
 
 class AppSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modalAddVisible: false,
-      modalRenewVisible: false,
+      modalEditVisible: false,
       currentId: 0
     };
   }
@@ -25,7 +23,7 @@ class AppSchedule extends Component {
 
   /**
    * @description 显示 modal
-   * @param {*} type 新增 add, 更新 renew
+   * @param {*} type 新增 add, 更新 edit
    * @param {*} id 更新的 id
    */
   showModal = (type, id) => {
@@ -33,8 +31,8 @@ class AppSchedule extends Component {
       case 'add':
         this.setState({ modalAddVisible: true });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: true, currentId: id });
+      case 'edit':
+        this.setState({ modalEditVisible: true, currentId: id });
         break;
       default:
         message.error('出错啦~');
@@ -43,7 +41,7 @@ class AppSchedule extends Component {
 
   /**
    * @description 处理 modal 确认事件
-   * @param {*} type 新增 add, 更新 renew
+   * @param {*} type 新增 add, 更新 edit
    * @param {*} form
    */
   handleOk = (type, form) => {
@@ -55,9 +53,9 @@ class AppSchedule extends Component {
             this.createSchedule(values);
             this.setState({ modalAddVisible: false });
             break;
-          case 'renew':
+          case 'edit':
             this.upgradeSchedule(values);
-            this.setState({ modalRenewVisible: false, currentId: 0 });
+            this.setState({ modalEditVisible: false, currentId: 0 });
             break;
           default:
             message.error('出现错误');
@@ -69,7 +67,7 @@ class AppSchedule extends Component {
 
   /**
    * @description 处理 modal 取消事件
-   * @param {*} type 新增 add, 更新 renew
+   * @param {*} type 新增 add, 更新 edit
    * @param {*} form
    */
   handleCancel = (type, form) => {
@@ -77,8 +75,8 @@ class AppSchedule extends Component {
       case 'add':
         this.setState({ modalAddVisible: false });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: false });
+      case 'edit':
+        this.setState({ modalEditVisible: false });
         break;
       default:
         message.error('出现错误');
@@ -89,36 +87,11 @@ class AppSchedule extends Component {
   /**
    * @description 获取进一个月的日程记录
    */
-  getScheduleList = () => {
-    const { BASE_API } = this.props;
-
-    axios
-      .get(`${BASE_API}/schedules`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          const data = res.data.data.map(el => ({
-            ...el,
-            key: el.id
-          }));
-          this.setState({ data });
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  getScheduleList = async () => {
+    const rowData = await getSchedules();
+    this.setState({
+      data: rowData.data.map(el => ({ ...el, key: el.id }))
+    });
   };
 
   /**
@@ -126,54 +99,21 @@ class AppSchedule extends Component {
    * @param {*} data
    * @returns
    */
-  createSchedule = data => {
+  createSchedule = async data => {
     if (!data) return;
-    const { BASE_API } = this.props;
-    const params = qs.stringify(data);
-
-    axios
-      .post(`${BASE_API}/schedule`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getScheduleList();
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await postSchedule(data);
+    this.getScheduleList();
   };
 
   /**
-   * @description 更新日程，标注为已完成状态
+   * @description 更新日程状态
    * @param {*} data
    * @returns
    */
-  upgradeSchedule = data => {
+  upgradeSchedule = async data => {
     if (!data) return;
-    const params = qs.stringify(data);
-    axios
-      .put(`${this.props.BASE_API}/schedule/${this.state.currentId}`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getScheduleList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    await putSchedule(this.state.currentId, data);
+    this.getScheduleList();
   };
 
   render() {
@@ -186,8 +126,8 @@ class AppSchedule extends Component {
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
         />
-        <ModalRenew
-          visible={this.state.modalRenewVisible}
+        <ModalEdit
+          visible={this.state.modalEditVisible}
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
         />
@@ -196,8 +136,4 @@ class AppSchedule extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(AppSchedule);
+export default AppSchedule;

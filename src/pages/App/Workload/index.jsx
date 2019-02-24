@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalAdd from './components/ModalAdd';
 import ModalEdit from './components/ModalEdit';
+import { getWorkloads, postWorkload, putWorkload, deleteWorkload } from '@/api/workload';
 
 class AppWorkload extends Component {
   constructor(props) {
@@ -24,7 +22,7 @@ class AppWorkload extends Component {
   }
   showModal = (type, id) => {
     const workloadList = this.state.data;
-    const workloadDetail = workloadList.filter(item => item.id === id);
+    const workloadDetail = workloadList.filter(el => el.id === id);
     this.setState({ workloadDetail: workloadDetail[0] });
     switch (type) {
       case 'add':
@@ -68,107 +66,26 @@ class AppWorkload extends Component {
     }
     form.resetFields();
   };
-  handleDelete = id => {
-    if (id) {
-      this.deleteWorkload(id);
-    }
-  };
-  getWorkloadList = () => {
-    const { BASE_API } = this.props;
-    axios
-      .get(`${BASE_API}/workloads`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          const data = res.data.data.map(el => ({ ...el, key: el.id }));
-          this.setState({ data });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  createWorkload = data => {
-    if (!data) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    const params = qs.stringify(data);
-    axios
-      .post(`${BASE_API}/workload`, params, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getWorkloadList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  upgradeWorkload = data => {
-    if (!data) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    const params = qs.stringify(data);
-    axios
-      .put(`${BASE_API}/workload/${this.state.currentId}`, params, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getWorkloadList();
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
-  };
-  deleteWorkload = id => {
+  handleDelete = async id => {
     if (!id) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    axios
-      .delete(`${BASE_API}/workload/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        this.getWorkloadList();
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await deleteWorkload(id);
+    this.getWorkloadList();
+  };
+  getWorkloadList = async () => {
+    const rowData = await getWorkloads();
+    this.setState({
+      data: rowData.data.map(el => ({ ...el, key: el.id }))
+    });
+  };
+  createWorkload = async data => {
+    if (!data) return;
+    await postWorkload(data);
+    this.getWorkloadList();
+  };
+  upgradeWorkload = async data => {
+    if (!data) return;
+    await putWorkload(this.state.currentId, data);
+    this.getWorkloadList();
   };
   render() {
     return (
@@ -196,8 +113,4 @@ class AppWorkload extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(AppWorkload);
+export default AppWorkload;

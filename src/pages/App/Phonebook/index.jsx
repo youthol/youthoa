@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import DataList from './components/DataList';
 import ModalEdit from './components/ModalEdit';
 import SearchDrawer from './components/SearchDrawer';
+import { getPhonebooks, putPhonebook, deletePhonebook } from '@/api/phonebook';
 
 class AppPhoneBook extends Component {
   constructor(props) {
@@ -24,7 +23,7 @@ class AppPhoneBook extends Component {
   }
   showModal = (type, id) => {
     const phoneBookList = this.state.data;
-    const phoneDetail = phoneBookList.filter(item => item.id === id);
+    const phoneDetail = phoneBookList.filter(el => el.id === id);
     this.setState({ phoneDetail: phoneDetail[0] });
     switch (type) {
       case 'add':
@@ -37,7 +36,7 @@ class AppPhoneBook extends Component {
         message.error('出错啦~');
     }
   };
-  toggleDrawer = e => {
+  toggleDrawer = () => {
     this.setState({
       searchDrawerVisible: !this.state.searchDrawerVisible
     });
@@ -46,10 +45,6 @@ class AppPhoneBook extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         switch (type) {
-          case 'add':
-            this.createSchedule(values);
-            this.setState({ modalAddVisible: false });
-            break;
           case 'edit':
             this.upgradePhoneBook(values);
             this.setState({ modalEditVisible: false, currentId: 0 });
@@ -74,85 +69,19 @@ class AppPhoneBook extends Component {
     }
     form.resetFields();
   };
-  handleDelete = id => {
-    if (id) {
-      this.deletePhoneBook(id);
-    }
-  };
-  getPhoneBookList = () => {
-    axios
-      .get(`${this.props.BASE_API}/phonebooks`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          const data = res.data.data.map(el => ({ ...el, key: el.id }));
-          this.setState({ data });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  upgradePhoneBook = data => {
-    if (!data) return;
-    const params = qs.stringify(data);
-    const { token } = sessionStorage;
-    axios
-      .put(`${this.props.BASE_API}/phonebook/${this.state.currentId}`, params, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getPhoneBookList();
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
-  };
-  deletePhoneBook = id => {
+  handleDelete = async id => {
     if (!id) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    axios
-      .delete(`${BASE_API}/phonebook/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        this.getPhoneBookList();
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await deletePhonebook(id);
+    this.getPhoneBookList();
+  };
+  getPhoneBookList = async () => {
+    const rowData = await getPhonebooks();
+    this.setState({ data: rowData.data.map(el => ({ ...el, key: el.id })) });
+  };
+  upgradePhoneBook = async data => {
+    if (!data) return;
+    await putPhonebook(this.state.currentId, data);
+    this.getPhoneBookList();
   };
   render() {
     return (
