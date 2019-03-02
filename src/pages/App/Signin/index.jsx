@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Modal, message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
 import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
-import DataList from '@/components/Signin/DataList';
-import SigninInput from '@/components/Signin/SigninInput';
-
-const confirm = Modal.confirm;
+import DataList from './components/DataList';
+import SigninInput from './components/SigninInput';
+import { getRecords, postSignin } from '@/api/signin';
 
 class AppSignin extends Component {
   constructor(props) {
@@ -35,14 +31,14 @@ class AppSignin extends Component {
 
   /**
    * @description 处理提交事件
-   * @param {*} val
+   * @param {*} val max length is 11
    * @returns
    */
-  handleSubmit = val => {
-    if (!val || val.length !== 11) {
+  handleSubmit = value => {
+    if (!value || value.length !== 11) {
       return message.error('请输入正确学号');
     }
-    const user = this.state.data.filter(el => el.sdut_id === val && el.status === 0);
+    const user = this.state.data.filter(el => el.sdut_id === value && el.status === 0);
     const timer = 77;
     if (
       user.length &&
@@ -50,93 +46,45 @@ class AppSignin extends Component {
         .add(-timer, 'minutes')
         .isBefore(user[0].created_at)
     ) {
-      confirm({
+      Modal.confirm({
         title: '确定要签退吗?',
         content: '现在签退是早退喔~',
         onOk: () => {
-          this.postSignin(val);
+          this.postSignin(value);
         }
       });
     } else {
-      this.postSignin(val);
+      this.postSignin(value);
     }
     this.setState({ inputValue: '' });
   };
 
   /**
-   * @description 请求当天签到数据
+   * @description 异步请求当天所有签到数据
    */
-  getRecordList = () => {
-    axios
-      .get(`${this.props.BASE_API}/signin`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          const data = res.data.data.map(el => ({
-            ...el,
-            key: el.id
-          }));
-          this.setState({ data });
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  getRecordList = async () => {
+    const rowData = await getRecords();
+    const data = rowData.data.map(el => ({ ...el, key: el.id }));
+    this.setState({ data });
   };
 
   /**
-   * @description 发送签到数据
-   * @param {*} id 学号
+   * @description 异步发送签到数据
+   * @param {*} id sdut identity
    * @returns
    */
-  postSignin = id => {
+  postSignin = async id => {
     if (!id) return;
-    const { BASE_API } = this.props;
-    const params = qs.stringify({ sdut_id: id });
-
-    axios
-      .post(`${BASE_API}/signin`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          const { status, user } = res.data.data;
-          switch (status) {
-            case 0:
-              message.success(`${user.name} 签到成功`);
-              break;
-            default:
-              message.success(`${user.name} 已签退`);
-          }
-          this.getRecordList();
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    const rowData = await postSignin({ sdut_id: id });
+    const { status, user } = rowData.data;
+    switch (status) {
+      case 0:
+        message.success(`${user.name} 签到成功`);
+        break;
+      default:
+        message.success(`${user.name} 已签退`);
+    }
+    this.getRecordList();
   };
 
   render() {
@@ -153,8 +101,4 @@ class AppSignin extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(AppSignin);
+export default AppSignin;

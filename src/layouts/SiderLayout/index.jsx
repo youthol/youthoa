@@ -75,6 +75,11 @@ class SiderLayout extends Component {
                 <span>系统数据管理</span>
               </Menu.Item>
             )}
+          {/* <Menu.Item key="/manage">
+                <Link to="/manage" />
+                <Icon type="laptop" />
+                <span>系统数据管理</span>
+              </Menu.Item> */}
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
@@ -90,7 +95,7 @@ class SiderLayout extends Component {
             <Icon type="compass" />
             <span>日程安排</span>
           </Menu.Item>
-          {/* <Menu.Item key="/workload">
+          <Menu.Item key="/workload">
             <Link to="/workload" />
             <Icon type="compass" />
             <span>工作量统计</span>
@@ -99,7 +104,7 @@ class SiderLayout extends Component {
             <Link to="/phonebook" />
             <Icon type="compass" />
             <span>办公电话表</span>
-          </Menu.Item> */}
+          </Menu.Item>
         </Menu>
       </Sider>
     );

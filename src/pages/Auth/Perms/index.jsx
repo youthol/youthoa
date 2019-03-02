@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import BasicLayout from '@/layouts/BasicLayout';
 import PermList from '@/components/Auth/PermList';
+import { getPerms } from '@/api/auth';
 
 class Permission extends Component {
   state = {
@@ -11,19 +11,12 @@ class Permission extends Component {
   componentDidMount() {
     this.getPermList();
   }
-  getPermList = () => {
-    const { BASE_API } = this.props;
-    axios
-      .get(`${BASE_API}/permissions`)
-      .then(res => {
-        const data = res.data.data.map(item => ({ ...item, key: item.id }));
-        if (data && data.length) {
-          this.setState({ data });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  getPermList = async () => {
+    const rowData = await getPerms();
+    const data = rowData.data.map(el => ({ ...el, key: el.id }));
+    if (data && data.length) {
+      this.setState({ data });
+    }
   };
   handleEdit = role => {
     this.props.history.push(`/perms/edit/${role.id}`);

@@ -37,7 +37,7 @@ const DataList = props => {
             <Button
               icon="logout"
               disabled={text.return_at ? true : false}
-              onClick={() => props.showModal('renew', text.id)}
+              onClick={() => props.showModal('edit', text.id)}
             />
             <Button icon="delete" disabled onClick={props.handleDelete} />
           </Button.Group>

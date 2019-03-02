@@ -1,31 +1,28 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Form, message } from 'antd';
 import moment from 'moment';
-import axios from 'axios';
-import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
 import NewItemBtn from '@/components/NewItemBtn';
-import DataList from '@/components/Device/DataList';
-import ModalAdd from '@/components/Device/ModalAdd';
-import ModalRenew from '@/components/Device/ModalRenew';
+import DataList from './components/DataList';
+import ModalAdd from './components/ModalAdd';
+import ModalEdit from './components/ModalEdit';
+import { getEquipments, getRecords, postRecord, putRecord } from '@/api/device';
 
 class AppDevice extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modalAddVisible: false,
-      modalRenewVisible: false,
+      modalEditVisible: false,
       currentId: 0
     };
   }
   componentDidMount() {
-    this.getEquipmentList();
-    this.getRecordList();
+    this.initData();
   }
 
   /**
-   * @description 打开表单输入框
+   * @description 显示输入框
    * @param {*} type
    * @param {*} id
    */
@@ -34,8 +31,8 @@ class AppDevice extends Component {
       case 'add':
         this.setState({ modalAddVisible: true });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: true, currentId: id });
+      case 'edit':
+        this.setState({ modalEditVisible: true, currentId: id });
         break;
       default:
         message.error('出错啦~');
@@ -43,7 +40,7 @@ class AppDevice extends Component {
   };
 
   /**
-   * @description 处理表单框OK点击事件
+   * @description 处理创建或更新提交事件
    * @param {*} type
    * @param {*} form
    */
@@ -56,9 +53,9 @@ class AppDevice extends Component {
             this.createRecord(values);
             this.setState({ modalAddVisible: false });
             break;
-          case 'renew':
+          case 'edit':
             this.upgradeRecord(values);
-            this.setState({ modalRenewVisible: false, currentId: 0 });
+            this.setState({ modalEditVisible: false, currentId: 0 });
             break;
           default:
             message.error('出现错误');
@@ -69,7 +66,7 @@ class AppDevice extends Component {
   };
 
   /**
-   * @description 处理表单框Cancle点击事件
+   * @description 隐藏输入框
    * @param {*} type
    * @param {*} form
    */
@@ -78,8 +75,8 @@ class AppDevice extends Component {
       case 'add':
         this.setState({ modalAddVisible: false });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: false });
+      case 'edit':
+        this.setState({ modalEditVisible: false });
         break;
       default:
         message.error('出错啦');
@@ -92,145 +89,38 @@ class AppDevice extends Component {
   };
 
   /**
-   * @description 获取全部可借用设备
+   * @description 初始化数据，获取可借用设备列表和借用记录
    */
-  getEquipmentList = () => {
-    const { BASE_API } = this.props;
-    axios
-      .get(`${BASE_API}/equipments`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.setState({ equipments: res.data.data });
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  initData = async () => {
+    const equipments = await getEquipments();
+    const records = await getRecords();
+    this.setState({
+      equipments: equipments.data,
+      data: records.data.map(el => ({ ...el, key: el.id }))
+    });
   };
-
-  /**
-   * @description 获取近一个月借用记录
-   */
-  getRecordList = () => {
-    const { BASE_API } = this.props;
-    axios
-      .get(`${BASE_API}/devices`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          const data = res.data.data.map(el => ({
-            ...el,
-            key: el.id
-          }));
-          this.setState({ data });
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
-  };
-
   /**
    * @description 创建借用记录
    * @param {*} data
    * @returns
    */
-  createRecord = data => {
+  createRecord = async data => {
     if (!data) return;
-    const params = qs.stringify(data);
-
-    axios
-      .post(`${this.props.BASE_API}/device`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getRecordList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        try {
-          message.error(err.response.data.message);
-          for (let error in err.response.data.errors) {
-            // FIX: 修改
-            error.forEach(el => {
-              message.error(el);
-            });
-          }
-        } catch (e) {
-          try {
-            const { errors } = err.response.data;
-            if (errors) {
-              for (let error in errors) {
-                if (errors[error] instanceof Array) {
-                  errors[error].forEach(el => message.error(el));
-                }
-              }
-            } else {
-              message.error(err.response.data.message);
-            }
-          } catch (e) {
-            console.error(e);
-          }
-        }
-      });
+    await postRecord(data);
+    const rowData = await getRecords();
+    this.setState({ data: rowData.data.map(el => ({ ...el, key: el.id })) });
   };
 
   /**
-   * @description 更新状态
+   * @description 更新借用记录
    * @param {*} data
    * @returns
    */
-  upgradeRecord = data => {
+  upgradeRecord = async data => {
     if (!data) return;
-    const params = qs.stringify(data);
-    axios
-      .put(`${this.props.BASE_API}/device/${this.state.currentId}`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getRecordList();
-        }
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await putRecord(this.state.currentId, data);
+    const rowData = await getRecords();
+    this.setState({ data: rowData.data.map(el => ({ ...el, key: el.id })) });
   };
 
   /**
@@ -276,8 +166,8 @@ class AppDevice extends Component {
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
         />
-        <ModalRenew
-          visible={this.state.modalRenewVisible}
+        <ModalEdit
+          visible={this.state.modalEditVisible}
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
         />
@@ -286,8 +176,4 @@ class AppDevice extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(Form.create()(AppDevice));
+export default Form.create()(AppDevice);

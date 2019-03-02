@@ -25,8 +25,8 @@ class ModalAdd extends Component {
         onCancel={e => this.props.handleCancel('add', this.props.form)}
       >
         <Form>
-          <FormItem {...formItemLayout} label="姓名">
-            {getFieldDecorator('name', {
+          <FormItem {...formItemLayout} label="成员学号">
+            {getFieldDecorator('sdut_id', {
               rules: [{ required: true, message: '被统计人学号不能为空!' }]
             })(<Input placeholder="请输入被统计人学号" autoComplete="off" />)}
           </FormItem>
@@ -36,14 +36,9 @@ class ModalAdd extends Component {
             })(<Input placeholder="请输入工作量描述" autoComplete="off" />)}
           </FormItem>
           <FormItem {...formItemLayout} label="工作量">
-            {getFieldDecorator('wk_count', {
+            {getFieldDecorator('score', {
               rules: [{ required: true, message: '工作量不能为空!' }]
-            })(<InputNumber placeholder="数值" min={1} max={100} />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="统计人">
-            {getFieldDecorator('manager', {
-              rules: [{ required: true, message: '统计人学号不能为空!' }]
-            })(<Input placeholder="请输入统计人学号" autoComplete="off" />)}
+            })(<InputNumber placeholder="数值" min={1} />)}
           </FormItem>
         </Form>
       </Modal>

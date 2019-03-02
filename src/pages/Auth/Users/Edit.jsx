@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Input, Button, InputNumber, Checkbox, DatePicker, Select, message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
+import { Form, Input, Button, InputNumber, Checkbox, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
+import { getUserById, putUser, getRoles } from '@/api/auth';
 
 const FormItem = Form.Item;
 
@@ -16,9 +15,7 @@ class UserEdit extends Component {
     roleList: []
   };
   componentDidMount() {
-    const id = this.props.history.location.pathname.split('/')[3];
-    this.getRoleList();
-    this.getUserById(id);
+    this.initialization();
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -34,100 +31,20 @@ class UserEdit extends Component {
       }
     });
   };
-  getRoleList = () => {
-    const { BASE_API } = this.props;
-    axios
-      .get(`${BASE_API}/roles`)
-      .then(res => {
-        const { data } = res.data;
-        const roleList = data.map(item => ({
-          label: item.display_name,
-          value: item.id
-        }));
-        this.setState({ roleList });
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  initialization = async () => {
+    const id = this.props.match.params.id;
+    const roles = await getRoles();
+    const user = await getUserById(id);
+    this.setState({
+      roleList: roles.data.map(el => ({ label: el.display_name, value: el.id })),
+      userinfo: user.data.userinfo,
+      roles: user.data.roles.map(el => el.id)
+    });
   };
-  getUserById = id => {
-    if (!id) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    axios
-      .get(`${BASE_API}/user/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        const { userinfo, roles } = res.data.data;
-        this.setState({
-          userinfo,
-          roles: roles.map(item => item.id)
-        });
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
-  };
-  putUserInfo = (id, data) => {
+  putUserInfo = async (id, data) => {
     if (!id || !data) return;
-    const { BASE_API, userinfo, permissions } = this.props;
-    // TODO: 判断权限
-    const { token } = sessionStorage;
-    const params = qs.stringify(data);
-    axios
-      .put(`${BASE_API}/user/${id}`, params, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        this.props.history.push('/users');
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await putUser(id, data);
+    this.props.history.push('/users');
   };
   render() {
     const { getFieldDecorator } = this.props.form;

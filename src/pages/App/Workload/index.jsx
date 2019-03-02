@@ -1,58 +1,35 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
 import BasicLayout from '@/layouts/BasicLayout';
-import DataList from '@/components/Workload/DataList';
 import NewItemBtn from '@/components/NewItemBtn';
-import ModalAdd from '@/components/Workload/ModalAdd';
+import DataList from './components/DataList';
+import ModalAdd from './components/ModalAdd';
+import ModalEdit from './components/ModalEdit';
+import { getWorkloads, postWorkload, putWorkload, deleteWorkload } from '@/api/workload';
 
 class AppWorkload extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modalAddVisible: false,
-      modalRenewVisible: false,
-      currentId: 0
+      modalEditVisible: false,
+      currentId: 0,
+      workloadDetail: {}
     };
   }
   componentDidMount() {
     this.getWorkloadList();
   }
-  getWorkloadList = () => {
-    axios
-      .get(`${this.props.BASE_API}/workloads`)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.setState({ data: res.data.data });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
-  createWorkload = data => {
-    if (!data) return;
-    const params = qs.stringify(data);
-    axios
-      .post(`${this.props.BASE_API}/workloads`, params)
-      .then(res => {
-        if (res.status >= 200 && res.status <= 300) {
-          this.getWorkloadList();
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  };
   showModal = (type, id) => {
+    const workloadList = this.state.data;
+    const workloadDetail = workloadList.filter(el => el.id === id);
+    this.setState({ workloadDetail: workloadDetail[0] });
     switch (type) {
       case 'add':
         this.setState({ modalAddVisible: true });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: true, currentId: id });
+      case 'edit':
+        this.setState({ modalEditVisible: true, currentId: id });
         break;
       default:
         message.error('出错啦~');
@@ -63,13 +40,12 @@ class AppWorkload extends Component {
       if (!err) {
         switch (type) {
           case 'add':
-            console.log(values);
             this.createWorkload(values);
             this.setState({ modalAddVisible: false });
             break;
-          case 'renew':
-            console.log(values);
-            this.setState({ modalRenewVisible: false, currentId: 0 });
+          case 'edit':
+            this.upgradeWorkload(values);
+            this.setState({ modalEditVisible: false, currentId: 0 });
             break;
           default:
             message.error('出现错误');
@@ -82,16 +58,34 @@ class AppWorkload extends Component {
       case 'add':
         this.setState({ modalAddVisible: false });
         break;
-      case 'renew':
-        this.setState({ modalRenewVisible: false });
+      case 'edit':
+        this.setState({ modalEditVisible: false });
         break;
       default:
         message.error('出错啦~');
     }
     form.resetFields();
   };
-  handleDelete = e => {
-    console.log('delete');
+  handleDelete = async id => {
+    if (!id) return;
+    await deleteWorkload(id);
+    this.getWorkloadList();
+  };
+  getWorkloadList = async () => {
+    const rowData = await getWorkloads();
+    this.setState({
+      data: rowData.data.map(el => ({ ...el, key: el.id }))
+    });
+  };
+  createWorkload = async data => {
+    if (!data) return;
+    await postWorkload(data);
+    this.getWorkloadList();
+  };
+  upgradeWorkload = async data => {
+    if (!data) return;
+    await putWorkload(this.state.currentId, data);
+    this.getWorkloadList();
   };
   render() {
     return (
@@ -108,13 +102,15 @@ class AppWorkload extends Component {
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
         />
+        <ModalEdit
+          data={this.state.workloadDetail}
+          visible={this.state.modalEditVisible}
+          handleOk={this.handleOk}
+          handleCancel={this.handleCancel}
+        />
       </BasicLayout>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(AppWorkload);
+export default AppWorkload;

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button } from 'antd';
+import { Table, Button, Popconfirm } from 'antd';
 
 const { Column } = Table;
 
@@ -21,7 +21,13 @@ const DataList = props => {
         key="action"
         render={text => (
           <Button.Group>
-            <Button icon="delete" onClick={props.handleDelete} />
+            <Button icon="edit" onClick={() => props.showModal('edit', text.id)} />
+            <Popconfirm
+              title="Are you sure delete this data?"
+              onConfirm={() => props.handleDelete(text.id)}
+            >
+              <Button icon="delete" />
+            </Popconfirm>
           </Button.Group>
         )}
       />

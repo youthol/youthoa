@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Form, Input, Button, Select, message } from 'antd';
-import axios from 'axios';
-import qs from 'qs';
+import { Form, Input, Button, Select } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
+import { getRoleById, putRole, getPerms } from '@/api/auth';
 
 const FormItem = Form.Item;
 
@@ -14,9 +12,7 @@ class RoleEdit extends Component {
     permissions: []
   };
   componentDidMount() {
-    const id = this.props.history.location.pathname.split('/')[3];
-    this.getPermList();
-    this.getRoleById(id);
+    this.initialization();
   }
   handleSubmit = e => {
     e.preventDefault();
@@ -28,100 +24,21 @@ class RoleEdit extends Component {
       }
     });
   };
-  getPermList = () => {
-    const { BASE_API } = this.props;
-    axios
-      .get(`${BASE_API}/permissions`)
-      .then(res => {
-        const { data } = res.data;
-        const permList = data.map(item => ({
-          label: item.display_name,
-          value: item.id
-        }));
-        this.setState({ permList });
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+  initialization = async () => {
+    const id = this.props.match.params.id;
+    const perms = await getPerms();
+    const role = await getRoleById(id);
+    this.setState({
+      permList: perms.data.map(el => ({ label: el.display_name, value: el.id })),
+      roleInfo: role.data,
+      permissions: role.data.permissions.map(el => el.id)
+    });
   };
-  getRoleById = id => {
-    if (!id) return;
-    const { BASE_API } = this.props;
-    const { token } = sessionStorage;
-    axios
-      .get(`${BASE_API}/role/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        console.log(res);
-        this.setState({
-          roleInfo: res.data.data,
-          permissions: res.data.data.permissions.map(el => el.id)
-        });
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
-  };
-  putRoleInfo = (id, data) => {
+
+  putRoleInfo = async (id, data) => {
     if (!id || !data) return;
-    const { BASE_API, userinfo, permissions } = this.props;
-    // TODO: 判断权限
-    const { token } = sessionStorage;
-    const params = qs.stringify(data);
-    axios
-      .put(`${BASE_API}/role/${id}`, params, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(res => {
-        this.props.history.push('/roles');
-      })
-      .catch(err => {
-        try {
-          const { errors } = err.response.data;
-          if (errors) {
-            for (let error in errors) {
-              if (errors[error] instanceof Array) {
-                errors[error].forEach(el => message.error(el));
-              }
-            }
-          } else {
-            message.error(err.response.data.message);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      });
+    await putRole(id, data);
+    this.props.history.push('/roles');
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -197,8 +114,4 @@ class RoleEdit extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API
-});
-
-export default connect(mapStateToProps)(Form.create()(RoleEdit));
+export default Form.create()(RoleEdit);
