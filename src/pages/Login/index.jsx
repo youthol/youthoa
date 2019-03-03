@@ -5,7 +5,7 @@ import { Form } from 'antd';
 import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
 import LoginForm from './components/LoginForm';
-import { setUserInfo } from './redux/actions';
+import { setUserInfo, updateUserInfo } from './redux/actions';
 import { postLogin, getUserInfo } from '@/api/login';
 import './style.scss';
 
@@ -64,7 +64,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setUserInfo: bindActionCreators(setUserInfo, dispatch)
+  setUserInfo: bindActionCreators(setUserInfo, dispatch),
+  updateUserInfo: bindActionCreators(updateUserInfo, dispatch)
 });
 
 export default connect(

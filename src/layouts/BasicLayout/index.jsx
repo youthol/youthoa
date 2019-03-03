@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Icon, message } from 'antd';
 import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
-import { setUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
+import { setUserInfo, updateUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -16,13 +16,15 @@ class BasicLayout extends Component {
   };
   componentDidMount() {
     const { token, expires_at } = sessionStorage;
-    const { userinfo } = this.props.currentUser;
     if (token && moment().isBefore(expires_at)) {
-      if (!userinfo) this.props.setUserInfo(token);
+      this.props.updateUserInfo();
       this.setState({ isAuth: true });
-    } else {
+    } else if (token && moment().isAfter(expires_at)) {
       sessionStorage.clear();
       this.props.deleteUserInfo();
+      this.props.history.push('/login');
+      this.setState({ isAuth: false });
+    } else {
       this.setState({ isAuth: false });
     }
   }
@@ -93,6 +95,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUserInfo: bindActionCreators(setUserInfo, dispatch),
+  updateUserInfo: bindActionCreators(updateUserInfo, dispatch),
   deleteUserInfo: bindActionCreators(deleteUserInfo, dispatch)
 });
 
