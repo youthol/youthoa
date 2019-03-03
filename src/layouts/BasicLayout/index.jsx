@@ -29,14 +29,14 @@ class BasicLayout extends Component {
     }
   }
 
-  handleLogin = e => {
+  handleLogin = () => {
     if (this.props.history.location.pathname === '/login') {
       message.info('请登录');
     } else {
       this.props.history.push('/login');
     }
   };
-  handleLogout = e => {
+  handleLogout = () => {
     Modal.confirm({
       title: '是否退出当前账号',
       okType: 'danger',
@@ -45,7 +45,6 @@ class BasicLayout extends Component {
       onOk: () => {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('expires_at');
-        sessionStorage.removeItem('username');
         this.props.deleteUserInfo();
         message.success('已退出');
         this.setState({ isAuth: false });
@@ -89,8 +88,7 @@ class BasicLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API,
-  currentUser: state.currentUser
+  BASE_API: state.globalData.BASE_API
 });
 
 const mapDispatchToProps = dispatch => ({

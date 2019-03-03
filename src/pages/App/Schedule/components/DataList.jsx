@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Table, Button, Badge } from 'antd';
+import { checkPermission } from '@/utils/auth';
 
 const { Column } = Table;
 

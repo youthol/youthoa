@@ -5,6 +5,7 @@ import { Layout, Menu, Icon } from 'antd';
 import LOGO from '@/assets/youthol_logo_lg@700x300.png';
 import LOGOMINI from '@/assets/youthol_logo_md@300x300.png';
 import './style.scss';
+import { checkPermission } from '@/utils/auth';
 
 const { Sider } = Layout;
 
@@ -15,8 +16,19 @@ class SiderLayout extends Component {
   handleCollapse = collapsed => {
     this.setState({ collapsed });
   };
+  // checkPermission = perms => {
+  //   const { permissions } = this.props.currentUser;
+  //   if (!perms || !permissions) return false;
+  //   let hasPermission = false;
+  //   for (let i in perms) {
+  //     if (permissions.some(item => item.name === perms[i])) {
+  //       hasPermission = true;
+  //       break;
+  //     }
+  //   }
+  //   return hasPermission;
+  // };
   render() {
-    const { permissions } = this.props;
     return (
       <Sider
         collapsible
@@ -38,48 +50,37 @@ class SiderLayout extends Component {
             <Icon type="dashboard" />
             <span>首页</span>
           </Menu.Item>
-          {!!permissions &&
-            permissions.some(
-              item => item.name === 'manage_administrator' || item.name === 'manage_user'
-            ) && (
-              <Menu.SubMenu
-                key="prems"
-                title={
-                  <span>
-                    <Icon type="laptop" />
-                    <span>管理员管理</span>
-                  </span>
-                }
-              >
-                <Menu.Item key="/users">
-                  <Link to="/users" />
-                  <span>用户管理</span>
-                </Menu.Item>
-                <Menu.Item key="/roles">
-                  <Link to="/roles" />
-                  <span>角色管理</span>
-                </Menu.Item>
-                <Menu.Item key="/perms">
-                  <Link to="/perms" />
-                  <span>权限管理</span>
-                </Menu.Item>
-              </Menu.SubMenu>
-            )}
-          {!!permissions &&
-            permissions.some(
-              item => item.name === 'manage_administrator' || item.name === 'manage_user'
-            ) && (
-              <Menu.Item key="/manage">
-                <Link to="/manage" />
-                <Icon type="laptop" />
-                <span>系统数据管理</span>
+          {checkPermission(['manage_administrator', 'manage_user']) && (
+            <Menu.SubMenu
+              key="prems"
+              title={
+                <span>
+                  <Icon type="laptop" />
+                  <span>管理员管理</span>
+                </span>
+              }
+            >
+              <Menu.Item key="/users">
+                <Link to="/users" />
+                <span>用户管理</span>
               </Menu.Item>
-            )}
-          {/* <Menu.Item key="/manage">
-                <Link to="/manage" />
-                <Icon type="laptop" />
-                <span>系统数据管理</span>
-              </Menu.Item> */}
+              <Menu.Item key="/roles">
+                <Link to="/roles" />
+                <span>角色管理</span>
+              </Menu.Item>
+              <Menu.Item key="/perms">
+                <Link to="/perms" />
+                <span>权限管理</span>
+              </Menu.Item>
+            </Menu.SubMenu>
+          )}
+          {checkPermission(['manage_administrator', 'manage_service']) && (
+            <Menu.Item key="/manage">
+              <Link to="/manage" />
+              <Icon type="laptop" />
+              <span>系统数据管理</span>
+            </Menu.Item>
+          )}
           <Menu.Item key="/signin">
             <Link to="/signin" />
             <Icon type="compass" />
@@ -112,9 +113,7 @@ class SiderLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-  userinfo: state.currentUser.userinfo,
-  roles: state.currentUser.roles,
-  permissions: state.currentUser.permissions
+  currentUser: state.currentUser
 });
 
 export default connect(mapStateToProps)(withRouter(SiderLayout));

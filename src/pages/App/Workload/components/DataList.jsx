@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Table, Button, Tag, Popconfirm } from 'antd';
+import { checkPermission } from '@/utils/auth';
 
 const { Column } = Table;
 
@@ -33,7 +34,10 @@ const DataList = props => {
               title="Are you sure delete this data?"
               onConfirm={() => props.handleDelete(text.id)}
             >
-              <Button icon="delete" />
+              <Button
+                icon="delete"
+                disabled={!checkPermission(['manage_administrator', '	manage_service'], true)}
+              />
             </Popconfirm>
           </Button.Group>
         )}
