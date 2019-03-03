@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Icon, message } from 'antd';
-import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
-import { setUserInfo, updateUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
+import { setUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
+import { checkLogin } from '@/utils/auth';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -15,17 +15,19 @@ class BasicLayout extends Component {
     isAuth: false
   };
   componentDidMount() {
-    const { token, expires_at } = sessionStorage;
-    if (token && moment().isBefore(expires_at)) {
-      this.props.updateUserInfo();
-      this.setState({ isAuth: true });
-    } else if (token && moment().isAfter(expires_at)) {
-      sessionStorage.clear();
-      this.props.deleteUserInfo();
-      this.props.history.push('/login');
-      this.setState({ isAuth: false });
-    } else {
-      this.setState({ isAuth: false });
+    switch (checkLogin()) {
+      case 1:
+        this.props.setUserInfo();
+        this.setState({ isAuth: true });
+        break;
+      case 2:
+        sessionStorage.clear();
+        this.props.deleteUserInfo();
+        this.props.history.push('/login');
+        this.setState({ isAuth: false });
+        break;
+      default:
+        this.setState({ isAuth: false });
     }
   }
 
@@ -93,7 +95,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUserInfo: bindActionCreators(setUserInfo, dispatch),
-  updateUserInfo: bindActionCreators(updateUserInfo, dispatch),
   deleteUserInfo: bindActionCreators(deleteUserInfo, dispatch)
 });
 

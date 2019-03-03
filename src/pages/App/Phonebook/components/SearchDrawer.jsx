@@ -42,7 +42,7 @@ class SearchDrawer extends Component {
   render() {
     return (
       <Drawer
-        title="Create a new account"
+        title="Search"
         width={540}
         onClose={this.props.onClose}
         visible={this.props.visible}

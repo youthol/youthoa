@@ -1,31 +1,27 @@
 import moment from 'moment';
 import store from '@/store';
 
-const checkLogin = () => {
-  const { currentUser } = store.getState();
-  const { userinfo, roles, permissions } = currentUser;
+/**
+ * @description 检查是否登录
+ * @returns 1正常; 2过期; 3未登录
+ */
+export const checkLogin = () => {
   const { token, expires_at } = sessionStorage;
-
   if (token && moment().isBefore(expires_at)) {
-    // TODO: token存在且有效
-    if (userinfo && roles && permissions) {
-      // TODO: 用户储存在本地，不需要操作
-    } else {
-      // TODO: 用户没存在本地，需要拿token请求
-    }
+    return 1;
   } else if (token && moment().isAfter(expires_at)) {
-    // TODO: token存在但无效，跳转登录页
+    return 2;
   } else {
-    // TODO: token不存在
+    return 3;
   }
 };
 
 /**
- * @description 检查用户是否有相应权限
- * @param {*} perms Array
- * @returns
+ * @description 检查是否有相应权限
+ * @param {*} perms 权限数组
+ * @returns true:有权限; false:无权限
  */
-const checkPermission = perms => {
+export const checkPermission = perms => {
   let { currentUser } = store.getState();
   let { permissions } = currentUser;
   if (!perms || !permissions) return false;
@@ -40,4 +36,4 @@ const checkPermission = perms => {
   return hasPermission;
 };
 
-export { checkLogin, checkPermission };
+// export { checkLogin, checkPermission };
