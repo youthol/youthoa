@@ -6,7 +6,7 @@ import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalAdd from './components/ModalAdd';
 import ModalEdit from './components/ModalEdit';
-import { getEquipments, getRecords, postRecord, putRecord } from '@/api/device';
+import { getEquipments, getRecords, postRecord, putRecord, deleteRecord } from '@/api/device';
 
 class AppDevice extends Component {
   constructor(props) {
@@ -84,8 +84,10 @@ class AppDevice extends Component {
     form.resetFields();
   };
 
-  handleDelete = e => {
-    console.log('delete');
+  handleDelete = async id => {
+    if (!id) return;
+    await deleteRecord(id);
+    this.initData();
   };
 
   /**

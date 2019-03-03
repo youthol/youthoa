@@ -5,7 +5,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 import DataList from './components/DataList';
 import ModalEdit from './components/ModalEdit';
 import SearchDrawer from './components/SearchDrawer';
-import { getPhonebooks, putPhonebook, deletePhonebook } from '@/api/phonebook';
+import { getRecords, putRecord, deleteRecord } from '@/api/phonebook';
 
 class AppPhoneBook extends Component {
   constructor(props) {
@@ -71,16 +71,16 @@ class AppPhoneBook extends Component {
   };
   handleDelete = async id => {
     if (!id) return;
-    await deletePhonebook(id);
+    await deleteRecord(id);
     this.getPhoneBookList();
   };
   getPhoneBookList = async () => {
-    const rowData = await getPhonebooks();
+    const rowData = await getRecords();
     this.setState({ data: rowData.data.map(el => ({ ...el, key: el.id })) });
   };
   upgradePhoneBook = async data => {
     if (!data) return;
-    await putPhonebook(this.state.currentId, data);
+    await putRecord(this.state.currentId, data);
     this.getPhoneBookList();
   };
   render() {

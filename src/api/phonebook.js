@@ -1,13 +1,13 @@
 import http from '@/utils/http';
 
-export const getPhonebooks = (params = {}) => {
+export const getRecords = (params = {}) => {
   return http.get('/phonebooks', params);
 };
 
-export const putPhonebook = (id, data = {}) => {
+export const putRecord = (id, data = {}) => {
   return http.put(`/phonebook/${id}`, data);
 };
 
-export const deletePhonebook = (id, params = {}) => {
+export const deleteRecord = (id, params = {}) => {
   return http.delete(`/phonebook/${id}`, params);
 };

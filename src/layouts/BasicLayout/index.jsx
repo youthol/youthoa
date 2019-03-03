@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Icon, message } from 'antd';
-import moment from 'moment';
 import SiderLayout from '@/layouts/SiderLayout';
 import { setUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
+import { checkLogin } from '@/utils/auth';
 import './style.scss';
 
 const { Header, Content, Footer } = Layout;
@@ -15,26 +15,30 @@ class BasicLayout extends Component {
     isAuth: false
   };
   componentDidMount() {
-    const { token, expires_at } = sessionStorage;
-    const { userinfo } = this.props.currentUser;
-    if (token && moment().isBefore(expires_at)) {
-      if (!userinfo) this.props.setUserInfo(token);
-      this.setState({ isAuth: true });
-    } else {
-      sessionStorage.clear();
-      this.props.deleteUserInfo();
-      this.setState({ isAuth: false });
+    switch (checkLogin()) {
+      case 1:
+        this.props.setUserInfo();
+        this.setState({ isAuth: true });
+        break;
+      case 2:
+        sessionStorage.clear();
+        this.props.deleteUserInfo();
+        this.props.history.push('/login');
+        this.setState({ isAuth: false });
+        break;
+      default:
+        this.setState({ isAuth: false });
     }
   }
 
-  handleLogin = e => {
+  handleLogin = () => {
     if (this.props.history.location.pathname === '/login') {
       message.info('请登录');
     } else {
       this.props.history.push('/login');
     }
   };
-  handleLogout = e => {
+  handleLogout = () => {
     Modal.confirm({
       title: '是否退出当前账号',
       okType: 'danger',
@@ -43,7 +47,6 @@ class BasicLayout extends Component {
       onOk: () => {
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('expires_at');
-        sessionStorage.removeItem('username');
         this.props.deleteUserInfo();
         message.success('已退出');
         this.setState({ isAuth: false });
@@ -87,8 +90,7 @@ class BasicLayout extends Component {
 }
 
 const mapStateToProps = state => ({
-  BASE_API: state.globalData.BASE_API,
-  currentUser: state.currentUser
+  BASE_API: state.globalData.BASE_API
 });
 
 const mapDispatchToProps = dispatch => ({

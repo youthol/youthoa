@@ -6,13 +6,13 @@ import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
 import LoginForm from './components/LoginForm';
 import { setUserInfo } from './redux/actions';
-import { postLogin, getUserInfo } from '@/api/login';
+import { postLogin } from '@/api/login';
+import { checkLogin } from '@/utils/auth';
 import './style.scss';
 
 class Login extends Component {
   componentDidMount() {
-    const { token, expires_at } = sessionStorage;
-    if (token && moment().isBefore(expires_at)) {
+    if (checkLogin() === 1) {
       this.props.history.push('/');
     }
   }
@@ -46,8 +46,7 @@ class Login extends Component {
     sessionStorage.clear();
     sessionStorage.setItem('token', access_token);
     sessionStorage.setItem('expires_at', expires_at);
-    const userInfo = await getUserInfo();
-    this.props.setUserInfo(userInfo);
+    this.props.setUserInfo();
     this.props.history.push('/');
   };
   render() {

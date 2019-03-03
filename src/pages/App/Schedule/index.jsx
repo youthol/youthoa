@@ -5,7 +5,7 @@ import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalAdd from './components/ModalAdd';
 import ModalEdit from './components/ModalEdit';
-import { getSchedules, postSchedule, putSchedule } from '@/api/schedule';
+import { getRecords, postRecord, putRecord, deleteRecord } from '@/api/schedule';
 
 class AppSchedule extends Component {
   constructor(props) {
@@ -83,12 +83,17 @@ class AppSchedule extends Component {
     }
     form.resetFields();
   };
+  handleDelete = async id => {
+    if (!id) return;
+    await deleteRecord(id);
+    this.getScheduleList();
+  };
 
   /**
    * @description 获取进一个月的日程记录
    */
   getScheduleList = async () => {
-    const rowData = await getSchedules();
+    const rowData = await getRecords();
     this.setState({
       data: rowData.data.map(el => ({ ...el, key: el.id }))
     });
@@ -101,7 +106,7 @@ class AppSchedule extends Component {
    */
   createSchedule = async data => {
     if (!data) return;
-    await postSchedule(data);
+    await postRecord(data);
     this.getScheduleList();
   };
 
@@ -112,7 +117,7 @@ class AppSchedule extends Component {
    */
   upgradeSchedule = async data => {
     if (!data) return;
-    await putSchedule(this.state.currentId, data);
+    await putRecord(this.state.currentId, data);
     this.getScheduleList();
   };
 
@@ -120,7 +125,11 @@ class AppSchedule extends Component {
     return (
       <BasicLayout>
         <NewItemBtn label="新增日程" showModal={this.showModal} />
-        <DataList data={this.state.data} showModal={this.showModal} />
+        <DataList
+          data={this.state.data}
+          showModal={this.showModal}
+          handleDelete={this.handleDelete}
+        />
         <ModalAdd
           visible={this.state.modalAddVisible}
           handleOk={this.handleOk}

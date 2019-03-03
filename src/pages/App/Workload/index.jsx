@@ -5,7 +5,7 @@ import NewItemBtn from '@/components/NewItemBtn';
 import DataList from './components/DataList';
 import ModalAdd from './components/ModalAdd';
 import ModalEdit from './components/ModalEdit';
-import { getWorkloads, postWorkload, putWorkload, deleteWorkload } from '@/api/workload';
+import { getRecords, postRecord, putRecord, deleteRecord } from '@/api/workload';
 
 class AppWorkload extends Component {
   constructor(props) {
@@ -68,23 +68,23 @@ class AppWorkload extends Component {
   };
   handleDelete = async id => {
     if (!id) return;
-    await deleteWorkload(id);
+    await deleteRecord(id);
     this.getWorkloadList();
   };
   getWorkloadList = async () => {
-    const rowData = await getWorkloads();
+    const rowData = await getRecords();
     this.setState({
       data: rowData.data.map(el => ({ ...el, key: el.id }))
     });
   };
   createWorkload = async data => {
     if (!data) return;
-    await postWorkload(data);
+    await postRecord(data);
     this.getWorkloadList();
   };
   upgradeWorkload = async data => {
     if (!data) return;
-    await putWorkload(this.state.currentId, data);
+    await putRecord(this.state.currentId, data);
     this.getWorkloadList();
   };
   render() {

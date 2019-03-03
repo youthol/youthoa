@@ -12,6 +12,10 @@ export const postRecord = (data = {}) => {
   return http.post('/device', data);
 };
 
-export const putRecord = (id, data ={}) => {
-   return http.put(`/device/${id}`, data)
-}
+export const putRecord = (id, data = {}) => {
+  return http.put(`/device/${id}`, data);
+};
+
+export const deleteRecord = (id, data = {}) => {
+  return http.delete(`/device/${id}`, data);
+};
