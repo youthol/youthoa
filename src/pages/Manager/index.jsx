@@ -8,7 +8,6 @@ class Manager extends Component {
     current: 'app'
   };
   handleClick = e => {
-    console.log('click ', e);
     this.setState({
       current: e.key
     });
@@ -58,6 +57,9 @@ class Manager extends Component {
           >
             <Menu.Item key="impt-hygiene-tb">
               <Link to="/manage/impt-hygiene-tb">导入卫生表</Link>
+            </Menu.Item>
+            <Menu.Item key="del-hygiene">
+              <Link to="/manage/del-hygiene">删除卫生成绩</Link>
             </Menu.Item>
           </Menu.SubMenu>
         </Menu>

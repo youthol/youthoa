@@ -15,6 +15,7 @@ import PermEdit from '@/pages/Auth/Perms/Edit';
 import Manages from '@/pages/Manager';
 import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
 import ImportHygieneTable from '@/pages/Manager/ImportHygieneTable';
+import DeleteHygiene from '@/pages/Manager/DeleteHygiene';
 import ExportPhoneBook from '@/pages/Manager/ExportPhoneBook';
 import ImportPhoneBook from '@/pages/Manager/ImportPhoneBook';
 import AppSignin from '@/pages/App/Signin';
@@ -44,6 +45,7 @@ class App extends Component {
           {/* Manages Routes */}
           <Route exact path="/manage" component={Manages} />
           <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} />
+          <Route exact path="/manage/del-hygiene" component={DeleteHygiene} />
           {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />
           <Route exact path="/signin/export" component={ExportSigninTable} />
