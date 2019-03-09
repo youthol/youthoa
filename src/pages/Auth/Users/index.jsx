@@ -5,7 +5,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 import UserList from '@/components/Auth/UserList';
 import OptsBtnGroup from '@/components/Auth/OptsBtnGroup';
 import SearchDrawer from './SearchDrawer';
-import { getUsers } from '@/api/auth';
+import { getUsers, deleteUser } from '@/api/auth';
 
 class User extends Component {
   state = {
@@ -25,6 +25,10 @@ class User extends Component {
   };
   handleEdit = user => {
     this.props.history.push(`/users/edit/${user.id}`);
+  };
+  handleDelete = async id => {
+    if (!id) return;
+    await deleteUser(id);
   };
   handleExport = e => {
     e.preventDefault();
@@ -62,7 +66,11 @@ class User extends Component {
           handleSearch={this.toggleDrawer}
           handleExport={this.handleExport}
         />
-        <UserList data={this.state.data} handleEdit={this.handleEdit} />
+        <UserList
+          data={this.state.data}
+          handleEdit={this.handleEdit}
+          handleDelete={this.handleDelete}
+        />
         <SearchDrawer
           data={this.state.data}
           visible={this.state.searchDrawerVisible}

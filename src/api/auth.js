@@ -12,6 +12,10 @@ export const putUser = (id, data = {}) => {
   return http.put(`/user/${id}`, data);
 };
 
+export const deleteUser = (id, params = {}) => {
+  return http.delete(`/user/${id}`, params);
+};
+
 export const getRoles = (params = {}) => {
   return http.get('/roles', params);
 };
