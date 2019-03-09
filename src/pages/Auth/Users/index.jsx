@@ -4,11 +4,13 @@ import { Form } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 import UserList from '@/components/Auth/UserList';
 import OptsBtnGroup from '@/components/Auth/OptsBtnGroup';
+import SearchDrawer from './SearchDrawer';
 import { getUsers } from '@/api/auth';
 
 class User extends Component {
   state = {
-    data: []
+    data: [],
+    searchDrawerVisible: false
   };
 
   componentDidMount() {
@@ -43,11 +45,29 @@ class User extends Component {
       }
     });
   };
+  toggleDrawer = () => {
+    this.setState({
+      searchDrawerVisible: !this.state.searchDrawerVisible
+    });
+  };
   render() {
     return (
       <BasicLayout>
-        <OptsBtnGroup add download upload component="users" handleExport={this.handleExport} />
+        <OptsBtnGroup
+          search
+          add
+          download
+          upload
+          component="users"
+          handleSearch={this.toggleDrawer}
+          handleExport={this.handleExport}
+        />
         <UserList data={this.state.data} handleEdit={this.handleEdit} />
+        <SearchDrawer
+          data={this.state.data}
+          visible={this.state.searchDrawerVisible}
+          onClose={this.toggleDrawer}
+        />
       </BasicLayout>
     );
   }
