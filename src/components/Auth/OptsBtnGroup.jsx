@@ -8,6 +8,11 @@ const OptsBtnGroup = props => {
   return (
     <div className="opt-btns">
       <Button.Group className="opt-btn-group">
+        {props.search && (
+          <Button type="primary" icon="search" onClick={() => props.handleSearch()}>
+            搜索
+          </Button>
+        )}
         {props.add && (
           <Button
             type="primary"
