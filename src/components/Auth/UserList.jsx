@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button } from 'antd';
+import { Table, Button, Popconfirm } from 'antd';
+import { checkPermission } from '@/utils/auth';
 
 const { Column } = Table;
 
@@ -22,7 +23,16 @@ const UserList = props => {
             render={text => (
               <Button.Group>
                 <Button icon="edit" onClick={() => props.handleEdit(text)} />
-                <Button icon="delete" disabled />
+                <Popconfirm
+                  title="Are you sure delete this data?"
+                  onConfirm={() => props.handleDelete(text.id)}
+                  disabled={true}
+                >
+                  <Button
+                    icon="delete"
+                    disabled={!checkPermission(['manage_administrator', '	manage_service'], true)}
+                  />
+                </Popconfirm>
               </Button.Group>
             )}
           />
@@ -33,7 +43,10 @@ const UserList = props => {
 };
 
 UserList.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
+  handleExpandRow: PropTypes.func,
+  handleEdit: PropTypes.func,
+  handleDelete: PropTypes.func
 };
 
 export default UserList;
