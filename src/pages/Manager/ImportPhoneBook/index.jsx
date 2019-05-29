@@ -11,7 +11,7 @@ class ImportHygiene extends Component {
     const { token } = sessionStorage;
     const props = {
       name: 'excel',
-      action: 'https://api.youthol.cn/api/oa/phonebook/import',
+      action: 'https://youthapi.sdut.edu.cn/api/oa/phonebook/import',
       headers: {
         Authorization: `Bearer ${token}`
       },

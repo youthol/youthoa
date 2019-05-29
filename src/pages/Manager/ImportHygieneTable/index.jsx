@@ -11,7 +11,7 @@ class ImportHygiene extends Component {
     const { token } = sessionStorage;
     const props = {
       name: 'dormitory',
-      action: 'https://api.youthol.cn/api/oa/hygiene/import',
+      action: 'https://youthapi.sdut.edu.cn/api/oa/hygiene/import',
       headers: {
         Authorization: `Bearer ${token}`
       },
