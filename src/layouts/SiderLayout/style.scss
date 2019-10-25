@@ -1,9 +1,14 @@
 .logo {
   height: 64px;
-  border-bottom: 1px solid #065279;
+  border-bottom: 1px solid #002547;
   text-align: center;
   line-height: 60px;
   img {
     height: 40px;
   }
+}
+
+.ant-layout-sider,
+.ant-menu-dark {
+  background: #002547;
 }
