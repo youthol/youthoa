@@ -1,0 +1,36 @@
+.main-title {
+  font-family: 'HYQingYaTiF';
+  font-size: 90px;
+  color: rgba(143, 143, 143, 0);
+  padding: 50px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  animation: title 1.5s ease forwards;
+}
+
+@keyframes title{
+  from {
+    transform: translateY(35px);
+    color: rgba(126, 126, 126, 0);
+  } to {
+    transform: translateY(0);
+    color: rgb(126, 126, 126);
+  }
+}
+
+.birthday {
+  font-family: 'HYQingYaTiJ';
+  animation: birthday 1.5s ease 0.5s forwards;
+  font-size: 18px;
+  color: rgba(126, 126, 126, 0);
+}
+
+@keyframes birthday{
+  from {
+    transform: translateY(20px);
+    color: rgba(126, 126, 126, 0);
+  } to {
+    transform: translateY(0);
+    color: rgb(126, 126, 126);
+  }
+}

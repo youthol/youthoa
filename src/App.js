@@ -23,6 +23,7 @@ import AppDevice from '@/pages/App/Device';
 import AppSchedule from '@/pages/App/Schedule';
 import AppWorkload from '@/pages/App/Workload';
 import AppPhonebook from '@/pages/App/Phonebook';
+import './scss/base.scss';
 
 class App extends Component {
   render() {
