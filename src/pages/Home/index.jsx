@@ -15,7 +15,7 @@ class Home extends Component {
    */
   getBirthday = async () => {
     const data = await getBirthday();
-    if (data.data.code) {
+    if (data.data) {
       this.setState({
         birthday: data.data.msg
       });
