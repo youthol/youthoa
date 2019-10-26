@@ -5,7 +5,7 @@
   padding: 50px;
   margin-bottom: 0;
   padding-bottom: 0;
-  animation: title 1.5s ease forwards;
+  animation: title 1.25s ease forwards;
 }
 
 @keyframes title{
@@ -20,7 +20,7 @@
 
 .birthday {
   font-family: 'HYQingYaTiJ';
-  animation: birthday 1.5s ease 0.5s forwards;
+  animation: birthday 1.25s ease 0.25s forwards;
   font-size: 18px;
   color: rgba(126, 126, 126, 0);
 }
@@ -33,4 +33,28 @@
     transform: translateY(0);
     color: rgb(126, 126, 126);
   }
+}
+
+.home-input {
+  margin: 0 auto;
+  margin-top: 40px;
+  animation: input 1.75s ease 0.5s forwards;
+  opacity: 0;
+}
+
+@keyframes input{
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  } to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.home-weather {
+  font-family: 'youyuan';
+  text-align: right;
+  margin: -25px -10px 0 0;
+  font-weight: bold;
 }
