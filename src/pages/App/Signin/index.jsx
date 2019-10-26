@@ -95,6 +95,10 @@ class AppSignin extends Component {
           inputValue={this.state.inputValue}
           handleSubmit={this.handleSubmit}
           handleChange={this.handleChange}
+          xs={24}
+          md={16}
+          lg={12}
+          className="signin-btn"
         />
       </BasicLayout>
     );
