@@ -18,7 +18,7 @@ class Home extends Component {
       inputValue: '',
       weather: '',
       birthday: '',
-      LoadingState: true, // birthday 加载状况
+      LoadingState: true // birthday 加载状况
     };
   }
 
@@ -36,6 +36,8 @@ class Home extends Component {
     const inputValue = e.target.value;
     if (Number(inputValue)) {
       this.setState({ inputValue });
+    } else if (Number(this.state.inputValue)) {
+      this.setState({ inputValue });
     }
   };
 
@@ -47,6 +49,10 @@ class Home extends Component {
   handleSubmit = value => {
     if (!value || value.length !== 11) {
       return message.error('请输入正确学号');
+    }
+    if (!this.state.data) {
+      message.error('服务器错误，请检查网络是否正常！');
+      return;
     }
     const user = this.state.data.filter(el => el.sdut_id === value && el.status === 0);
     const timer = 77;
@@ -74,8 +80,10 @@ class Home extends Component {
    */
   getRecordList = async () => {
     const rowData = await getRecords();
-    const data = rowData.data.map(el => ({ ...el, key: el.id }));
-    this.setState({ data });
+    if (rowData) {
+      const data = rowData.data.map(el => ({ ...el, key: el.id }));
+      this.setState({ data });
+    }
   };
 
   /**
@@ -108,11 +116,13 @@ class Home extends Component {
         LoadingState: false
       });
     }
+    this.setState({
+      LoadingState: false
+    });
   };
 
   getWeather = async () => {
     const data = await weather();
-    console.log(data);
     if (data) {
       this.setState({
         weather: {
@@ -136,7 +146,7 @@ class Home extends Component {
         {!this.state.LoadingState ? (
           <div style={{ textAlign: 'center' }}>
             <div className="home-weather">
-              {!this.state.weather ? null : `${city} ${wea} ${tem}℃ ${win_speed}${win}`}
+              {!this.state.weather ? null : `${city} ${wea} ${tem}℃ ${win}${win_speed}`}
             </div>
             <h1 className="main-title">{checkTime() + '好哟'}</h1>
             <p className="birthday">{this.state.birthday ? this.state.birthday : null}</p>
