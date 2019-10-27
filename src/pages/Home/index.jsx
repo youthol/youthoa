@@ -9,14 +9,23 @@ import { Modal, message } from 'antd';
 import { getRecords, postSignin } from '@/api/signin';
 import SigninInput from '../App/Signin/components/SigninInput';
 import { weather } from '../../api/weather';
+import Loading from '../../components/Loading';
 
 class Home extends Component {
   constructor() {
     super();
     this.state = {
       inputValue: '',
-      weather: ''
+      weather: '',
+      birthday: '',
+      LoadingState: true, // birthday 加载状况
     };
+  }
+
+  componentDidMount() {
+    this.getBirthday();
+    this.getWeather();
+    this.getRecordList();
   }
 
   /**
@@ -95,7 +104,8 @@ class Home extends Component {
     const data = await getBirthday();
     if (data) {
       this.setState({
-        birthday: data.data.msg
+        birthday: data.data.msg,
+        LoadingState: false
       });
     }
   };
@@ -106,47 +116,45 @@ class Home extends Component {
     if (data) {
       this.setState({
         weather: {
-          tem: data.tem,  //当前温度
-          city: data.city,  //城市名
-          wea: data.wea,  //天气状况
-          tem1: data.tem1,  //最高温度
-          tem2: data.tem2,  //最低温度
+          tem: data.tem, //当前温度
+          city: data.city, //城市名
+          wea: data.wea, //天气状况
+          tem1: data.tem1, //最高温度
+          tem2: data.tem2, //最低温度
           win_speed: data.win_speed, //风速
-          win: data.win,  //风向
-          air_level: data.air_level  //空气状况
+          win: data.win, //风向
+          air_level: data.air_level //空气状况
         }
       });
     }
-  }
-
-  componentDidMount() {
-    this.getBirthday();
-    this.getWeather();
-    this.getRecordList();
-  }
+  };
 
   render() {
-    const {tem, city, wea, win_speed, win} = this.state.weather;
+    const { tem, city, wea, win_speed, win } = this.state.weather;
     return (
       <BasicLayout>
-        <div style={{ textAlign: 'center' }}>
-          <div className="home-weather">
-            {!this.state.weather?null:`${city} ${wea} ${tem}℃ ${win_speed}${win}`}
+        {!this.state.LoadingState ? (
+          <div style={{ textAlign: 'center' }}>
+            <div className="home-weather">
+              {!this.state.weather ? null : `${city} ${wea} ${tem}℃ ${win_speed}${win}`}
+            </div>
+            <h1 className="main-title">{checkTime() + '好哟'}</h1>
+            <p className="birthday">{this.state.birthday ? this.state.birthday : null}</p>
+            <SigninInput
+              inputValue={this.state.inputValue}
+              handleSubmit={this.handleSubmit}
+              handleChange={this.handleChange}
+              className="home-input"
+              xs={20}
+              md={12}
+              lg={10}
+              xl={8}
+              justify="center"
+            />
           </div>
-          <h1 className="main-title">{checkTime() + '好哟'}</h1>
-          <p className="birthday">{this.state.birthday ? this.state.birthday : null}</p>
-          <SigninInput
-            inputValue={this.state.inputValue}
-            handleSubmit={this.handleSubmit}
-            handleChange={this.handleChange}
-            className="home-input"
-            xs={20}
-            md={12}
-            lg={10}
-            xl={8}
-            justify="center"
-          />
-        </div>
+        ) : (
+          <Loading className="home-loading" />
+        )}
       </BasicLayout>
     );
   }
