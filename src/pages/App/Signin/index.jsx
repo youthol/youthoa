@@ -26,6 +26,8 @@ class AppSignin extends Component {
     const inputValue = e.target.value;
     if (Number(inputValue)) {
       this.setState({ inputValue });
+    } else if (Number(this.state.inputValue)) {
+      this.setState({ inputValue });
     }
   };
 
@@ -37,6 +39,10 @@ class AppSignin extends Component {
   handleSubmit = value => {
     if (!value || value.length !== 11) {
       return message.error('请输入正确学号');
+    }
+    if (!this.state.data) {
+      message.error('服务器错误，请检查网络是否正常！');
+      return;
     }
     const user = this.state.data.filter(el => el.sdut_id === value && el.status === 0);
     const timer = 77;
@@ -64,8 +70,10 @@ class AppSignin extends Component {
    */
   getRecordList = async () => {
     const rowData = await getRecords();
-    const data = rowData.data.map(el => ({ ...el, key: el.id }));
-    this.setState({ data });
+    if (rowData) {
+      const data = rowData.data.map(el => ({ ...el, key: el.id }));
+      this.setState({ data });
+    }
   };
 
   /**
