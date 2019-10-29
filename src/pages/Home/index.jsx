@@ -7,7 +7,7 @@ import './style.scss';
 import moment from 'moment';
 import { Modal, message } from 'antd';
 import { getRecords, postSignin } from '@/api/signin';
-import SigninInput from '../App/Signin/components/SigninInput';
+import SigninInput from '../../components/SigninInput';
 import { weather } from '../../api/weather';
 import Loading from '../../components/Loading';
 
@@ -67,7 +67,9 @@ class Home extends Component {
         content: '现在签退是早退喔~',
         onOk: () => {
           this.postSignin(value);
-        }
+        },
+        okText: '确认',
+        cancelText: '取消'
       });
     } else {
       this.postSignin(value);
