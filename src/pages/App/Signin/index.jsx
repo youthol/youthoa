@@ -3,7 +3,7 @@ import { Modal, message } from 'antd';
 import moment from 'moment';
 import BasicLayout from '@/layouts/BasicLayout';
 import DataList from './components/DataList';
-import SigninInput from './components/SigninInput';
+import SigninInput from '../../../components/SigninInput';
 import { getRecords, postSignin } from '@/api/signin';
 
 class AppSignin extends Component {
@@ -57,7 +57,9 @@ class AppSignin extends Component {
         content: '现在签退是早退喔~',
         onOk: () => {
           this.postSignin(value);
-        }
+        },
+        okText: '确认',
+        cancelText: '取消'
       });
     } else {
       this.postSignin(value);
