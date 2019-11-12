@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Upload, Icon, message } from 'antd';
 import Manager from '@/pages/Manager';
+import { importPhoneBookUrl } from '../../../api/menage';
 
 const Dragger = Upload.Dragger;
 
@@ -11,7 +12,7 @@ class ImportHygiene extends Component {
     const { token } = sessionStorage;
     const props = {
       name: 'excel',
-      action: 'https://youthapi.sdut.edu.cn/api/oa/phonebook/import',
+      action: importPhoneBookUrl,
       headers: {
         Authorization: `Bearer ${token}`
       },

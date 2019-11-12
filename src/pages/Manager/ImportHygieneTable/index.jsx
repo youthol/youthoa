@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Upload, Icon, message } from 'antd';
 import Manager from '@/pages/Manager';
+import { importHygieneUrl } from '../../../api/menage';
 
 const Dragger = Upload.Dragger;
 
@@ -11,7 +12,7 @@ class ImportHygiene extends Component {
     const { token } = sessionStorage;
     const props = {
       name: 'dormitory',
-      action: 'https://youthapi.sdut.edu.cn/api/oa/hygiene/import',
+      action: importHygieneUrl,
       headers: {
         Authorization: `Bearer ${token}`
       },
