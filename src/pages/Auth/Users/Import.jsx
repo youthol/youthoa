@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Upload, Icon, message } from 'antd';
 import Manager from '@/pages/Manager';
+import { ImportUserTableUrl } from '../../../api/auth';
 
 const Dragger = Upload.Dragger;
 
@@ -11,7 +12,7 @@ class ImportUserTable extends Component {
     const { token } = sessionStorage;
     const props = {
       name: 'excel',
-      action: 'https://youthapi.sdut.edu.cn/api/oa/user/import',
+      action: ImportUserTableUrl,
       headers: {
         Authorization: `Bearer ${token}`
       },

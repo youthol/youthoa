@@ -39,3 +39,5 @@ export const getPermById = (id, params = {}) => {
 export const putPerm = (id, data = {}) => {
   return http.put(`/permission/${id}`, data);
 };
+
+export const ImportUserTableUrl = 'https://youthapi.sdut.edu.cn/api/oa/user/import';
