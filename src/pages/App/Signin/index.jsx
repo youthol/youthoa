@@ -16,6 +16,7 @@ class AppSignin extends Component {
 
   componentDidMount() {
     this.getRecordList();
+   
   }
 
   /**
@@ -59,6 +60,15 @@ class AppSignin extends Component {
     this.setState({ inputValue: '' });
   };
 
+
+
+
+
+
+
+
+
+
   /**
    * @description 异步请求当天所有签到数据
    */
@@ -66,9 +76,17 @@ class AppSignin extends Component {
     const rowData = await getRecords();
     const data = rowData.data.map(el => ({ ...el, key: el.id }));
     this.setState({ data });
+    
   };
 
   /**
+   * 
+   * 
+   * 
+   * 
+   * 
+   * 
+   * 
    * @description 异步发送签到数据
    * @param {*} id sdut identity
    * @returns
