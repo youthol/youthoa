@@ -2,7 +2,7 @@
   font-family: 'HYQingYaTiF';
   font-size: 90px;
   color: rgba(143, 143, 143, 0);
-  padding: 50px;
+  padding: 30px;
   margin-bottom: 0;
   padding-bottom: 0;
   animation: title 1.25s ease forwards;
@@ -37,7 +37,7 @@
 
 .home-input {
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 20px;
   animation: input 1.75s ease 0.5s forwards;
   opacity: 0;
 }
@@ -62,4 +62,8 @@
 .home-loading {
   margin: 0 auto;
   margin-top: 100px;
+}
+
+.home-chart {
+  margin-top: 40px;
 }

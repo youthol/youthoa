@@ -16,7 +16,6 @@ class AppSignin extends Component {
 
   componentDidMount() {
     this.getRecordList();
-   
   }
 
   /**
