@@ -81,7 +81,7 @@ class BasicLayout extends Component {
           </Header>
           <Content className="page__bd">{this.props.children}</Content>
           <Footer className="page__ft">
-            <span>© {new Date().getFullYear()} 青春在线网站 版权所有</span>
+            <span>© {new Date().getFullYear()} 青春在线网站and STEVEN 版权所有</span>
           </Footer>
         </Layout>
       </Layout>

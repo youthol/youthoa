@@ -10,15 +10,25 @@ import { getRecords, postSignin } from '@/api/signin';
 import SigninInput from '../../components/SigninInput';
 import { weather } from '../../api/weather';
 import Loading from '../../components/Loading';
+import { Chart, Geom, Axis, Tooltip, Legend } from 'bizcharts';
+import { getRecords } from '@/api/signin';
+import swal from 'sweetalert';
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       inputValue: '',
       weather: '',
       birthday: '',
-      LoadingState: true // birthday 加载状况
+      LoadingState: true, // birthday 加载状况
+      duty: [],
+      PresentTime: null,
+      data: [],
+      cols: {
+        time: { alias: '值班时常' },
+        genre: { alias: '值班人员' }
+      }
     };
   }
 
@@ -78,13 +88,33 @@ class Home extends Component {
   };
 
   /**
+
    * @description 异步请求当天所有签到数据
    */
   getRecordList = async () => {
     const rowData = await getRecords();
+
     if (rowData) {
       const data = rowData.data.map(el => ({ ...el, key: el.id }));
       this.setState({ data });
+      var today = new Date();
+      var strin = today.toLocaleString('chinese', { hour12: false });
+      var time2 = new Date(strin).getTime();
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].status === 0) {
+          const name = data[i].user.name;
+          const result = data[i].created_at;
+          var time = new Date(result).getTime();
+          const calu = (time2 - time) / 1000 / 60 / 60;
+          // 此处将love和loveName写为两个对象，并想办法将值班时常与名字导入数组中，但还没完成这个想法
+          const love = { genre: name, time: calu.toFixed(0) };
+          this.state.duty.push(love);
+        }
+      }
+
+      this.setState({
+        PresentTime: time
+      });
     }
   };
 
@@ -163,6 +193,13 @@ class Home extends Component {
               xl={8}
               justify="center"
             />
+            <Chart width={600} height={400} data={this.state.duty} scale={this.state.cols}>
+              <Axis name="genre" title />
+              <Axis name="time" title />
+              <Legend position="top" dy={-20} />
+              <Tooltip />
+              <Geom type="interval" position="genre*time" color="genre" />
+            </Chart>
           </div>
         ) : (
           <Loading className="home-loading" />

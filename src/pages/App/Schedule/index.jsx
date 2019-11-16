@@ -124,13 +124,13 @@ class AppSchedule extends Component {
   render() {
     return (
       <BasicLayout>
-        <NewItemBtn label="新增日程" showModal={this.showModal} />
-        <DataList
+        <NewItemBtn label="新增日程" showModal={this.showModal} /> */}
+         <DataList
           data={this.state.data}
           showModal={this.showModal}
           handleDelete={this.handleDelete}
-        />
-        <ModalAdd
+        /> 
+         <ModalAdd
           visible={this.state.modalAddVisible}
           handleOk={this.handleOk}
           handleCancel={this.handleCancel}
