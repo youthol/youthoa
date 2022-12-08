@@ -33,32 +33,32 @@ class App extends Component {
           {/* Basic Routes */}
           <Route exact path="/" component={Home} />
           {/* Auth Routes */}
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/users" component={Users} />
-          <Route exact path="/users/import" component={ImportUsersTable} />
-          <Route exact path="/users/add" component={UserAdd} />
-          <Route exact path="/users/edit/:id" component={UserEdit} />
-          <Route exact path="/roles" component={Roles} />
-          <Route exact path="/roles/add" component={RoleAdd} />
-          <Route exact path="/roles/edit/:id" component={RoleEdit} />
-          <Route exact path="/perms" component={Perms} />
-          <Route exact path="/perms/edit/:id" component={PermEdit} />
+          <Route exact path="/login" component={Login} />                               {/* 登录 */}
+          <Route exact path="/users" component={Users} />                               {/* 用户列表 */}
+          <Route exact path="/users/import" component={ImportUsersTable} />             {/* 导入用户 */}
+          <Route exact path="/users/add" component={UserAdd} />                         {/* 添加用户 */}
+          <Route exact path="/users/edit/:id" component={UserEdit} />                   {/* 编辑用户 */}
+          <Route exact path="/roles" component={Roles} />                               {/* 角色列表 */}
+          <Route exact path="/roles/add" component={RoleAdd} />                         {/* 新增角色 */}
+          <Route exact path="/roles/edit/:id" component={RoleEdit} />                   {/* 编辑角色 */}
+          <Route exact path="/perms" component={Perms} />                               {/* 权限列表 */}
+          <Route exact path="/perms/edit/:id" component={PermEdit} />                   {/* 权限修改 */}
           {/* Manages Routes */}
-          <Route exact path="/manage" component={Manages} />
-          <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} />
-          <Route exact path="/manage/del-hygiene" component={DeleteHygiene} />
-          {/* Features Routes */}
-          <Route exact path="/signin" component={AppSignin} />
-          <Route exact path="/signin/export" component={ExportSigninTable} />
-          <Route exact path="/device" component={AppDevice} />
-          <Route exact path="/schedule" component={AppSchedule} />
-          <Route exact path="/workload" component={AppWorkload} />
-          <Route exact path="/phonebook" component={AppPhonebook} />
-          <Route exact path="/phonebook/export" component={ExportPhoneBook} />
-          <Route exact path="/phonebook/import" component={ImportPhoneBook} />
+          <Route exact path="/manage" component={Manages} />                            {/* 管理 系统数据管理 */}
+          <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} /> {/* 导入卫生表 */}
+          <Route exact path="/manage/del-hygiene" component={DeleteHygiene} />          {/* 删除卫生成绩 */}
+          {/* Features Routes */} 
+          <Route exact path="/signin" component={AppSignin} />                          {/* 签到界面    */}
+          <Route exact path="/signin/export" component={ExportSigninTable} />           {/* 导出签到信息 */}
+          <Route exact path="/device" component={AppDevice} />                          {/* 设备借用  */}
+          <Route exact path="/schedule" component={AppSchedule} />                      {/* 时间表 日程安排 */}
+          <Route exact path="/workload" component={AppWorkload} />                      {/* 工作量统计 */}
+          <Route exact path="/phonebook" component={AppPhonebook} />                    {/* 办公电话表 */}
+          <Route exact path="/phonebook/export" component={ExportPhoneBook} />          {/* 导出办公电话表 */}
+          <Route exact path="/phonebook/import" component={ImportPhoneBook} />          {/* 导入办公电话表 */}
           {/* NotMatch Routes */}
-          <Redirect to="/" />
-          <Route component={NotMatch} />
+          <Redirect to="/" />                                                           {/* 首页 */}
+          <Route component={NotMatch} />                                                {/* 404界面 */}
         </Switch>
       </Router>
     );
