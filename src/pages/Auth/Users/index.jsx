@@ -24,6 +24,7 @@ class User extends Component {
     }
   };
   handleEdit = user => {
+    console.log('%cindex.jsx line:27 this.props', 'color: #26bfa5;', this.props);
     this.props.history.push(`/users/edit/${user.id}`);
   };
   handleDelete = async id => {
@@ -75,6 +76,7 @@ class User extends Component {
           data={this.state.data}
           visible={this.state.searchDrawerVisible}
           onClose={this.toggleDrawer}
+          history={this.props.history}
         />
       </BasicLayout>
     );

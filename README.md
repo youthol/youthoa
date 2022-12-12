@@ -94,3 +94,34 @@ $ yarn build
 2019-10-30
 
 - `A` 添加 fontmin 依赖，可以使用 `npm run font` 进行字体包提取
+
+
+
+| 包名                         | 版本      | 使用                                                         | 备注 |
+| ---------------------------- | --------- | ------------------------------------------------------------ | ---- |
+| `antd`                       | `^3.12.4` | 基于 `Ant Design` 设计体系的 `React UI` 组件库               |      |
+| `axios`                      | `^0.18.0` | `Axios` 是一个基于 `promise` 的网络请求库                    |      |
+| `bizcharts`                  | `^3.5.5`  |                                                              |      |
+| `chalk`                      | `^1.1.3`  |                                                              |      |
+| `dotenv`                     | `4.0.0`   |                                                              |      |
+| `dotenv-expand`              | `4.2.0`   |                                                              |      |
+| `file-loader`                | `1.1.5`   |                                                              |      |
+| `fs-extra`                   | `3.0.1`   |                                                              |      |
+| `html-webpack-plugin`        | `2.29.0`  |                                                              |      |
+| `moment`                     | `^2.22.2` | `JavaScript` 日期处理类库                                    |      |
+| `node-sass`                  | `^4.13.0` |                                                              |      |
+| `qs`                         | `^6.5.2`  | `qs` 是一个流行的查询参数序列化和解析库。<br />可以将一个普通的object序列化成一个查询字符串，<br />或者反过来将一个查询字符串解析成一个object，<br />而且支持复杂的嵌套 |      |
+| `react`                      | `^16.4.1` | 用于构建用户界面的 JavaScript 库                             |      |
+| `react-dev-utils`            | `^5.0.1`  |                                                              |      |
+| `react-dom`                  | `^16.4.1` |                                                              |      |
+| `react-redux`                | `^5.0.7`  | `Redux` 官方提供的 React 绑定库。 具有高效且灵活的特性。     |      |
+| `react-router-dom`           | `^4.3.1`  | `react-dom` 包提供了用户 DOM 的特定方法，可以在你应用程序的顶层进行使用 |      |
+| `redux`                      | `^4.0.0`  | `JS` 应用的状态容器，提供可预测的状态管理                    |      |
+| `redux-thunk`                | `^2.3.0`  | `redux-thunk` 就是一个标准的 `Redux middleware`              |      |
+| `resolve`                    | `1.6.0`   |                                                              |      |
+| `sass-loader`                | `^7.1.0`  |                                                              |      |
+| `style-loader`               | `0.19.0`  |                                                              |      |
+| `sw-precache-webpack-plugin` | `0.11.4`  |                                                              |      |
+| `sweetalert`                 | `^2.1.2`  |                                                              |      |
+| `url-loader`                 | `0.6.2`   |                                                              |      |
+| `whatwg-fetch`               | `2.0.3`   |                                                              |      |

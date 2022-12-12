@@ -20,7 +20,7 @@ const errorHandle = (response, status) => {
 };
 
 const instance = axios.create({
-  baseURL: 'https://youthapi.sdut.edu.cn/api/oa',
+  baseURL: 'http://127.0.0.1:8000/api/oa',
   withCredentials: false,
   timeout: 3000
 });

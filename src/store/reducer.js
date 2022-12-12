@@ -1,7 +1,7 @@
 // import * as actionTypes from './actionTypes';
 
 const urls = {
-  serve: 'https://youthapi.sdut.edu.cn/api/oa',
+  serve: 'http://127.0.0.1:8000/api/oa',
   localhost: 'http://localhost:5000/api'
 };
 

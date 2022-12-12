@@ -8,5 +8,5 @@ export const deleteHygiene = (params = {}) => {
   return http.delete('/hygiene/weeks', params);
 };
 
-export const importPhoneBookUrl = 'https://youthapi.sdut.edu.cn/api/oa/phonebook/import';
-export const importHygieneUrl = 'https://youthapi.sdut.edu.cn/api/oa/hygiene/import';
+export const importPhoneBookUrl = 'http://127.0.0.1:8000/api/oa/phonebook/import';
+export const importHygieneUrl = 'http://127.0.0.1:8000/api/oa/hygiene/import';

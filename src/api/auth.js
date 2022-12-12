@@ -40,4 +40,4 @@ export const putPerm = (id, data = {}) => {
   return http.put(`/permission/${id}`, data);
 };
 
-export const ImportUserTableUrl = 'https://youthapi.sdut.edu.cn/api/oa/user/import';
+export const ImportUserTableUrl = 'http://127.0.0.1:8000/api/oa/user/import';

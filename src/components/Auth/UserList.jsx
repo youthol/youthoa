@@ -26,7 +26,7 @@ const UserList = props => {
                 <Popconfirm
                   title="Are you sure delete this data?"
                   onConfirm={() => props.handleDelete(text.id)}
-                  disabled={true}
+                  disabled={false}
                 >
                   <Button
                     icon="delete"
