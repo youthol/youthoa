@@ -21,8 +21,8 @@ class ModalEdit extends Component {
       <Modal
         title="日程完结"
         visible={this.props.visible}
-        onOk={() => this.props.handleOk('renew', this.props.form)}
-        onCancel={() => this.props.handleCancel('renew', this.props.form)}
+        onOk={() => this.props.handleOk('edit', this.props.form)}
+        onCancel={() => this.props.handleCancel('edit', this.props.form)}
       >
         <Form>
           <FormItem {...formItemLayout} label="备忘人">
