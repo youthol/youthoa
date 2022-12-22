@@ -23,7 +23,7 @@ class UserEdit extends Component {
     validateFields((err, values) => {
       if (!err) {
         const data = Object.assign({}, values, {
-          birthday: moment(values.birthday).format('YYYY-MM-DD'),
+          birthday:  values.birthday ?moment(values.birthday).format('YYYY-MM-DD') :null,
           department: values.department.join('+'),
           duty_at: values.duty_at.join('|')
         });
@@ -153,7 +153,7 @@ class UserEdit extends Component {
             </FormItem>
             <FormItem {...formItemLayout} label="生日">
               {getFieldDecorator('birthday', {
-                initialValue: moment(this.state.userinfo.birthday)
+                initialValue: this.state.userinfo.birthday?  moment(this.state.userinfo.birthday ) :null,
               })(<DatePicker placeholder="请选择生日" />)}
             </FormItem>
             <FormItem {...formItemLayout} label="所属角色">
