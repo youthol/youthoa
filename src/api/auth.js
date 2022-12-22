@@ -8,6 +8,9 @@ export const getUserById = (id, params = {}) => {
   return http.get(`/user/${id}`, params);
 };
 
+export const postUser = ( data = {}) => {
+  return http.post(`/user/`, data);
+};
 export const putUser = (id, data = {}) => {
   return http.put(`/user/${id}`, data);
 };
