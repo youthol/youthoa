@@ -12,7 +12,7 @@ import './style.scss';
 
 class Login extends Component {
   componentDidMount() {
-    if (checkLogin() === 1) {
+    if (checkLogin() === 1) { // todo 待优化, 1 无含义 建议使用常量
       this.props.history.push('/');
     }
   }

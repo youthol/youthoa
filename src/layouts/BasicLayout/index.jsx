@@ -15,7 +15,7 @@ class BasicLayout extends Component {
     isAuth: false
   };
   componentDidMount() {
-    switch (checkLogin()) {
+    switch (checkLogin()) { // todo 待优化, 1,2 无含义,建议使用 常量 优化
       case 1:
         this.props.setUserInfo();
         this.setState({ isAuth: true });

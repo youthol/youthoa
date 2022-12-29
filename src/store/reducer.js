@@ -10,6 +10,7 @@ const initialState = {
 };
 
 export default (state = initialState, actions) => {
+  // 此处为什么使用 switch ? 
   switch (actions.type) {
     default:
       return state;

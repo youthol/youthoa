@@ -5,6 +5,11 @@ import store from '@/store';
  * @description 检查是否登录
  * @returns 1正常; 2过期; 3未登录
  */
+// 常量
+// loggedin 正常   (登录)
+// overdue 过期    (登录过期)
+// notloggedin        (未登录)
+
 export const checkLogin = () => {
   const { token, expires_at } = sessionStorage;
   if (token && moment().isBefore(expires_at)) {
