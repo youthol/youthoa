@@ -216,26 +216,28 @@ class Home extends Component {
               xl={8}
               justify="center"
             />
-            <Chart
-              width={600}
-              height={300}
-              data={this.state.duty}
-              scale={this.state.cols}
-              className="home-chart"
-            >
-              <Axis name="genre" title />
-              <Axis
-                name="time"
-                title
-                label={{
-                  formatter(text) {
-                    return `${text}m`;
-                  }
-                }}
-              />
+            <div className='chart-container'>
+              <Chart
+                width={600}
+                height={300}
+                data={this.state.duty}
+                scale={this.state.cols}
+                className="home-chart"
+              >
+                <Axis name="genre" title />
+                <Axis
+                  name="time"
+                  title
+                  label={{
+                    formatter(text) {
+                      return `${text}m`;
+                    }
+                  }}
+                />
               <Tooltip />
-              <Geom type="interval" position="genre*time" color="genre" />
-            </Chart>
+                <Geom type="interval" position="genre*time" color="genre" />
+              </Chart>
+            </div>
           </div>
         ) : (
           <Loading className="home-loading" />
