@@ -16,6 +16,7 @@ import Manages from '@/pages/Manager';
 import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
 import ImportHygieneTable from '@/pages/Manager/ImportHygieneTable';
 import DeleteHygiene from '@/pages/Manager/DeleteHygiene';
+import EquipmentManager from '@/pages/Manager/EquipmentManager';
 import ExportPhoneBook from '@/pages/Manager/ExportPhoneBook';
 import ImportPhoneBook from '@/pages/Manager/ImportPhoneBook';
 import AppSignin from '@/pages/App/Signin';
@@ -44,9 +45,10 @@ class App extends Component {
           <Route exact path="/perms" component={Perms} />                               {/* 权限列表 */}
           <Route exact path="/perms/edit/:id" component={PermEdit} />                   {/* 权限修改 */}
           {/* Manages Routes */}
-          <Route exact path="/manage" component={Manages} />                            {/* 管理 系统数据管理 */}
-          <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} /> {/* 导入卫生表 */}
-          <Route exact path="/manage/del-hygiene" component={DeleteHygiene} />          {/* 删除卫生成绩 */}
+          <Route  path="/manage" component={Manages} />                            {/* 管理 系统数据管理 */}
+          <Route  path="/manage/impt-hygiene-tb" component={ImportHygieneTable} /> {/* 导入卫生表 */}
+          <Route  path="/manage/del-hygiene" component={DeleteHygiene} />          {/* 删除卫生成绩 */}
+          <Route  path="/manage/device" component={EquipmentManager} />          {/* 删除卫生成绩 */}
           {/* Features Routes */} 
           <Route exact path="/signin" component={AppSignin} />                          {/* 签到界面    */}
           <Route exact path="/signin/export" component={ExportSigninTable} />           {/* 导出签到信息 */}

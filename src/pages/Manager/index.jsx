@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Icon } from 'antd';
+import { Link, Switch } from 'react-router-dom';
+import { Menu, Icon, Popover } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
+import EquipmentManager from '@/pages/Manager/EquipmentManager';
+import EquipmentManagerAdd from '@/pages/Manager/EquipmentManager/add';
 import './style.scss';
-
+import {  Route} from "react-router-dom";
 class Manager extends Component {
   state = {
     current: 'app'
@@ -13,6 +15,12 @@ class Manager extends Component {
       current: e.key
     });
   };
+
+  content = (
+    <div>
+      <p>设备借用 所需的设备</p>
+    </div>
+  );
   render() {
     return (
       <BasicLayout>
@@ -61,10 +69,20 @@ class Manager extends Component {
             </Menu.Item>
             <Menu.Item key="del-hygiene">
               <Link to="/manage/del-hygiene">删除卫生成绩</Link>
-            </Menu.Item>
+            </Menu.Item>  
           </Menu.SubMenu>
+
+          <Menu.Item key="del-hygiene111">
+            <Popover content={this.content} title="设备管理" trigger="hover">
+              <Link to="/manage/equipment">设备管理</Link>
+            </Popover>
+          </Menu.Item>
         </Menu>
         <div>{this.props.children}</div>
+        <Switch >
+          <Route path="/manage/equipment/add" component={EquipmentManagerAdd} />
+          <Route path="/manage/equipment" component={EquipmentManager} />
+        </Switch>
       </BasicLayout>
     );
   }
