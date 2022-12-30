@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Table, Button, Badge, Popconfirm } from 'antd';
+import { Table, Button, Badge, Popconfirm, Icon } from 'antd';
 import { checkPermission } from '@/utils/auth';
 
 const { Column } = Table;
@@ -36,19 +36,26 @@ const DataList = props => {
         render={text => (
           <Button.Group>
             <Button
-              icon="logout"
               disabled={text.return_at ? true : false}
               onClick={() => props.showModal('edit', text.id)}
-            />
+            >
+                <Icon type="logout" />
+
+              </Button>
+
+
+         
             <Popconfirm
               title="Are you sure delete this data?"
               onConfirm={() => props.handleDelete(text.id)}
               disabled={true}
             >
               <Button
-                icon="delete"
                 disabled={!checkPermission(['manage_administrator', '	manage_service'], true)}
-              />
+              >
+
+                <Icon type="delete" />
+              </Button>
             </Popconfirm>
           </Button.Group>
         )}
