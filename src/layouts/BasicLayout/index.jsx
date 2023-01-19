@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Layout, Modal, Icon, message } from 'antd';
+import { Layout, Modal, Menu, Dropdown, Icon, message } from 'antd';
 import SiderLayout from '@/layouts/SiderLayout';
 import { setUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
 import { checkLogin } from '@/utils/auth';
@@ -58,6 +58,20 @@ class BasicLayout extends Component {
   };
 
   render() {
+
+
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <a href="javascript:;">个人中心</a>
+        </Menu.Item>
+
+        <Menu.Item onClick={this.handleLogout}>
+          <a href="javascript:;">退出登录</a>
+        </Menu.Item>
+      </Menu>
+    );
+
     return (
       <Layout className="page__layout">
         <SiderLayout isAuth={this.state.isAuth} />
@@ -68,12 +82,13 @@ class BasicLayout extends Component {
             </div>
             <div className="header-user">
               {this.state.isAuth ? (
-                <Icon
-                  type="user"
-                  title="退出"
-                  style={{ color: '#08c' }}
-                  onClick={this.handleLogout}
-                />
+                <Dropdown overlay={menu} placement="bottomLeft">
+                  <Icon
+                    type="user"
+                    title="退出"
+                    style={{ color: '#08c' }}
+                  />
+                </Dropdown>
               ) : (
                 <Icon type="user" title="登录" onClick={this.handleLogin} />
               )}
