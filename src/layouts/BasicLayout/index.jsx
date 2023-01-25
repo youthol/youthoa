@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Layout, Modal, Menu, Dropdown, Icon, message } from 'antd';
+import { Link } from 'react-router-dom'
 import SiderLayout from '@/layouts/SiderLayout';
 import { setUserInfo, deleteUserInfo } from '@/pages/Login/redux/actions';
 import { checkLogin } from '@/utils/auth';
@@ -63,11 +64,11 @@ class BasicLayout extends Component {
     const menu = (
       <Menu>
         <Menu.Item>
-          <a href="javascript:;">个人中心</a>
+          <Link to="/account">个人中心</Link>
         </Menu.Item>
 
         <Menu.Item onClick={this.handleLogout}>
-          <a href="javascript:;">退出登录</a>
+          退出登录
         </Menu.Item>
       </Menu>
     );
