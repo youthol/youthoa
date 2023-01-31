@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Table, Button, Popconfirm } from 'antd';
+import { Form, Table, Button, Popconfirm, Badge } from 'antd';
 import OptsBtnGroup from '@/components/Auth/OptsBtnGroup';
 // import SearchDrawer from './SearchDrawer';
 import { getEquipments } from '@/api/equipment';
-
+import BasicLayout from '@/layouts/BasicLayout';
 
 const { Column } = Table;
 
@@ -52,6 +52,8 @@ class User extends Component {
   };
   render() {
     return (
+
+      <BasicLayout>
       <div className="testttt">
 
         <OptsBtnGroup
@@ -65,8 +67,15 @@ class User extends Component {
         />
         <Table dataSource={this.state.data} style={{ textAlign: "center" }} >
           <Column title="ID" dataIndex="id" key="id" />
-          <Column title="设备名称" dataIndex="device_name" key="name" />
-          <Column title="设备类型" dataIndex="device_type" key="sdut_id" />
+          <Column title="设备名称" dataIndex="device_name" key="device_name" />
+          <Column title="设备类型" dataIndex="device_type" key="device_type" />
+          <Column title="设备状态" dataIndex="status" key="status" render={
+            text => (text>0?(
+              <Badge status="success" text="可使用" />
+            ):(
+              <Badge status="processing" text="已借出" />
+            ))
+            }/>
           <Column
             title="操作"
             key="action"
@@ -88,6 +97,7 @@ class User extends Component {
         </Table>
 
       </div>
+      </BasicLayout>
     );
   }
 }

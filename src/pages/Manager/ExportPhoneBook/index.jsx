@@ -2,24 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Form, Button } from 'antd';
 import Manager from '@/pages/Manager';
+import { downloadFile } from '@/lib/downloadFile';
 
 class ExportSigninTable extends Component {
   handleExport = e => {
     e.preventDefault();
     const { BASE_API } = this.props;
 
+    // url  file name 
+    // 封装 导出文件
+
     try {
       const { token } = sessionStorage;
-      let a = document.createElement('a');
       let url = `${BASE_API}/phonebook/export?token=${token}`;
       let filename = 'myfile.zip';
-      a.href = url;
-      a.download = filename;
-      a.click();
+
+      downloadFile(url,filename)
+    
     } catch (e) {
       console.error(e);
     }
+
+
+   
   };
+
+
 
   render() {
     return (
@@ -27,7 +35,7 @@ class ExportSigninTable extends Component {
         <Form className="export-form" onSubmit={this.handleExport}>
           <Form.Item>
             <Button type="primary" htmlType="submit" className="login-form-button">
-              导出数据
+              导出办公电话数据
             </Button>
           </Form.Item>
         </Form>

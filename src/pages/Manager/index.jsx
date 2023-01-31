@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { Link, Switch } from 'react-router-dom';
 import { Menu, Icon, Popover } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
-import EquipmentManager from '@/pages/Manager/EquipmentManager';
-import EquipmentManagerAdd from '@/pages/Manager/EquipmentManager/add';
 import './style.scss';
-import {  Route} from "react-router-dom";
 class Manager extends Component {
   state = {
     current: 'app'
@@ -45,15 +42,20 @@ class Manager extends Component {
               </span>
             }
           >
+
+            <Menu.ItemGroup title="签到数据">
             <Menu.Item key="expt-signin-tb">
               <Link to="/signin/export">导出签到数据表</Link>
             </Menu.Item>
+            </Menu.ItemGroup>
+            <Menu.ItemGroup title="办公电话">
             <Menu.Item key="/phonebook/export">
               <Link to="/phonebook/export">导出联系方式表</Link>
             </Menu.Item>
             <Menu.Item key="/phonebook/import">
               <Link to="/phonebook/import">导入联系方式表</Link>
             </Menu.Item>
+            </Menu.ItemGroup>
           </Menu.SubMenu>
           {/* 系统外数据管理入口 */}
           <Menu.SubMenu
@@ -79,10 +81,7 @@ class Manager extends Component {
           </Menu.Item>
         </Menu>
         <div>{this.props.children}</div>
-        <Switch >
-          <Route path="/manage/equipment/add" component={EquipmentManagerAdd} />
-          <Route path="/manage/equipment" component={EquipmentManager} />
-        </Switch>
+      
       </BasicLayout>
     );
   }

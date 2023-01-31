@@ -412,3 +412,12 @@ https://github.com/qt/qt5/blob/5.9/.commit-template
 * https://www.freecodecamp.org/news/how-to-write-better-git-commit-messages/
 
   
+--
+
+## 笔记
+
+存在问题
+
+* 界面刷新 redux (store) 状态会消失
+* 侧边栏 点击 子菜单, 跳转后 会折叠父菜单
+  由当前布局方式导致, 可通过将菜单的状态 交由 redux 管理解决

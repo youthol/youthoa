@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+
 import NotMatch from '@/pages/404';
 import Home from '@/pages/Home';
+
 import Login from '@/pages/Login';
 import Users from '@/pages/Auth/Users';
 import UserAdd from '@/pages/Auth/Users/Add';
@@ -12,6 +14,13 @@ import RoleAdd from '@/pages/Auth/Roles/Add';
 import RoleEdit from '@/pages/Auth/Roles/Edit';
 import Perms from '@/pages/Auth/Perms';
 import PermEdit from '@/pages/Auth/Perms/Edit';
+
+import AppSignin from '@/pages/App/Signin';
+import AppDevice from '@/pages/App/Device';
+import AppSchedule from '@/pages/App/Schedule';
+import AppWorkload from '@/pages/App/Workload';
+import AppPhonebook from '@/pages/App/Phonebook';
+
 import Manages from '@/pages/Manager';
 import ExportSigninTable from '@/pages/Manager/ExportSigninTable';
 import ImportHygieneTable from '@/pages/Manager/ImportHygieneTable';
@@ -19,18 +28,29 @@ import DeleteHygiene from '@/pages/Manager/DeleteHygiene';
 import EquipmentManager from '@/pages/Manager/EquipmentManager';
 import ExportPhoneBook from '@/pages/Manager/ExportPhoneBook';
 import ImportPhoneBook from '@/pages/Manager/ImportPhoneBook';
-import AppSignin from '@/pages/App/Signin';
-import AppDevice from '@/pages/App/Device';
-import AppSchedule from '@/pages/App/Schedule';
-import AppWorkload from '@/pages/App/Workload';
-import AppPhonebook from '@/pages/App/Phonebook';
-import './scss/base.scss';
 
+import ManageEquipment from '@/pages/Manager/Equipment'       // 设备管理管理
+import ManageEquipmentAdd from '@/pages/Manager/Equipment/Add.jsx'       // 设备管理管理
+import ManageSigninRecoard from '@/pages/Manager/SigninRecoard'   // 签到记录管理
+import ManageDevice from '@/pages/Manager/Device'          // 设备借用记录管理
+import ManageWorkload from '@/pages/Manager/Workload'   // 工作量数据管理
+import ManageSchedule from '@/pages/Manager/Schedule'        // 日程安排数据管理
+import ManagePhonebook from '@/pages/Manager/PhoneBook/index.jsx'       // 办公电话数据管理
+
+import Account from "@/pages/Auth/Account"
+
+import './scss/base.scss';
+/**
+ * 
+ */
 class App extends Component {
+
   render() {
     return (
       <Router>
         <Switch>
+          <Route path="/account" component={Account} />
+
           {/* Basic Routes */}
           <Route exact path="/" component={Home} />
           {/* Auth Routes */}
@@ -45,11 +65,32 @@ class App extends Component {
           <Route exact path="/perms" component={Perms} />                               {/* 权限列表 */}
           <Route exact path="/perms/edit/:id" component={PermEdit} />                   {/* 权限修改 */}
           {/* Manages Routes */}
-          <Route  path="/manage" component={Manages} />                            {/* 管理 系统数据管理 */}
-          <Route  path="/manage/impt-hygiene-tb" component={ImportHygieneTable} /> {/* 导入卫生表 */}
-          <Route  path="/manage/del-hygiene" component={DeleteHygiene} />          {/* 删除卫生成绩 */}
-          <Route  path="/manage/device" component={EquipmentManager} />          {/* 删除卫生成绩 */}
-          {/* Features Routes */} 
+          <Route exact path="/manage" component={Manages} />                            {/* 管理 系统数据管理 */}
+          <Route exact path="/manage/impt-hygiene-tb" component={ImportHygieneTable} /> {/* 导入卫生表 */}
+          <Route exact path="/manage/del-hygiene" component={DeleteHygiene} />          {/* 删除卫生成绩 */}
+
+
+          <Route exact path="/manage/equipment" component={ManageEquipment} />          {/* 设备管理管理 */}
+          <Route exact path="/manage/equipment/add" component={ManageEquipmentAdd} />          {/* 设备管理管理 */}
+          <Route exact path="/manage/siginrecoard" component={ManageSigninRecoard} />          {/* 签到记录管理 */}
+          <Route exact path="/manage/device" component={ManageDevice} />          {/* 设备借用记录管理 */}
+          <Route exact path="/manage/workload" component={ManageWorkload} />          {/* 工作量数据管理 */}
+          <Route exact path="/manage/schedulee" component={ManageSchedule} />          {/* 日程安排数据管理 */}
+          <Route exact path="/manage/phonebook" component={ManagePhonebook} />          {/* 办公电话数据管理  */}
+
+
+          {/* 
+            import ManageEquipment from                                 '@/pages/Manager/Equipment'       // 设备管理管理
+            import ManageSigninRecoard from                             '@/pages/Manager/SigninRecoard'   // 签到记录管理
+            import ManageDevice from                                    '@/pages/Manager/Device'          // 设备借用记录管理
+            import ManageWorkload from                                  '@/pages/Manager/Workload'        // 工作量数据管理
+            import ManageSchedule from                                  '@/pages/Manager/Schedule'        // 日程安排数据管理
+            import ManagePhonebook from                                 '@/pages/Manager/Phonebook'       // 办公电话数据管理 
+        */}
+
+
+          3
+          {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />                          {/* 签到界面    */}
           <Route exact path="/signin/export" component={ExportSigninTable} />           {/* 导出签到信息 */}
           <Route exact path="/device" component={AppDevice} />                          {/* 设备借用  */}

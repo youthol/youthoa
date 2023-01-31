@@ -6,28 +6,14 @@ import LOGO from '@/assets/youthol_logo_lg@700x300.png';
 import LOGOMINI from '@/assets/youthol_logo_md@300x300.png';
 import './style.scss';
 import { checkPermission } from '@/utils/auth';
-
 const { Sider } = Layout;
-
 class SiderLayout extends Component {
   state = {
-    collapsed: false
+    collapsed: false,
   };
-  handleCollapse = collapsed => {
+  handleCollapse = (collapsed) => {
     this.setState({ collapsed });
   };
-  // checkPermission = perms => {
-  //   const { permissions } = this.props.currentUser;
-  //   if (!perms || !permissions) return false;
-  //   let hasPermission = false;
-  //   for (let i in perms) {
-  //     if (permissions.some(item => item.name === perms[i])) {
-  //       hasPermission = true;
-  //       break;
-  //     }
-  //   }
-  //   return hasPermission;
-  // };
   render() {
     return (
       <Sider
@@ -75,11 +61,44 @@ class SiderLayout extends Component {
             </Menu.SubMenu>
           )}
           {checkPermission(['manage_administrator', 'manage_service']) && (
-            <Menu.Item key="/manage">
-              <Link to="/manage" />
-              <Icon type="laptop" />
-              <span>系统数据管理</span>
-            </Menu.Item>
+            <Menu.SubMenu
+              key="manage"
+              title={
+                <span>
+                  <Icon type="laptop" />
+                  <span>系统数据管理</span>
+                </span>
+              }
+            >
+              <Menu.Item key="/manage">
+                <Link to="/manage" />
+                <span>数据管理</span>
+              </Menu.Item>
+              <Menu.Item key="/manage/siginrecoard" disabled>
+                <Link to="/manage/siginrecoard" />
+                <span>签到数据管理</span>
+              </Menu.Item>
+              <Menu.Item key="/manage/workload" disabled>
+                <Link to="/manage/workload" />
+                <span>工作量数据管理</span>
+              </Menu.Item>
+              <Menu.Item key="/manage/device" disabled>
+                <Link to="/manage/device" />
+                <span>设备借用数据管理</span>
+              </Menu.Item>
+              <Menu.Item key="/manage/schedulee" disabled>
+                <Link to="/manage/schedulee" />
+                <span>日程安排数据管理</span>
+              </Menu.Item>
+              <Menu.Item key="/manage/equipment">
+                <Link to="/manage/equipment" />
+                <span>设备数据管理</span>
+              </Menu.Item>
+              <Menu.Item key="/manage/phonebook" disabled>
+                <Link to="/manage/phonebook" />
+                <span>办公电话数据管理</span>
+              </Menu.Item>
+            </Menu.SubMenu>
           )}
           <Menu.Item key="/signin">
             <Link to="/signin" />
@@ -111,9 +130,7 @@ class SiderLayout extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  currentUser: state.currentUser
+const mapStateToProps = (state) => ({
+  currentUser: state.currentUser,
 });
-
 export default connect(mapStateToProps)(withRouter(SiderLayout));
