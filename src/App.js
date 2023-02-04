@@ -89,7 +89,7 @@ class App extends Component {
         */}
 
 
-          3
+
           {/* Features Routes */}
           <Route exact path="/signin" component={AppSignin} />                          {/* 签到界面    */}
           <Route exact path="/signin/export" component={ExportSigninTable} />           {/* 导出签到信息 */}
